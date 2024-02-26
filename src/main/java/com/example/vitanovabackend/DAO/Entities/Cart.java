@@ -15,13 +15,14 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long IdCard;
     float PriceCard;
     LocalDate DateCard;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "cart")
-    List<Product>products = new ArrayList<>();
+    List<Order>orders = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "cart")
     User user;
 }
