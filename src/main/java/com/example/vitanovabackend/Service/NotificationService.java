@@ -1,7 +1,6 @@
 package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.Notification;
-import com.example.vitanovabackend.DAO.Entities.PeriodTracker;
 import com.example.vitanovabackend.DAO.Repositories.NotificationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
