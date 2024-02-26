@@ -24,6 +24,8 @@ import java.time.LocalDate;
 
         LocalDate sentDate;
 
+        boolean seen;
+
 
         @OneToOne
         User sender;
