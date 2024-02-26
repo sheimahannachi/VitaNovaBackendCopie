@@ -25,9 +25,9 @@ public class Exercise {
     String bodypart;
     @Enumerated(EnumType.STRING)
     Intensity intensity ;
-    String sets;
-    String reps;
-    String instruction;
+    long sets;
+    long reps;
+    //String instruction;
     String picture;
     boolean archived;
 
