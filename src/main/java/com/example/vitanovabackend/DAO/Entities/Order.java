@@ -5,23 +5,22 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
+@Table(name="orderr")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Cart {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long IdCard;
-    float PriceCard;
-    LocalDate DateCard;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "cart")
-    List<Order>orders = new ArrayList<>();
-    @OneToOne(cascade = CascadeType.ALL,mappedBy = "cart")
-    User user;
+    long idOrder;
+    LocalDate dateOrder;
+    float prixOrder;
+    int quantite;
+    boolean archiveOrder;
+    @ManyToOne
+    Cart cart;
 }
