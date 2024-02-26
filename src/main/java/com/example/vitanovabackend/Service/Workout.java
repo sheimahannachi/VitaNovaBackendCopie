@@ -1,4 +1,4 @@
-package com.example.vitanovabackend.DAO.Service;
+package com.example.vitanovabackend.Service;
 import com.example.vitanovabackend.DAO.Entities.Exercise;
 import com.example.vitanovabackend.DAO.Entities.WorkoutProgram;
 import com.example.vitanovabackend.DAO.Repositories.ExerciseRepository;

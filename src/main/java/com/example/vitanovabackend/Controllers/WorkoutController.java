@@ -1,8 +1,8 @@
-package com.example.vitanovabackend.DAO.Controllers;
+package com.example.vitanovabackend.Controllers;
 
 import com.example.vitanovabackend.DAO.Entities.Exercise;
 import com.example.vitanovabackend.DAO.Entities.WorkoutProgram;
-import com.example.vitanovabackend.DAO.Service.Iworkout;
+import com.example.vitanovabackend.Service.Iworkout;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
