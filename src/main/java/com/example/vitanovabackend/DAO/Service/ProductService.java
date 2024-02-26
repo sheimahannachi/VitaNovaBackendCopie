@@ -20,7 +20,7 @@ import java.util.UUID;
 public class ProductService implements ProductIService {
 
     private final ProductRepository productRepository;
-    public static String uploadDirectory = System.getProperty("user.dir") + "src/main/java/com/example/vitanovabackend/DAO/uploads";
+    public static String uploadDirectory = System.getProperty("user.dir") + "/uploads";
 
     @Override
     public Product addProduct(@ModelAttribute Product product, @RequestParam("image") MultipartFile file) {
