@@ -22,10 +22,14 @@ public class Food {
     long id;
     String code;
     double calories;
-    double sugar;
+    double glucides;
     double protein;
-    double fats;
+    double lipides;
+    String title;
+    String ingredients;
+    String FoodPic;
     LocalDate date;
+    Boolean archive;
     @ManyToMany
     List<User> person=new ArrayList<>();
     @ManyToOne
