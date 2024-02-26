@@ -1,4 +1,4 @@
-package com.example.vitanovabackend.DAO.Controller;
+package com.example.vitanovabackend.DAO.Controllers;
 
 import com.example.vitanovabackend.DAO.Entities.Exercise;
 import com.example.vitanovabackend.DAO.Entities.WorkoutProgram;
