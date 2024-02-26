@@ -19,13 +19,15 @@ public class WorkoutProgram {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
+    String title;
     @Enumerated(EnumType.STRING)
     Intensity intensity;
-    String frequency;
     String duration;
     String restIntervals;
     String sportType;
     String progression;
+    String image;
+
     @ManyToMany
     List<Exercise>exercises=new ArrayList<>();
     @ManyToOne

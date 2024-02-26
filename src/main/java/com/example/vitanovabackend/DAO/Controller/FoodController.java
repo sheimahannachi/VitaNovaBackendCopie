@@ -3,9 +3,8 @@ package com.example.vitanovabackend.DAO.Controller;
 import com.example.vitanovabackend.DAO.Entities.Food;
 import com.example.vitanovabackend.DAO.Entities.Hydration;
 import com.example.vitanovabackend.DAO.Entities.Tracker;
-import com.example.vitanovabackend.DAO.Services.IFoodService;
+import com.example.vitanovabackend.DAO.Service.IFoodService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
