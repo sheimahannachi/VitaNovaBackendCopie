@@ -22,7 +22,7 @@ public class Community {
     long id;
 
 
-    String ComunityName;
+    String communityName;
 
 
     String description;
