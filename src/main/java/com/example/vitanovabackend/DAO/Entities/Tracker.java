@@ -20,11 +20,11 @@ public class Tracker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    long calories;
-    String diet;
-    String consumedfood;
-    String hydration ;
-    int cups;
+    String consumedfood;//list of food
+    double consumedcalories;
+    Boolean archive;
+    String notification;
+    LocalDate date ;
     @OneToOne (mappedBy = "tracker")
     PersonalGoals personalGoals;
 
