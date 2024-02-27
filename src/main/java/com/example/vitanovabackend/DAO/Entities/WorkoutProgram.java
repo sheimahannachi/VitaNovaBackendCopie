@@ -27,6 +27,7 @@ public class WorkoutProgram {
     String sportType;
     String progression;
     String image;
+    Boolean archived;
 
     @ManyToMany
     List<Exercise>exercises=new ArrayList<>();

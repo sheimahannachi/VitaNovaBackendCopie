@@ -36,7 +36,11 @@ public class Workout implements Iworkout {
         workoutProgram.setImage(fileName);
         return workoutProgramRepository.save(workoutProgram);
     }
-
+    public WorkoutProgram ArchiverPlan(long id){
+        WorkoutProgram workoutProgram=workoutProgramRepository.findById(id).get();
+        workoutProgram.setArchived(true);
+        return workoutProgramRepository.save(workoutProgram);
+    }
     @Override
     public void DeletePlan(WorkoutProgram workoutProgram) {
 

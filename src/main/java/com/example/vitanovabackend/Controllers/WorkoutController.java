@@ -25,7 +25,10 @@ public class WorkoutController {
     public WorkoutProgram UpdatePlan(@ModelAttribute WorkoutProgram workoutProgram,@RequestParam("image") MultipartFile file) throws IOException {
         return iWorkout.UpdatePlan(workoutProgram,file);
     }
-
+    @DeleteMapping("ArchiverPlan/{idplan}")
+    public WorkoutProgram ArchiverPlan(@PathVariable("idplan") long id){
+        return iWorkout.ArchiverPlan(id);
+    }
     @DeleteMapping("DeletePlan")
     public void DeletePlan(@RequestBody WorkoutProgram workoutProgram) {
         iWorkout.DeletePlan(workoutProgram);
