@@ -5,59 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="99ac1da3-b93e-4f85-90cb-5f0b114b7ca7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Communication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Communication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/CommunicationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/CommunicationRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/CommunityRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/CommunityRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/NotificationController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/PeriodTrackerController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Cart.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Categories.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Challenges$ChallengesBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Challenges.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Communication$CommunicationBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Communication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Community$CommunityBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Community.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Exercise$ExerciseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Exercise.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Food$FoodBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Food.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Gender.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Intensity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Mood.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Notification$NotificationBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Notification.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/PeriodTracker$PeriodTrackerBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/PeriodTracker.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/PersonalGoals$PersonalGoalsBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/PersonalGoals.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Product.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Role.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Symptoms.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Tracker$TrackerBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Tracker.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/User$UserBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/WorkoutProgram$WorkoutProgramBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/WorkoutProgram.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/CardRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/CommunicationRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/CommunityRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/ExerciseRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/FoodRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/NotificationRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/PeriodTrackerRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/PersonalGoalsRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/ProductRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/TrackerRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/UserRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/WorkoutProgramRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/INotificationService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/IPeriodTrackerService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/NotificationService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/PeriodTrackerService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/VitaNovabackendApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,27 +26,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.VitaNovabackendApplication.executor": "Run",
-    "git-widget-placeholder": "Firas",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Utilisateur 2/Desktop/piDEV/Code/COPIE/VitaNovaBackendCopie",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.importing",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.VitaNovabackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Firas&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Utilisateur 2/Desktop/piDEV/Code/COPIE/VitaNovaBackendCopie&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.importing&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Utilisateur 2\Desktop\piDEV\Code\COPIE\VitaNovaBackendCopie\src\main\java\com\example\vitanovabackend\DAO\Entities" />
@@ -155,6 +103,8 @@
       <updated>1708977844617</updated>
       <workItem from="1708977846201" duration="15000" />
       <workItem from="1708977879057" duration="1592000" />
+      <workItem from="1708980101372" duration="859000" />
+      <workItem from="1708985589575" duration="1466000" />
     </task>
     <servers />
   </component>
