@@ -3,7 +3,9 @@ package com.example.vitanovabackend.DAO.Service;
 import com.example.vitanovabackend.DAO.Entities.Product;
 import com.example.vitanovabackend.DAO.Repositories.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,68 +22,50 @@ import java.util.UUID;
 public class ProductService implements ProductIService {
 
     private final ProductRepository productRepository;
-    public static String uploadDirectory = System.getProperty("user.dir") + "/uploads";
 
-    @Override
+    public static String uploadDirectory = "C:/xampp/htdocs/aziz/";
+
+    @PostMapping("/addProduct")
     public Product addProduct(@ModelAttribute Product product, @RequestParam("image") MultipartFile file) {
         try {
-            // Vérifie si le répertoire existe, sinon le crée
             Path directoryPath = Paths.get(uploadDirectory);
             if (!Files.exists(directoryPath)) {
                 Files.createDirectories(directoryPath);
             }
-
-            // Génère un nom de fichier unique
             String originalFilename = file.getOriginalFilename();
             String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
-
-            // Chemin complet du fichier
             Path filePath = Paths.get(uploadDirectory, fileName);
-
-            // Enregistre le fichier dans le répertoire spécifié
             Files.write(filePath, file.getBytes());
-
-            // Définit le nom du fichier dans le produit
-            product.setPicturePr(fileName);
-
-            product.setArchivePr(true);
+            // Construire l'URL de l'image
+            String imageUrl = fileName;
+            // Définir l'URL de l'image sur l'objet Product
+            product.setPicturePr(imageUrl);
+            product.setArchivePr(false);
         } catch (IOException e) {
-            e.printStackTrace(); // Gérer l'erreur de manière appropriée (par exemple, journalisez-la)
+            e.printStackTrace();
         }
-
-        // Retourne le produit avec le nom du fichier mis à jour
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+        return savedProduct;
     }
 
     public Product updateProduct(Long IdPr, @ModelAttribute Product updatedProduct, @RequestParam("image") MultipartFile newImage) {
         try {
-            // Vérifie si le répertoire existe, sinon le crée
+
             Path directoryPath = Paths.get(uploadDirectory);
             if (!Files.exists(directoryPath)) {
                 Files.createDirectories(directoryPath);
             }
-
-            // Génère un nom de fichier unique pour la nouvelle image
             String originalFilename = newImage.getOriginalFilename();
             String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
-
-            // Chemin complet du fichier pour la nouvelle image
             Path newFilePath = Paths.get(uploadDirectory, fileName);
-
-            // Enregistre le fichier de la nouvelle image dans le répertoire spécifié
             Files.write(newFilePath, newImage.getBytes());
 
-            // Obtient le produit à mettre à jour depuis la base de données
             Product pr = productRepository.findById(IdPr).orElseThrow(() -> new RuntimeException("Produit introuvable"));
-
-            // Met à jour les autres attributs du produit avec les valeurs fournies dans updatedProduct
             pr.setNamePr(updatedProduct.getNamePr());
             pr.setCategoriePr(updatedProduct.getCategoriePr());
             pr.setPricePr(updatedProduct.getPricePr());
             // Mise à jour du nom de l'image avec le nouveau nom généré
             pr.setPicturePr(fileName);
-
-            // Enregistre les modifications dans la base de données
             return productRepository.save(pr);
         } catch (IOException e) {
             e.printStackTrace(); // Gérer l'erreur de manière appropriée (par exemple, journalisez-la)
@@ -95,12 +79,19 @@ public class ProductService implements ProductIService {
     }
 
     @Override
-    public void archiverProduit(Long idPr) {
-        Optional<Product> optionalProduct = productRepository.findById(idPr);
+    public Product getProductById(Long IdPr) {
+        return productRepository.findById(IdPr).get();
+    }
+    @Override
+    public ResponseEntity<String> archiverProduct(Long IdPr) {
+        Optional<Product> optionalProduct = productRepository.findById(IdPr);
         if (optionalProduct.isPresent()) {
             Product produit = optionalProduct.get();
-            produit.setArchivePr(false); // Met à jour la valeur d'archivePr à 0
+            produit.setArchivePr(true); // Met à jour la valeur d'archivePr à true
             productRepository.save(produit);
+            return ResponseEntity.ok().body("Le produit a été archivé avec succès.");
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

@@ -20,29 +20,31 @@ import java.util.List;
 public class ProductController {
     ProductIService productIService;
 
+
     @PostMapping("addProduct")
-    public Product addProduct(@ModelAttribute Product product, @RequestParam("image") MultipartFile file){
-        return productIService.addProduct(product,file);
+    public Product addProduct(@ModelAttribute Product product, @RequestParam("image") MultipartFile file) {
+        return productIService.addProduct(product, file);
     }
+
     @PutMapping("updateProduct/{IdPr}")
 
     public Product updateProduct(@PathVariable Long IdPr, @ModelAttribute Product updatedProduct, @RequestParam("image") MultipartFile newImage) {
-        return productIService.updateProduct(IdPr,updatedProduct,newImage);
+        return productIService.updateProduct(IdPr, updatedProduct, newImage);
     }
+
     @GetMapping("getProducts")
-    public List<Product> getProducts () {
+    public List<Product> getProducts() {
         return productIService.getProducts();
     }
 
 
-    @DeleteMapping("/{IdPr}")
-    public ResponseEntity<String> archiverProduit(@PathVariable Long IdPr) {
-        try {
-            productIService.archiverProduit(IdPr);
-            return ResponseEntity.ok("Le produit a été archivé avec succès.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Une erreur s'est produite lors de l'archivage du produit : " + e.getMessage());
-        }
+    @GetMapping("getProductById/{IdPr}")
+    public Product getProductById(@PathVariable Long IdPr) {
+
+        return productIService.getProductById(IdPr);
+    }
+    @PutMapping("/{IdPr}")
+    public ResponseEntity<String> archiverProduct(@PathVariable Long IdPr) {
+        return productIService.archiverProduct(IdPr);
     }
 }
