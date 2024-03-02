@@ -14,8 +14,8 @@ public class CommunityController {
     CommunityService service;
 
     @PostMapping("addCommunity")
-    public Community addCommmunity (@RequestBody Community community){
-        return service.addCommmunity(community);
+    public Community addCommmunity (@RequestBody Community community,@RequestParam long userId){
+        return service.addCommmunity(community,userId);
 
     }
 
@@ -45,5 +45,10 @@ public class CommunityController {
     }
 
 
+    @PutMapping("addMemberToComunity")
+    public boolean addMember(@RequestParam long userId,@RequestParam long communityId){
+        return service.addMember(userId,communityId);
+
+    }
 
 }

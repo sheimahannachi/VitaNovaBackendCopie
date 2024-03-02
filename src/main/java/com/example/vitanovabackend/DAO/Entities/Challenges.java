@@ -1,4 +1,5 @@
 package com.example.vitanovabackend.DAO.Entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -27,10 +28,12 @@ public class Challenges {
 
     String description;
 
+    @Enumerated(EnumType.STRING)
     ChallengeType type;
 
     long goal;
 
+    @JsonIgnore
     @ManyToOne
     Community community ;
 

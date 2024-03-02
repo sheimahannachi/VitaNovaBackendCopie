@@ -5,6 +5,8 @@ import com.example.vitanovabackend.Service.IChallengesService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 public class ChallengesController {
@@ -17,23 +19,33 @@ public class ChallengesController {
     }
 
 
-    @PutMapping("updateChallenge")
-    public Challenges updateChallenge (@RequestParam long id ,@RequestBody Challenges challenge){
+    @PutMapping("updateChallenge/{id}")
+    public Challenges updateChallenge (@PathVariable long id ,@RequestBody Challenges challenge){
          return service.updateChallenge(id,challenge);
     }
 
 
-    @DeleteMapping("deleteChallenge")
-    public void deleteChallenge(@RequestParam long id){
+    @DeleteMapping("deleteChallenge/{id}")
+    public void deleteChallenge(@PathVariable long id){
          service.deleteChallenge(id);
     }
 
-    @GetMapping("findChallenge")
-    public Challenges findChallenges(@RequestParam long id){
+    @GetMapping("findChallenge/{id}")
+    public Challenges findChallenges(@PathVariable long id){
          return service.findChallenges(id);
     }
 
 
+    @GetMapping("findActiveChallengeByCommunity/{id}")
+    public Challenges findActiveByCommunity(@PathVariable long id){
+         return service.findByCommunityIdAndActive(id);
+
+    }
+
+    @GetMapping("findAllActive")
+    public List<Challenges>findAllActive(){
+         return service.findAllActive();
+    }
 
 
 }

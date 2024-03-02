@@ -2,6 +2,8 @@ package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.Challenges;
 
+import java.util.List;
+
 public interface IChallengesService {
 
 
@@ -12,5 +14,11 @@ public interface IChallengesService {
     void deleteChallenge(long id);
 
     Challenges findChallenges(long id);
+
+    Challenges findByCommunityIdAndActive(long id);
+
+    List<Challenges> findAllActive();
+
+
 
 }

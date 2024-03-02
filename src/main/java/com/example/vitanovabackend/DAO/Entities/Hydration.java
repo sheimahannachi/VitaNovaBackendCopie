@@ -24,4 +24,6 @@ public class Hydration {
     LocalDate date;
     Boolean archive;
 
+    @OneToOne(mappedBy = "hydration")
+    Tracker tracker;
 }

@@ -1,5 +1,6 @@
 package com.example.vitanovabackend.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -32,11 +33,14 @@ public class Community {
 
     boolean status ;
 
+    @JsonIgnore
     @ManyToOne
     User creator;
 
-    @ManyToMany
+    @JsonIgnore
+    @OneToMany(mappedBy = "community")
     List<User> membres = new ArrayList<>();
+    @JsonIgnore
     @OneToMany(mappedBy ="community")
     List<Challenges> challenges=new ArrayList<>();
 }

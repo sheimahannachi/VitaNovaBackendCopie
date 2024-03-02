@@ -40,6 +40,10 @@ public class User {
     private String password;
 
 
+    @Column(name = "Community_Activity")
+    long comunityActivity;
+
+
     @OneToOne
     PersonalGoals personalGoals;
 
@@ -52,6 +56,6 @@ public class User {
     @ManyToMany
     List<Food>foods=new ArrayList<>();
 
-    @ManyToMany( mappedBy = "membres",cascade = CascadeType.ALL)
-    List<Community> communities = new ArrayList<>();
+    @ManyToOne( cascade = CascadeType.ALL)
+    Community community;
 }
