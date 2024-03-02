@@ -5,10 +5,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-@Table(name = "Tracker")
+@Table(name = "Hydration")
 @Entity
 @Getter
 @Setter
@@ -16,16 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
-public class Tracker {
+public class Hydration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    String consumedfood;//list of food
-    double consumedcalories;
-    Boolean archive;
+    int cupsqte;
+    double sumofwater;
     String notification;
-    LocalDate date ;
-    @OneToOne (mappedBy = "tracker")
-    PersonalGoals personalGoals;
+    LocalDate date;
+    Boolean archive;
 
 }
