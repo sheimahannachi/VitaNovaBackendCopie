@@ -22,9 +22,10 @@ import java.util.UUID;
 public class Workout implements Iworkout {
     WorkoutProgramRepository workoutProgramRepository;
     ExerciseRepository exerciseRepository;
+    public static String uploadDirectory= "C:/xampp/php/htdocs/uploads";
 
     public WorkoutProgram addPlan(WorkoutProgram workoutProgram, MultipartFile file) throws IOException {
-        String fileName = saveFile(file, "uploads");
+        String fileName = saveFile(file, uploadDirectory);
         workoutProgram.setImage(fileName);
         return workoutProgramRepository.save(workoutProgram);
     }
@@ -32,7 +33,7 @@ public class Workout implements Iworkout {
 
     @Override
     public WorkoutProgram UpdatePlan(WorkoutProgram workoutProgram,MultipartFile file) throws IOException  {
-        String fileName = saveFile(file, "uploads");
+        String fileName = saveFile(file, uploadDirectory);
         workoutProgram.setImage(fileName);
         return workoutProgramRepository.save(workoutProgram);
     }
@@ -86,7 +87,8 @@ public class Workout implements Iworkout {
 
     @Override
     public Exercise addExercise(Exercise exercise, MultipartFile file) throws IOException {
-        String fileName = saveFile(file, "uploads");
+        String fileName = saveFile(file, uploadDirectory);
+        exercise.setArchived(false);
         exercise.setPicture(fileName);
         return exerciseRepository.save(exercise);
     }
@@ -95,7 +97,7 @@ public class Workout implements Iworkout {
 
     @Override
     public Exercise UpdateExercise(Exercise exercise,MultipartFile file) throws IOException {
-        String fileName = saveFile(file, "uploads");
+        String fileName = saveFile(file, uploadDirectory);
         exercise.setPicture(fileName);
         return exerciseRepository.save(exercise);
     }
@@ -111,7 +113,8 @@ public class Workout implements Iworkout {
 
     @Override
     public List<Exercise> GetExercise() {
-        return exerciseRepository.findAll();
+
+        return exerciseRepository.findActiveExercises();
     }
 
 
