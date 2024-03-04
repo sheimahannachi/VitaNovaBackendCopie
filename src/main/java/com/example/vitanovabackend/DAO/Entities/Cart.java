@@ -18,9 +18,9 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long IdCard;
-    float PriceCard;
-    LocalDate DateCard;
+    Long idCard;
+    float priceCard;
+    LocalDate dateCard;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "cart")
     List<Order>orders = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "cart")

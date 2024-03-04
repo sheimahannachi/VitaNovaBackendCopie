@@ -48,7 +48,7 @@ public class ProductService implements ProductIService {
         return savedProduct;
     }
 
-    public Product updateProduct(Long IdPr, @ModelAttribute Product updatedProduct, @RequestParam("image") MultipartFile newImage) {
+    public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, @RequestParam("image") MultipartFile newImage) {
         try {
 
             Path directoryPath = Paths.get(uploadDirectory);
@@ -60,7 +60,7 @@ public class ProductService implements ProductIService {
             Path newFilePath = Paths.get(uploadDirectory, fileName);
             Files.write(newFilePath, newImage.getBytes());
 
-            Product pr = productRepository.findById(IdPr).orElseThrow(() -> new RuntimeException("Produit introuvable"));
+            Product pr = productRepository.findById(idPr).orElseThrow(() -> new RuntimeException("Produit introuvable"));
             pr.setNamePr(updatedProduct.getNamePr());
             pr.setCategoriePr(updatedProduct.getCategoriePr());
             pr.setPricePr(updatedProduct.getPricePr());
@@ -79,12 +79,12 @@ public class ProductService implements ProductIService {
     }
 
     @Override
-    public Product getProductById(Long IdPr) {
-        return productRepository.findById(IdPr).get();
+    public Product getProductById(Long idPr) {
+        return productRepository.findById(idPr).get();
     }
     @Override
-    public ResponseEntity<String> archiverProduct(Long IdPr) {
-        Optional<Product> optionalProduct = productRepository.findById(IdPr);
+    public ResponseEntity<String> archiverProduct(Long idPr) {
+        Optional<Product> optionalProduct = productRepository.findById(idPr);
         if (optionalProduct.isPresent()) {
             Product produit = optionalProduct.get();
             produit.setArchivePr(true); // Met à jour la valeur d'archivePr à true
@@ -94,4 +94,10 @@ public class ProductService implements ProductIService {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @Override
+    public List<Product> searchProductsByName(String searchTerm) {
+        return productRepository.findByNamePrContaining(searchTerm);
+    }
+
 }

@@ -26,25 +26,29 @@ public class ProductController {
         return productIService.addProduct(product, file);
     }
 
-    @PutMapping("updateProduct/{IdPr}")
+    @PutMapping("updateProduct/{idPr}")
 
-    public Product updateProduct(@PathVariable Long IdPr, @ModelAttribute Product updatedProduct, @RequestParam("image") MultipartFile newImage) {
-        return productIService.updateProduct(IdPr, updatedProduct, newImage);
+    public Product updateProduct(@PathVariable Long idPr, @ModelAttribute Product updatedProduct, @RequestParam("image") MultipartFile newImage) {
+        return productIService.updateProduct(idPr, updatedProduct, newImage);
     }
 
-    @GetMapping("getProducts")
+    @GetMapping("/getProducts")
     public List<Product> getProducts() {
         return productIService.getProducts();
     }
 
 
-    @GetMapping("getProductById/{IdPr}")
-    public Product getProductById(@PathVariable Long IdPr) {
+    @GetMapping("getProductById/{idPr}")
+    public Product getProductById(@PathVariable Long idPr) {
 
-        return productIService.getProductById(IdPr);
+        return productIService.getProductById(idPr);
     }
-    @PutMapping("/{IdPr}")
-    public ResponseEntity<String> archiverProduct(@PathVariable Long IdPr) {
-        return productIService.archiverProduct(IdPr);
+    @PutMapping("/{idPr}")
+    public ResponseEntity<String> archiverProduct(@PathVariable Long idPr) {
+        return productIService.archiverProduct(idPr);
+    }
+    @GetMapping("/search")
+    public List<Product> searchProductsByName(@RequestParam String term) {
+        return productIService.searchProductsByName(term);
     }
 }

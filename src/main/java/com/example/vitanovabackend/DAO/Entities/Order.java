@@ -23,4 +23,6 @@ public class Order {
     boolean archiveOrder;
     @ManyToOne
     Cart cart;
+    @ManyToOne
+    Product product;
 }

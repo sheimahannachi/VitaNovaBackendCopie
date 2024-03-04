@@ -14,15 +14,15 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long IdPr;
-    String NamePr;
+    Long idPr;
+    String namePr;
     @Enumerated(EnumType.STRING)
     Categories categoriePr;
-    float PricePr ;
-    String PicturePr;
+    float pricePr ;
+    String picturePr;
+    String description ;
     boolean archivePr;
-    @ManyToOne
-    Order order;
+    int likesCount;
 
 
 }

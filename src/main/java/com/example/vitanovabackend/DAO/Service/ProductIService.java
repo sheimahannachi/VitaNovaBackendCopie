@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface ProductIService {
     public Product addProduct(Product product, MultipartFile file);
-    public Product updateProduct(Long IdPr, Product updatedProduct, MultipartFile newImage) ;
+    public Product updateProduct(Long idPr, Product updatedProduct, MultipartFile newImage) ;
     public List<Product > getProducts();
-    public ResponseEntity<String> archiverProduct(Long IdPr);
-    public Product getProductById(Long IdPr);
+    public ResponseEntity<String> archiverProduct(Long idPr);
+    public Product getProductById(Long idPr);
+    public List<Product> searchProductsByName(String searchTerm);
 }
