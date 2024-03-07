@@ -27,7 +27,7 @@ import java.time.LocalDate;
         boolean seen;
 
 
-        @OneToOne
+        @ManyToOne
         User sender;
 
         @OneToOne

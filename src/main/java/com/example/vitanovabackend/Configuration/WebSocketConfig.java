@@ -1,4 +1,4 @@
-package com.example.vitanovabackend.WebSocketConfig;
+package com.example.vitanovabackend.Configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

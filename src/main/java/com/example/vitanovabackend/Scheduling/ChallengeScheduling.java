@@ -13,7 +13,8 @@ public class ChallengeScheduling {
 
     IChallengeResultService service;
 //cron = "0 0 0 * * 0"
-    @Scheduled(fixedDelay = 5000)
+    //fixedDelay = 5000
+    @Scheduled(cron = "0 0 0 * * 0")
     public void getWeeklyResult(){
         service.ChallengeResult();
         log.info("Weekly result done");

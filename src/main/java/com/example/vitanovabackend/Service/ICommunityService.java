@@ -2,6 +2,7 @@ package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.Community;
 import com.example.vitanovabackend.DAO.Entities.User;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface ICommunityService {
 
     Community findCommunity(long id);
 
-    List<Community> findAllCommunity();
+    Page<Community> findAllCommunity(int page, int size);
 
     List<Community> findByName(String CommunityName);
 

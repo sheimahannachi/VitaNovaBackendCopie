@@ -1,20 +1,23 @@
 package com.example.vitanovabackend.Controllers;
 
+import com.example.vitanovabackend.Configuration.PageanationSize;
 import com.example.vitanovabackend.DAO.Entities.Challenges;
 import com.example.vitanovabackend.Service.IChallengesService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class ChallengesController {
      IChallengesService service;
 
      @PostMapping("addChallenge")
-    public Challenges addChallenge (@RequestBody Challenges challenge){
-        return service.addChallenge(challenge);
+    public Challenges addChallenge (@RequestBody Challenges challenge, @RequestParam long communityId){
+        return service.addChallenge(challenge,communityId);
 
     }
 
@@ -42,9 +45,14 @@ public class ChallengesController {
 
     }
 
-    @GetMapping("findAllActive")
+    @GetMapping("findAllActiveChallenges")
     public List<Challenges>findAllActive(){
          return service.findAllActive();
+    }
+
+    @GetMapping("findAllChallenges")
+    public Page<Challenges> findAll(@RequestParam(defaultValue = "0") int page){
+         return this.service.findAll(page, PageanationSize.size);
     }
 
 

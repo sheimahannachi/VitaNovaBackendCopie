@@ -18,9 +18,17 @@ public class CommunicationService implements  ICommunicationService{
     @Override
     public Communication addCommunication(Communication communication) {
 
-        // Sender and reciever are to be added either comunity or one to one
-        communication.setSentDate(LocalDate.now());
-        return repository.save(communication) ;
+
+        Communication communicationRecieved=Communication.builder()
+                .message(communication.getMessage())
+                .seen(false)
+                .sentDate(LocalDate.now())
+                .sender(communication.getSender())
+                .reciever(communication.getReciever())
+                .build();
+
+
+        return repository.save(communicationRecieved) ;
     }
 
     @Override

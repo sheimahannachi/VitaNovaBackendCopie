@@ -33,8 +33,8 @@ public class Challenges {
 
     long goal;
 
-    @JsonIgnore
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.ALL)
     Community community ;
 
 
