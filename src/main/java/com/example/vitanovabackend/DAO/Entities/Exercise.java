@@ -30,6 +30,7 @@ public class Exercise {
     //String instruction;
     String picture;
     boolean archived;
+    int rate;
 
 
     @ManyToMany

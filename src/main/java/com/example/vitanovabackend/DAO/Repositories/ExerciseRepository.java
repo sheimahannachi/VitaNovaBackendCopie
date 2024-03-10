@@ -13,4 +13,7 @@ public interface ExerciseRepository extends JpaRepository<Exercise,Long> {
 
     @Query("SELECT e FROM Exercise e WHERE e.archived = false")
     List<Exercise> findActiveExercises();
+    public List<Exercise> getExercisesByBodypartAndIntensity(String bodyPart,String intensity) ;
+
+    public List<Exercise> getExercisesByTypeExAndIntensity(String typeEx,String intensity) ;
 }

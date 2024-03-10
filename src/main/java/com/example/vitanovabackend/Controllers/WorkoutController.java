@@ -1,6 +1,7 @@
 package com.example.vitanovabackend.Controllers;
 
 import com.example.vitanovabackend.DAO.Entities.Exercise;
+import com.example.vitanovabackend.DAO.Entities.UserRating;
 import com.example.vitanovabackend.DAO.Entities.WorkoutProgram;
 import com.example.vitanovabackend.Service.Iworkout;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -25,8 +26,8 @@ public class WorkoutController {
 
 
     @PostMapping("addPlan")
-    public WorkoutProgram addPlan(@ModelAttribute WorkoutProgram workoutProgram, @RequestParam("image") MultipartFile file) throws IOException {
-        return iWorkout.addPlan(workoutProgram,file);
+    public WorkoutProgram addPlan(@ModelAttribute WorkoutProgram workoutProgram, @RequestParam("image") MultipartFile file,@RequestParam("bodypart") String bodypart,@RequestParam("intensity") String intensity,@RequestParam("typeEx") String typeEx) throws IOException {
+        return iWorkout.addPlan(workoutProgram,file,bodypart,intensity,typeEx);
     }
 
 
@@ -80,5 +81,18 @@ public class WorkoutController {
     public List<Exercise> GetExercise() {
         return iWorkout.GetExercise();
     }
+    @GetMapping("GetActiveExercise")
+    public List<Exercise> GetActiveExercise() {
+        return iWorkout.GetActiveExercise();
+    }
+   /* @PostMapping("rateExercise/{id}/{rate}")
+    public Exercise rateExercise(@PathVariable("id") long id,@PathVariable("rate") int rate){
+        return iWorkout.rateExercise(id,rate);
+    }*/
+    @PostMapping("saveUserExerciseRating/{idEx}")
+    public UserRating saveUserExerciseRating(@RequestBody UserRating userExerciseRating,@PathVariable("idEx") long idExercise){
+        return iWorkout.saveUserExerciseRating(userExerciseRating,idExercise);
+    }
 
 }
+
