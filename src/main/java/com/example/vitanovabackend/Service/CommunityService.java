@@ -70,9 +70,10 @@ public class CommunityService implements ICommunityService{
     }
 
     @Override
-    public List<Community> findByName(String communityName) {
+    public Page<Community> findByName(String communityName,int page,int size) {
+        Pageable pageable= PageRequest.of(page,size);
 
-        return  repository.findByCommunityName(communityName);
+        return  repository.findByCommunityName(communityName,pageable);
     }
 
     @Override
@@ -94,6 +95,12 @@ public class CommunityService implements ICommunityService{
 
 
         return true;
+    }
+
+    @Override
+    public Page<Community> findAllOrderByChallengesNumber(int page, int size) {
+        Pageable pageable=PageRequest.of(page,size);
+        return repository.findAllOrderByCountChallenges(pageable);
     }
 
 

@@ -24,55 +24,64 @@ public class ChallengeResultService implements IChallengeResultService {
     PersonalGoalsRepository personalGoalsRepository;
     @Override
     public void ChallengeResult() {
-        List<Challenges> challenges=repository.findAllByActiveTrue();
+        List<Challenges> challenges = repository.findAllByActiveTrue();
 
-        if(!challenges.isEmpty()) {
+        if (!challenges.isEmpty()) {
 
             /////// all Challengesthis Week
             for (Challenges challenge : challenges) {
-                Community community=communityRepository.findById(challenge.getCommunity().getId()).orElse(null);
+                Community community = communityRepository.findById(challenge.getCommunity().getId()).orElse(null);
 
                 log.info(challenge.getName());
-                if(community!=null){
-                    log.info(community.getCommunityName());
+                if (community != null) {
+                    log.info("Acitivities for: " + community.getCommunityName());
 
                     List<User> members = repository.communityMembers(community.getId());
-                    if(!members.isEmpty()){
+                    if (!members.isEmpty()) {
 
 
-                        for(User user:members){
+                        for (User user : members) {
                             log.info(user.getFirstName());
 
-                            if(challenge.getType().equals(ChallengeType.CALORIES)){
+                            if (challenge.getType().equals(ChallengeType.CALORIES)) {
 
 
-                                long caloriesConsumed=sumCaloriesWeek(user);
-                                log.info("call"+caloriesConsumed);
+                                long caloriesConsumed = sumCaloriesWeek(user);
+                                if (challenge.getCompare().equals(ChallengeCompare.LESS)) {
 
-                                if(challenge.getGoal()>caloriesConsumed || challenge.getGoal()==caloriesConsumed){
-                                    long communityActivity = user.getComunityActivity();
-                                    user.setComunityActivity(communityActivity+1);
-                                    log.info("user com act"+user.getComunityActivity());
-                                    userRepository.save(user);
-                                }
+                                    if (challenge.getGoal() > caloriesConsumed || challenge.getGoal() == caloriesConsumed) {
+                                        long communityActivity = user.getComunityActivity();
+                                        user.setComunityActivity(communityActivity + 1);
+                                        log.info("+1 for" + user.getFirstName() + " " + user.getLastName());
+                                        userRepository.save(user);
+                                    }
+                                } else {
+                                    if (challenge.getGoal() < caloriesConsumed || challenge.getGoal() == caloriesConsumed) {
+                                        long communityActivity = user.getComunityActivity();
+                                        user.setComunityActivity(communityActivity + 1);
+                                        log.info("+1 for" + user.getFirstName() + " " + user.getLastName());
+                                        userRepository.save(user);
+                                    }
 
-
-                                }
-                            if(challenge.getType().equals(ChallengeType.WATER)){
-
-                                long waterConsumed= sumWaterWeek(user);
-
-
-                                if(challenge.getGoal()<waterConsumed || challenge.getGoal()==waterConsumed){
-
-                                    long communityActivity = user.getComunityActivity();
-                                    user.setComunityActivity(communityActivity+1);
-                                    log.info("user com act"+user.getComunityActivity());
-                                    userRepository.save(user);
 
                                 }
-
                             }
+                                if (challenge.getType().equals(ChallengeType.WATER)) {
+
+                                    long waterConsumed = sumWaterWeek(user);
+
+
+                                    if (challenge.getGoal() < waterConsumed || challenge.getGoal() == waterConsumed) {
+
+                                        long communityActivity = user.getComunityActivity();
+                                        user.setComunityActivity(communityActivity + 1);
+                                        log.info("user com act" + user.getComunityActivity());
+                                        userRepository.save(user);
+
+                                    }
+
+                                }
+
 
                         }
                     }

@@ -18,7 +18,9 @@ public interface ICommunityService {
 
     Page<Community> findAllCommunity(int page, int size);
 
-    List<Community> findByName(String CommunityName);
+    Page<Community> findByName(String CommunityName, int page , int size);
 
     boolean addMember(long userId,long communityId);
+
+    Page<Community> findAllOrderByChallengesNumber(int page , int size);
 }

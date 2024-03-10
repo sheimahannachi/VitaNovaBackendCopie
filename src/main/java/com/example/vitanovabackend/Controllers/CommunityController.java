@@ -5,6 +5,7 @@ import com.example.vitanovabackend.DAO.Entities.Community;
 import com.example.vitanovabackend.Service.CommunityService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,8 +52,9 @@ public class CommunityController {
 
 
     @GetMapping("/findCommunitiesByNom/{name}")
-    public List<Community> findCommunitiesByName(@PathVariable String name){
-        return service.findByName(name);
+    public Page<Community> findCommunitiesByName(@PathVariable String name
+            ,@RequestParam(defaultValue = "0") int page){
+        return service.findByName(name,page,PageanationSize.size);
     }
 
 
@@ -61,6 +63,11 @@ public class CommunityController {
     public boolean addMember(@RequestParam long userId,@RequestParam long communityId){
         return service.addMember(userId,communityId);
 
+    }
+
+    @GetMapping("getCommunitiesOrderedByChallenges")
+    public Page<Community> getCommunitiesOrderByChallenegs(@RequestParam(defaultValue = "0" )int page){
+        return service.findAllOrderByChallengesNumber(page,PageanationSize.size);
     }
 
 }
