@@ -3,8 +3,10 @@ package com.example.vitanovabackend.Controllers;
 import com.example.vitanovabackend.Configuration.PageanationSize;
 import com.example.vitanovabackend.DAO.Entities.Challenges;
 import com.example.vitanovabackend.Service.IChallengesService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,15 +18,15 @@ public class ChallengesController {
      IChallengesService service;
 
      @PostMapping("addChallenge")
-    public Challenges addChallenge (@RequestBody Challenges challenge, @RequestParam long communityId){
-        return service.addChallenge(challenge,communityId);
+    public ResponseEntity<Challenges> addChallenge (@Valid @RequestBody Challenges challenge, @RequestParam long communityId){
+        return ResponseEntity.ok(service.addChallenge(challenge,communityId));
 
     }
 
 
     @PutMapping("updateChallenge/{id}")
-    public Challenges updateChallenge (@PathVariable long id ,@RequestBody Challenges challenge){
-         return service.updateChallenge(id,challenge);
+    public ResponseEntity<Challenges> updateChallenge (@PathVariable long id ,@Valid @RequestBody Challenges challenge){
+         return ResponseEntity.ok( service.updateChallenge(id,challenge));
     }
 
 

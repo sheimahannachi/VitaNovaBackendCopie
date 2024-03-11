@@ -23,4 +23,6 @@ public interface ICommunityService {
     boolean addMember(long userId,long communityId);
 
     Page<Community> findAllOrderByChallengesNumber(int page , int size);
+
+
 }

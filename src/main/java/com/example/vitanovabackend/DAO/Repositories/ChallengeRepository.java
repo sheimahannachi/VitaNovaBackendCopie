@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ChallengeRepository extends JpaRepository<Challenges,Long> {
 
@@ -20,6 +21,9 @@ public interface ChallengeRepository extends JpaRepository<Challenges,Long> {
     List<User> communityMembers(@Param("id")long id);
 
     Page<Challenges> findAll(Pageable pageable);
+
+    @Query("select c from Challenges c where c.community.id=:id order by c.creationDate desc limit 1")
+    Optional<Challenges> findLatestByCommunity(@Param("id") long id);
 
 
 }

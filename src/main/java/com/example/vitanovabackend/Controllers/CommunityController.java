@@ -3,9 +3,11 @@ package com.example.vitanovabackend.Controllers;
 import com.example.vitanovabackend.Configuration.PageanationSize;
 import com.example.vitanovabackend.DAO.Entities.Community;
 import com.example.vitanovabackend.Service.CommunityService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,15 +23,15 @@ public class CommunityController {
 
 
     @PostMapping("addCommunity/{userId}")
-    public Community addCommmunity (@RequestBody Community community,@PathVariable long userId){
-        return service.addCommmunity(community,userId);
+    public ResponseEntity<Community> addCommmunity (@Valid @RequestBody Community community, @PathVariable long userId){
+        return ResponseEntity.ok().body(service.addCommmunity(community,userId));
 
     }
 
 
     @PutMapping("updateComunity/{id}")
-    public Community updateCommmunity (@PathVariable long id ,@RequestBody Community community){
-        return service.updateCommmunity(id,community);
+    public ResponseEntity<Community> updateCommmunity (@PathVariable long id ,@Valid @RequestBody Community community){
+        return ResponseEntity.ok().body(service.updateCommmunity(id,community));
     }
 
     @DeleteMapping("deleteCommunity/{id}")

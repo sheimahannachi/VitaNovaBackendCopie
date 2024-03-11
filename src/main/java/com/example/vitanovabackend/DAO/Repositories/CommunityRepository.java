@@ -20,4 +20,7 @@ public interface CommunityRepository extends JpaRepository<Community,Long> {
     Page<Community> findAllOrderByCountChallenges(Pageable pageable);
 
 
+    List<Community> findAllByStatusIsTrue();
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.vitanovabackend.Service;
 
+import com.example.vitanovabackend.DAO.Entities.Challenges;
 import com.example.vitanovabackend.DAO.Entities.Community;
 import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.DAO.Repositories.CommunityRepository;
@@ -102,6 +103,8 @@ public class CommunityService implements ICommunityService{
         Pageable pageable=PageRequest.of(page,size);
         return repository.findAllOrderByCountChallenges(pageable);
     }
+
+
 
 
 }
