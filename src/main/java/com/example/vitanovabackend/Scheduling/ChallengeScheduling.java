@@ -12,8 +12,7 @@ import org.springframework.stereotype.Component;
 public class ChallengeScheduling {
 
     IChallengeResultService service;
-//cron = "0 0 0 * * 0"
-    //fixedDelay = 5000
+
     @Scheduled(cron = "0 0 0 * * 0")
     public void getWeeklyResult(){
         service.ChallengeResult();

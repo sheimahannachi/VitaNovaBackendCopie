@@ -48,8 +48,9 @@ public class CommunityController {
 
 
     @GetMapping("/findAllCommunities")
-    public Page<Community> findAllCommunities(@RequestParam(defaultValue = "0") int page){
-        return service.findAllCommunity(page, PageanationSize.size);
+    public Page<Community> findAllCommunities(@RequestParam(defaultValue = "0") int page
+            ,@RequestParam(defaultValue = "5") int size){
+        return service.findAllCommunity(page, size);
     }
 
 
