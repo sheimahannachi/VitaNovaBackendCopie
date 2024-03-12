@@ -8,7 +8,6 @@ import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -60,7 +59,7 @@ public class PeriodTrackerService implements IPeriodTrackerService {
         return periodTrackerRepository.findAll();
     }
     @Override
-    public PeriodTracker getPeriodTrackerById(long idPeriod) {
+    public PeriodTracker getPeriodTrackerById (long idPeriod) {
         return periodTrackerRepository.findById(idPeriod)
                 .orElseThrow(() -> new NoSuchElementException("Period tracker not found with id: " + idPeriod));
     }
