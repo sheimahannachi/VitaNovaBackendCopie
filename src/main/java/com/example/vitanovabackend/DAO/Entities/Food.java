@@ -30,6 +30,7 @@ public class Food {
     String FoodPic;
     LocalDate date;
     Boolean archive;
+    String category;
     @ManyToMany
     List<User> person=new ArrayList<>();
     @ManyToOne
