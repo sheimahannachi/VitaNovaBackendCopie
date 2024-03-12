@@ -65,7 +65,6 @@ public class PeriodTrackerController {
         LocalDate nextPeriodDate = iPeriodTrackerService.calculateNextPeriodDate(periodTracker);
         return ResponseEntity.ok("Next period date: " + nextPeriodDate.toString());
     }
-
     @PostMapping("/calculate-ovulation-date")
     public ResponseEntity<String> calculateOvulationDate(@RequestBody PeriodTracker periodTracker) {
         LocalDate ovulationDate = iPeriodTrackerService.calculateOvulationDate(periodTracker);
@@ -73,5 +72,3 @@ public class PeriodTrackerController {
     }
 
 }
-
-

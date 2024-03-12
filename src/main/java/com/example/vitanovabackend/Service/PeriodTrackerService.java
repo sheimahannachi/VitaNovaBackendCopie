@@ -6,14 +6,15 @@ import com.example.vitanovabackend.DAO.Repositories.PeriodTrackerRepository;
 
 import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+
+
 
 
 @Service
@@ -53,7 +54,6 @@ public class PeriodTrackerService implements IPeriodTrackerService {
         UpdatedperiodTracker.setIdPeriod(idPeriod);
         return periodTrackerRepository.save(UpdatedperiodTracker);
     }
-
     @Override
     public List<PeriodTracker> getPeriodTracker() {
         return periodTrackerRepository.findAll();
@@ -63,8 +63,8 @@ public class PeriodTrackerService implements IPeriodTrackerService {
         return periodTrackerRepository.findById(idPeriod)
                 .orElseThrow(() -> new NoSuchElementException("Period tracker not found with id: " + idPeriod));
     }
-
     @Override
+
     public List<PeriodTracker> searchArchivedPeriodsForUser(Long idUser) {
         User user = userRepository.findById(idUser).orElse(null);
         if (user != null) {
@@ -72,6 +72,7 @@ public class PeriodTrackerService implements IPeriodTrackerService {
         } else {
             return Collections.emptyList();
         }
+
 }
     @Override
     public List<PeriodTracker> getNonArchivedPeriodTrackers() {
@@ -81,7 +82,6 @@ public class PeriodTrackerService implements IPeriodTrackerService {
     public List<User> findByPeriodNotNull() {
         return userRepository.findByPeriodNotNull();
     }
-
     @Override
     public String calculateCyclePhase (PeriodTracker periodTracker) {
         // Retrieve period information
@@ -130,11 +130,12 @@ public class PeriodTrackerService implements IPeriodTrackerService {
         // Retrieve period information
         LocalDate lastPeriodStartDate = LocalDate.parse(periodTracker.getStartDate());
         int cycleLength = periodTracker.getCycleLength();
-
         // Calculate the ovulation date
         LocalDate ovulationDate = lastPeriodStartDate.plusDays(cycleLength - 14);
         return ovulationDate;
     }
 }
+
+
 
 

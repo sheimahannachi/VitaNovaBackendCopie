@@ -1,12 +1,8 @@
 package com.example.vitanovabackend.DAO.Entities;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays; // Import Arrays
 import java.util.List;
 
 @Table(name = "PeriodTracker")
@@ -36,6 +32,7 @@ public class PeriodTracker {
     private Boolean archive=false;
     @Column(name = "cyclePhase")
     private String cyclePhase;
+
 
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "periodTracker")
     @JsonIgnore

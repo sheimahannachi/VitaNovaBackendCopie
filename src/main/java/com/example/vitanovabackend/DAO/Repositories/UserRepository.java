@@ -12,4 +12,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query("SELECT u FROM User u WHERE u.periodTracker IS NOT NULL")
     List<User> findByPeriodNotNull();
+
 }

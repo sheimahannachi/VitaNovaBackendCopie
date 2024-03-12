@@ -11,4 +11,5 @@ import java.util.List;
 public interface PeriodTrackerRepository extends JpaRepository<PeriodTracker,Long> {
      List<PeriodTracker>findByUserAndArchive(User user, boolean archive);
     List<PeriodTracker>findByArchiveFalse();
+
 }
