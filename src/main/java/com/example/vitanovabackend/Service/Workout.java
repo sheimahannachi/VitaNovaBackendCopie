@@ -18,6 +18,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @AllArgsConstructor
@@ -148,9 +151,9 @@ public class Workout implements Iworkout {
         return exerciseRepository.findAll();
     }
 
-    public List<Exercise> GetActiveExercise() {
-
-        return exerciseRepository.findActiveExercises();
+    public Page<Exercise> GetActiveExercise(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return exerciseRepository.findActiveExercises(pageable);
     }
 
     /*public Exercise rateExercise(long id,int rate){
@@ -170,6 +173,39 @@ public class Workout implements Iworkout {
 
         }
     }
+
+    public Exercise getExerciseById(long id) {
+        return exerciseRepository.findById(id).get();
+    }
+
+    public double calculateAverageRating(long exerciseId) {
+        // Retrieve all ratings for the exercise
+        List<UserRating> ratings = userExerciseRatingRepository.findByExerciseId(exerciseId);
+
+        // Calculate the total sum of ratings
+        int totalRatings = ratings.size();
+        if (totalRatings == 0) {
+            return 0; // Return 0 if there are no ratings
+        }
+
+        int sumOfRatings = ratings.stream().mapToInt(UserRating::getRate).sum();
+
+        // Calculate the average rating
+        double averageRating = (double) sumOfRatings / totalRatings;
+
+        // Retrieve the corresponding Exercise entity from the database
+        Exercise exercise = exerciseRepository.findById(exerciseId).orElse(null);
+        if (exercise != null) {
+            // Update the rating attribute of the Exercise entity
+            exercise.setRate(averageRating);
+
+            // Save the updated Exercise entity back to the database
+            exerciseRepository.save(exercise);
+        } else {
+            // Handle the case where the exercise is not found
+        }
+
+        return averageRating;
+    }
+
 }
-
-

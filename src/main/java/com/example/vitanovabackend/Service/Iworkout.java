@@ -3,6 +3,7 @@ package com.example.vitanovabackend.Service;
 import com.example.vitanovabackend.DAO.Entities.Exercise;
 import com.example.vitanovabackend.DAO.Entities.UserRating;
 import com.example.vitanovabackend.DAO.Entities.WorkoutProgram;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -20,8 +21,10 @@ public interface Iworkout {
     public void DeleteExercise (Exercise exercise);
     public List<Exercise> GetExercise ();
     public Exercise ArchiverExercise(long id);
-    public List<Exercise> GetActiveExercise();
+    public Page<Exercise> GetActiveExercise(int page, int size);
     //public Exercise rateExercise(long id,int rate);
     public UserRating saveUserExerciseRating(UserRating userExerciseRating,long idExercise);
+    public Exercise getExerciseById(long id);
+    public double calculateAverageRating(long exerciseId);
 
 }

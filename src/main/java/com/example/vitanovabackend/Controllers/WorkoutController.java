@@ -7,6 +7,8 @@ import com.example.vitanovabackend.Service.Iworkout;
 import jakarta.servlet.annotation.MultipartConfig;
 import lombok.AllArgsConstructor;
 import org.apache.catalina.filters.CorsFilter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -82,8 +84,8 @@ public class WorkoutController {
         return iWorkout.GetExercise();
     }
     @GetMapping("GetActiveExercise")
-    public List<Exercise> GetActiveExercise() {
-        return iWorkout.GetActiveExercise();
+    public Page<Exercise> GetActiveExercise(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10")int size) {
+        return iWorkout.GetActiveExercise(page,size);
     }
    /* @PostMapping("rateExercise/{id}/{rate}")
     public Exercise rateExercise(@PathVariable("id") long id,@PathVariable("rate") int rate){
@@ -92,6 +94,14 @@ public class WorkoutController {
     @PostMapping("saveUserExerciseRating/{idEx}")
     public UserRating saveUserExerciseRating(@RequestBody UserRating userExerciseRating,@PathVariable("idEx") long idExercise){
         return iWorkout.saveUserExerciseRating(userExerciseRating,idExercise);
+    }
+@GetMapping("getExerciseById/{exerciseId}")
+public Exercise getExerciseById(@PathVariable("exerciseId") long id){
+        return iWorkout.getExerciseById(id);
+}
+@GetMapping("Rating/{exerciseId}")
+    public double calculateAverageRating(@PathVariable("exerciseId") long exerciseId){
+        return iWorkout.calculateAverageRating(exerciseId);
     }
 
 }
