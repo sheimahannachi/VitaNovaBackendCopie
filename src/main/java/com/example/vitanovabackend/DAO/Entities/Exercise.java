@@ -19,12 +19,19 @@ public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    String exerciseName;
+    String title;
     String description;
     String typeEx;
-    String sets;
-    String reps;
-    String instruction;
+    String bodypart;
+    @Enumerated(EnumType.STRING)
+    Intensity intensity ;
+    long sets;
+    long reps;
+    //String instruction;
+    String picture;
+    boolean archived;
+    double rate;
+
 
     @ManyToMany
     List<WorkoutProgram>workoutPrograms=new ArrayList<>();
