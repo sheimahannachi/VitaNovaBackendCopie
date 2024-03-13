@@ -1,6 +1,7 @@
 package com.example.vitanovabackend.DAO.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,14 +21,17 @@ import java.time.LocalDate;
         long id;
 
 
+        @NotBlank(message = "Message is mandatory")
         String message;
 
+        @NotBlank(message = "Message is mandatory")
         LocalDate sentDate;
 
         boolean seen;
 
 
-        @OneToOne
+        @NotBlank(message = "Message is mandatory")
+        @ManyToOne
         User sender;
 
         @OneToOne

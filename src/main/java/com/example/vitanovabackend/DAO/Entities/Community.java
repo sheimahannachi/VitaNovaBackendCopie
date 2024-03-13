@@ -1,6 +1,11 @@
 package com.example.vitanovabackend.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,9 +27,14 @@ public class Community {
     long id;
 
 
+    @Pattern(regexp = "\\D+",message = "No numbers allowed in community name!")
+    @NotBlank(message = "Community Name is mandatory!")
+    @Size(min = 2,max = 30,message = "Invalid Community name size")
     String communityName;
 
 
+    @NotBlank(message = "Community description is mandatory!")
+    @Size(min = 5,max = 40,message = "Invalid Community description size")
     String description;
 
     LocalDate creationDate;
@@ -32,11 +42,18 @@ public class Community {
 
     boolean status ;
 
+
+    @JsonIgnore
+    @NotNull(message = "Community should have a creator!")
     @ManyToOne
     User creator;
 
-    @ManyToMany
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "community")
     List<User> membres = new ArrayList<>();
+
+    @JsonIgnore
     @OneToMany(mappedBy ="community")
     List<Challenges> challenges=new ArrayList<>();
 }

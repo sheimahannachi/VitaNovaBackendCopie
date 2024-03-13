@@ -1,4 +1,4 @@
-package com.example.vitanovabackend.controllers;
+package com.example.vitanovabackend.Controllers;
 
 import com.example.vitanovabackend.DAO.Entities.Food;
 import com.example.vitanovabackend.DAO.Entities.Hydration;

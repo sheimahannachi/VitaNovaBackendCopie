@@ -1,21 +1,38 @@
 package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.Challenges;
+import com.example.vitanovabackend.DAO.Entities.Community;
 import com.example.vitanovabackend.DAO.Repositories.ChallengeRepository;
+import com.example.vitanovabackend.DAO.Repositories.CommunityRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class ChallengesService implements IChallengesService {
 
     ChallengeRepository repository;
+    CommunityRepository communityRepository;
     @Override
-    public Challenges addChallenge(Challenges challenge) {
+    public Challenges addChallenge(Challenges challenge,long communityId) {
+        Community community=communityRepository.findById(communityId).orElse(null);
+
+        if(community==null)
+            return null;
+
         challenge.setActive(true);
         challenge.setCreationDate(LocalDate.now());
+        challenge.setCommunity(community);
+
+
+
+
         return repository.save(challenge);
     }
 
@@ -26,6 +43,9 @@ public class ChallengesService implements IChallengesService {
             return null;
 
         challenge.setId(id);
+        challenge.setActive(true);
+        challenge.setCreationDate(LocalDate.now());
+        challenge.setCommunity(challenge1.getCommunity());
 
         return repository.save(challenge);
     }
@@ -40,4 +60,22 @@ public class ChallengesService implements IChallengesService {
     public Challenges findChallenges(long id) {
         return repository.findById(id).orElse(null);
     }
+
+    @Override
+    public Challenges findByCommunityIdAndActive(long id) {
+        return repository.findByActiveTrueAndCommunityId(id);
+    }
+
+    @Override
+    public List<Challenges> findAllActive() {
+        return repository.findAllByActiveTrue();
+    }
+
+    @Override
+    public Page<Challenges> findAll(int page,int size) {
+        Pageable pageable= PageRequest.of(page,size);
+        return repository.findAll(pageable);
+    }
+
+
 }

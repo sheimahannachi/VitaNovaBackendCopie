@@ -28,4 +28,7 @@ public class Tracker {
     @OneToOne (mappedBy = "tracker")
     PersonalGoals personalGoals;
 
+    @OneToOne
+    Hydration hydration;
+
 }

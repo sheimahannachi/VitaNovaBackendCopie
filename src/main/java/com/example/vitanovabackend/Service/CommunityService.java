@@ -1,8 +1,14 @@
 package com.example.vitanovabackend.Service;
 
+import com.example.vitanovabackend.DAO.Entities.Challenges;
 import com.example.vitanovabackend.DAO.Entities.Community;
+import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.DAO.Repositories.CommunityRepository;
+import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,12 +19,20 @@ import java.util.List;
 public class CommunityService implements ICommunityService{
 
     CommunityRepository repository;
+    UserRepository userRepository;
     @Override
-    public Community addCommmunity(Community community) {
+    public Community addCommmunity(Community community, long userId) {
         //CREATOR A AJOUTER
+        User creator=userRepository.findById(userId).orElse(null);
 
+        if(creator==null)
+            return null;
+
+        community.setStatus(true);
         community.setCreationDate(LocalDate.now());
-        return repository.save(community);
+        Community communitySaved =repository.save(community);
+        creator.setCommunity(communitySaved);
+        return communitySaved;
     }
 
     @Override
@@ -29,6 +43,7 @@ public class CommunityService implements ICommunityService{
             return null;
 
         community.setId(id);
+        repository.save(community);
 
         return community;
     }
@@ -50,14 +65,43 @@ public class CommunityService implements ICommunityService{
     // à ajouter dans controller
 
     @Override
-    public List<Community> findAllCommunity() {
-        return repository.findAll();
+    public Page<Community> findAllCommunity(int page , int size) {
+        Pageable pageable= PageRequest.of(page,size);
+        return repository.findAll(pageable);
     }
 
     @Override
-    public List<Community> findByName(String communityName) {
+    public Page<Community> findByName(String communityName,int page,int size) {
+        Pageable pageable= PageRequest.of(page,size);
 
-        return  repository.findByCommunityName(communityName);
+        return  repository.findByCommunityName(communityName,pageable);
+    }
+
+    @Override
+    public boolean addMember(long userId, long communityId) {
+        User member= userRepository.findById(userId).orElse(null);
+        Community community=repository.findById(communityId).orElse(null);
+
+        if(member==null || community==null )
+            return false;
+
+        member.setCommunity(community);
+        member.setComunityActivity(0);
+
+        userRepository.save(member);
+
+
+
+
+
+
+        return true;
+    }
+
+    @Override
+    public Page<Community> findAllOrderByChallengesNumber(int page, int size) {
+        Pageable pageable=PageRequest.of(page,size);
+        return repository.findAllOrderByCountChallenges(pageable);
     }
 
 
