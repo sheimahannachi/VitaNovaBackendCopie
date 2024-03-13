@@ -43,4 +43,6 @@ public class InactiveCommunities implements IInactiveCommunity{
 
         return retour;
     }
+
 }
+

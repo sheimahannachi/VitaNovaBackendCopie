@@ -17,4 +17,6 @@ public class CommunityScheduling {
         iInactiveCommunity.inactiveCommunities();
         log.info("Daily inactivity check done...");
     }
+
 }
+

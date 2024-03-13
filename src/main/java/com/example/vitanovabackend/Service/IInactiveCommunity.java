@@ -4,3 +4,4 @@ public interface IInactiveCommunity {
 
     boolean inactiveCommunities();
 }
+

@@ -66,6 +66,7 @@ public class ChallengeResultService implements IChallengeResultService {
 
                                 }
                             }
+
                             if (challenge.getType().equals(ChallengeType.WATER)) {
 
                                 long waterConsumed = sumWaterWeek(user);
@@ -182,3 +183,4 @@ public class ChallengeResultService implements IChallengeResultService {
 
 
 }
+
