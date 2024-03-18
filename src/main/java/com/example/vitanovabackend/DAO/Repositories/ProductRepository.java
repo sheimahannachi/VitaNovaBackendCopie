@@ -10,4 +10,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
     List<Product> findByNamePrContaining(String searchTerm);
+
+    // List<Product> findByCategoriePrAndPricePrAndStatusPr(String categoriePr, float pricePr, String statusPr);
+   // List<Product> findByCategoriePrAndStatusPr(String categoriePr, String statusPr);
+    //List<Product> findByCategoriePrAndStatusPrAndPricePrLessThanOrEqual(String categoriePr, String statusPr, float pricePr);
 }

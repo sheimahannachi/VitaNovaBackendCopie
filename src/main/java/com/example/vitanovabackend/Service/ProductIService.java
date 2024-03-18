@@ -1,4 +1,4 @@
-package com.example.vitanovabackend.DAO.Service;
+package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.Product;
 import org.springframework.http.ResponseEntity;
@@ -13,4 +13,7 @@ public interface ProductIService {
     public ResponseEntity<String> archiverProduct(Long idPr);
     public Product getProductById(Long idPr);
     public List<Product> searchProductsByName(String searchTerm);
+  //  public  List<Product> findByCategoriePrAndPricePrAndStatusPr(String categoriePr, float pricePr, String statusPr);
+  //List<Product> filterProductsByCategoryAndStatusAndPriceRange(String categoriePr, String statusPr, float pricePr);
+  public List<Product> filterProducts(String categoriePr, Float pricePr);
 }

@@ -16,13 +16,14 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idPr;
     String namePr;
-    @Enumerated(EnumType.STRING)
-    Categories categoriePr;
+
+    String categoriePr;
     float pricePr ;
     String picturePr;
-    String description ;
+    String descriptionPr ;
+    int quantityPr;
+    String statusPr;
     boolean archivePr;
     int likesCount;
-
 
 }

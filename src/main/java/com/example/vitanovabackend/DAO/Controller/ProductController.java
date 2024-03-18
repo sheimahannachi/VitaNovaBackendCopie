@@ -2,10 +2,9 @@ package com.example.vitanovabackend.DAO.Controller;
 
 
 import com.example.vitanovabackend.DAO.Entities.Product;
-import com.example.vitanovabackend.DAO.Service.ProductIService;
+import com.example.vitanovabackend.Service.ProductIService;
 import jakarta.servlet.annotation.MultipartConfig;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,5 +49,24 @@ public class ProductController {
     @GetMapping("/search")
     public List<Product> searchProductsByName(@RequestParam String term) {
         return productIService.searchProductsByName(term);
+    }
+   /* @GetMapping("/filtered")
+    public     List<Product> findByCategoriePrAndStatusPrAndPricePrLessThanEqual(String categoriePr, String statusPr, float pricePr){
+        return productIService.filterProductsByCategoryAndStatusAndPriceRange(categoriePr,statusPr , pricePr);
+    }*/
+
+    @GetMapping("/filter")
+    public List<Product> filterProducts(@RequestParam(required = false) String categoriePr,
+                                        @RequestParam(required = false) Float pricePr ){
+        // Vérifier et appliquer les filtres
+        if (categoriePr != null && !categoriePr.isEmpty() &&
+                (categoriePr.equals("NUTRITION") || categoriePr.equals("Fitness_Equipement") || categoriePr.equals("Mentall_wellbeing")) &&
+                pricePr != null) {
+            return productIService.filterProducts(categoriePr, pricePr);
+
+        } else {
+            // Retourner une liste vide si les paramètres de filtrage ne sont pas valides
+            return List.of();
+        }
     }
 }
