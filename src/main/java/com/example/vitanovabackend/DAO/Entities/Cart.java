@@ -21,7 +21,7 @@ public class Cart {
     float PriceCard;
     LocalDate DateCard;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "cart")
-    List<Order>orders = new ArrayList<>();
+    List<Product>products = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "cart")
     User user;
 }

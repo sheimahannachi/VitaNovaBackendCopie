@@ -19,16 +19,7 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "Content")
     private String Content;
-    @Column(name = "priority")
     private String priority;
-    @Column(name = "NotificationDate")
-    private LocalDate NotificationDate;
-    @Column(name = "archive")
-    private Boolean archive=false;
-
-
-    @ManyToOne
-    PeriodTracker periodTracker;
+    private LocalDate dateNotification;
 }

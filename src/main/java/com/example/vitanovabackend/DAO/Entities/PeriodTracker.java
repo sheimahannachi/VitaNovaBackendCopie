@@ -1,5 +1,4 @@
 package com.example.vitanovabackend.DAO.Entities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
@@ -34,8 +33,8 @@ public class PeriodTracker {
     private String cyclePhase;
 
 
+
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "periodTracker")
-    @JsonIgnore
     User user;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "periodTracker")
@@ -43,7 +42,4 @@ public class PeriodTracker {
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "periodTracker")
     List<Food> foods = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "periodTracker")
-    List<Notification> notifications = new ArrayList<>();
 }

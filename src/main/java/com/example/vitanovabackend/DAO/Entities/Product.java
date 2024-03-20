@@ -15,14 +15,11 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long IdPr;
-    String NamePr;
     @Enumerated(EnumType.STRING)
-    Categories categoriePr;
-    float PricePr ;
-    String PicturePr;
-    boolean archivePr;
+    Categories ProductCat;
+    float Price ;
     @ManyToOne
-    Order order;
+    Cart cart;
 
 
 }
