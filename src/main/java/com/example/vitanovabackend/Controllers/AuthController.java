@@ -70,6 +70,7 @@ public class AuthController {
     public ResponseEntity<UserInfoResponse> authenticateAndGetToken(@RequestBody LoginRequest authRequest) {
         UserInfoResponse response = new UserInfoResponse();
         System.out.println(authRequest);
+        if(authRequest!=null){
         User user = services.loginUser(authRequest.getUsername(), authRequest.getPassword());
         System.out.println(user);
         System.out.println("generating token : ");
@@ -86,11 +87,11 @@ public class AuthController {
                             user.getRole().toString(),
                             user.getEmail(),
                             jwtCookie.getValue()
-                    ));
+                    ));}
 
 
         }
-return (ResponseEntity<UserInfoResponse>) ResponseEntity.badRequest();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // JWT token not found in cookie
     }
 
     @PostMapping("/signup")
@@ -172,6 +173,12 @@ user.setHeight(signUpRequest.getHeight());
     @PutMapping("/reset-password")
     public User resetPassword(@RequestBody ResetPasswordRequest request) {
         return services.ResetPassword(request.getEmail(), request.getPassword());
+
+    }
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/reset-password-Phone")
+    public User resetPasswordPhone(@RequestBody ResetPasswordRequest request) {
+        return services.ResetPasswordPhone(request.getPhone(), request.getPassword());
 
     }
 

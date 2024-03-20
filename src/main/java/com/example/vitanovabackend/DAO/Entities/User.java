@@ -49,7 +49,8 @@ public class User implements UserDetails {
     private Boolean verified=false;
     @Column(name = "score")
     private int score=0;
-
+    @Column(name = "phone")
+    private String phone;
     @OneToOne
     PersonalGoals personalGoals;
 
