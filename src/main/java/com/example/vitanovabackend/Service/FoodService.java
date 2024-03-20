@@ -25,20 +25,22 @@ public class FoodService implements IFoodService {
     FoodRepository foodRepository;
     TrackerRepository trackerRepository;
     HydrationRepository hydrationRepository;
-
+    public static String uploadDirectory= "C:/xampp/htdocs/uploads";
     @Override
     public Food addFood(Food food ,MultipartFile file) throws IOException
     {
-        String fileName = saveFile(file,"uploads");
+        String fileName = saveFile(file,uploadDirectory);
         food.setFoodPic(fileName);
+        food.setArchive(false);
         return foodRepository.save(food);
     }
 
     @Override
     public Food updateFood(Food food , MultipartFile file) throws IOException
     {
-        String fileName = saveFile(file,"uploads");
+        String fileName = saveFile(file,uploadDirectory);
         food.setFoodPic(fileName);
+        food.setArchive(false);
         return foodRepository.save(food);
     }
 
@@ -62,7 +64,12 @@ public class FoodService implements IFoodService {
 
     @Override
     public List<Food> getFood() {
-        return foodRepository.findAll();
+        return foodRepository.findActiveFoods();
+    }
+
+    @Override
+    public Food getFoodById(long id) {
+        return foodRepository.findById(id).get();
     }
     /////////////////////////////////////////////////////////////////////////
 

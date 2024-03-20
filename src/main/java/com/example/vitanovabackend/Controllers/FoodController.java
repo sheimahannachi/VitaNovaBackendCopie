@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin("*")
 @RequestMapping("RestController")
 public class FoodController {
 
@@ -22,8 +23,8 @@ public class FoodController {
     {
         return iFoodService.addFood(food,file);
     }
-    @PutMapping("updateFood")
-    public Food updateFood(@ModelAttribute Food food ,@RequestParam("pic") MultipartFile file) throws IOException
+    @PutMapping("updateFood/{id}")
+    public Food updateFood(@PathVariable("id") long id,@ModelAttribute Food food ,@RequestParam("pic") MultipartFile file) throws IOException
     {
         return iFoodService.updateFood(food,file);
     }
@@ -45,6 +46,10 @@ public class FoodController {
     public List<Food> getFood() {
 
         return iFoodService.getFood();
+    }
+    @GetMapping("getFood/{id}")
+    public Food getFoodById(@PathVariable("id") long id){
+        return iFoodService.getFoodById(id);
     }
     //////////////////////////////////////////////
     @PostMapping("addTracker")
