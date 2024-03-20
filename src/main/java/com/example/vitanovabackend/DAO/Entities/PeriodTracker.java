@@ -1,11 +1,7 @@
 package com.example.vitanovabackend.DAO.Entities;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,22 +17,21 @@ public class PeriodTracker {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idPeriod;
     @Column(name = "StartDate")
-    private LocalDate StartDate;
-    @Column(name = "EndDate")
-    private LocalDate EndDate;
+    private String StartDate;
     @Column(name = "CycleLength")
     private Integer CycleLength;
-    @Column(name = "MenstruationDuration")
-    private Integer MenstruationDuration;
-    @Column(name = "OvulationDate")
-    private LocalDate OvulationDate;
-    @Enumerated(EnumType.STRING)
-    private Symptoms symptoms;
-    @Enumerated(EnumType.STRING)
-    private Mood mood;
+
+    @ElementCollection
+    private List<String> symptoms = new ArrayList<>();
+
+    @Column(name = "mood")
+    private String mood ;
+    @Column(name = "periodLength")
+    private Integer periodLength ;
     @Column(name = "archive")
     private Boolean archive=false;
-
+    @Column(name = "cyclePhase")
+    private String cyclePhase;
 
 
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "periodTracker")

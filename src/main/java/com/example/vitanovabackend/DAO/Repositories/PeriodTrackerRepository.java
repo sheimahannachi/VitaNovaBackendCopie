@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface PeriodTrackerRepository extends JpaRepository<PeriodTracker,Long> {
-    public List<PeriodTracker> findByUserAndArchive(User user, boolean archive);
+     List<PeriodTracker>findByUserAndArchive(User user, boolean archive);
+    List<PeriodTracker>findByArchiveFalse();
 
 }

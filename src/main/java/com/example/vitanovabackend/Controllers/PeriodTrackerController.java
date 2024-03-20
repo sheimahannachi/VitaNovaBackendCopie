@@ -4,11 +4,16 @@ import com.example.vitanovabackend.DAO.Entities.PeriodTracker;
 import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.Service.IPeriodTrackerService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @AllArgsConstructor
+@RequestMapping("/PeriodTracker")
 public class PeriodTrackerController {
     IPeriodTrackerService iPeriodTrackerService;
 
@@ -28,13 +33,42 @@ public class PeriodTrackerController {
    public List<PeriodTracker> getPeriodTracker(){
         return iPeriodTrackerService.getPeriodTracker();
 }
-  @PutMapping("archivePeriod")
-    public String archivePeriod(@RequestParam Long idPeriod){
-        return iPeriodTrackerService.archivePeriod(idPeriod);
-  }
+
+    @GetMapping("getPeriodTrackerById/{idPeriod}")
+    public PeriodTracker getPeriodTrackerById(@PathVariable("idPeriod") long idPeriod) {
+        return iPeriodTrackerService.getPeriodTrackerById(idPeriod);
+    }
+    @PutMapping("archivePeriod")
+    public ResponseEntity<String> archivePeriod(@RequestParam Long idPeriod) {
+        String result = iPeriodTrackerService.archivePeriod(idPeriod);
+        return ResponseEntity.ok(result);
+    }
   @GetMapping("ArchivedPeriods")
     public List<PeriodTracker>searchArchivedPeriodsForUser(@RequestParam long idUser){
       return iPeriodTrackerService.searchArchivedPeriodsForUser(idUser);
   }
-}
 
+    @GetMapping("/nonArchivedPeriodTrackers")
+    public List<PeriodTracker> getNonArchivedPeriodTrackers() {
+        return iPeriodTrackerService.getNonArchivedPeriodTrackers();
+    }
+    @GetMapping("/periodNotNull")
+    public List<User> getUsersWithPeriodNotNull() {
+        return iPeriodTrackerService.findByPeriodNotNull();
+    }
+    @PostMapping("/calculate-cycle-phase")
+    public String calculateCyclePhase(@RequestBody PeriodTracker periodTracker) {
+        return iPeriodTrackerService.calculateCyclePhase(periodTracker);
+    }
+    @PostMapping("/calculate-next-period-date")
+    public ResponseEntity<String> calculateNextPeriodDate(@RequestBody PeriodTracker periodTracker) {
+        LocalDate nextPeriodDate = iPeriodTrackerService.calculateNextPeriodDate(periodTracker);
+        return ResponseEntity.ok("Next period date: " + nextPeriodDate.toString());
+    }
+    @PostMapping("/calculate-ovulation-date")
+    public ResponseEntity<String> calculateOvulationDate(@RequestBody PeriodTracker periodTracker) {
+        LocalDate ovulationDate = iPeriodTrackerService.calculateOvulationDate(periodTracker);
+        return ResponseEntity.ok("Ovulation date: " + ovulationDate.toString());
+    }
+
+}
