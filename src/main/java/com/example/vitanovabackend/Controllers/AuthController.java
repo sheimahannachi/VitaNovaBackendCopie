@@ -116,6 +116,7 @@ user.setFirstName(signUpRequest.getFirstName());
 user.setPicture(signUpRequest.getPicture());
 user.setWeight(signUpRequest.getWeight());
 user.setHeight(signUpRequest.getHeight());
+user.setPhone(signUpRequest.getPhone());
         String strRoles = signUpRequest.getRole();
         System.out.println("strroles " +strRoles);
         if(strRoles.equals(ERole.ADMIN.toString()))user.setRole(ERole.ADMIN);
@@ -170,13 +171,13 @@ user.setHeight(signUpRequest.getHeight());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // JWT token not found in cookie
     }
     @CrossOrigin(origins = "http://localhost:4200")
-    @PutMapping("/reset-password")
+    @PutMapping("/resetPassword")
     public User resetPassword(@RequestBody ResetPasswordRequest request) {
         return services.ResetPassword(request.getEmail(), request.getPassword());
 
     }
     @CrossOrigin(origins = "http://localhost:4200")
-    @PutMapping("/reset-password-Phone")
+    @PutMapping("/resetPasswordPhone")
     public User resetPasswordPhone(@RequestBody ResetPasswordRequest request) {
         return services.ResetPasswordPhone(request.getPhone(), request.getPassword());
 
