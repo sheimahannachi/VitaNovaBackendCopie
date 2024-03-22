@@ -70,8 +70,7 @@ public class User implements UserDetails {
     @ManyToOne( cascade = CascadeType.ALL)
     Community community;
 
-    @ManyToMany( mappedBy = "membres",cascade = CascadeType.ALL)
-    List<Community> communities = new ArrayList<>();
+
 
 
 
