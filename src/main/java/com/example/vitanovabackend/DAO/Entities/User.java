@@ -47,11 +47,10 @@ public class User implements UserDetails {
     private String picture;
     @Column(name = "verified")
     private Boolean verified=false;
-    @Column(name = "score")
-    private int score=0;
+
 
     @Column(name = "Community_Activity")
-    long comunityActivity;
+    long comunityActivity=0;
 
 
     @OneToOne

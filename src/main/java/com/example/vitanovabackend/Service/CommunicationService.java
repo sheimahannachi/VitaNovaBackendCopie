@@ -24,7 +24,7 @@ public class CommunicationService implements  ICommunicationService{
                 .seen(false)
                 .sentDate(LocalDate.now())
                 .sender(communication.getSender())
-                .reciever(communication.getReciever())
+//                .reciever(communication.getReciever())
                 .build();
 
 

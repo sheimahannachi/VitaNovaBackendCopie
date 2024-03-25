@@ -1,5 +1,6 @@
 package com.example.vitanovabackend.Security.config;
 
+import com.example.vitanovabackend.Configuration.ControllerUrls;
 import com.example.vitanovabackend.Security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -48,7 +49,18 @@ public class SecurityConfig implements WebSecurityConfigurer {
                 .cors() // Enable CORS support
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/login","/api/generateToken","/api/getuserfromtoken","/api/sendEmail","/api/reset-password").permitAll()
+                .requestMatchers("/api/login",
+                        "/api/generateToken",
+                        "/api/getuserfromtoken",
+                        "/api/sendEmail",
+                        "/api/reset-password",
+                        //Firas bdé houni ya 7aj
+                        ControllerUrls.CommunityUrls.getCommunitiesOrderByChallenger,
+                        ControllerUrls.CommunityUrls.addCommunity,
+                        ControllerUrls.ChallengesUrl.FindAllActiveChallenge,
+                        ControllerUrls.CommunityUrls.UpdateCommunity,
+                        ControllerUrls.CommunityUrls.FindAllCommunity,
+                        "/ws/**").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**").authenticated()
                 .and()
@@ -107,7 +119,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:4200"); // Allow requests from this origin
+        config.addAllowedOriginPattern("http://localhost:4200"); // Allow requests from this origin
         config.addAllowedMethod("*"); // Allow all HTTP methods
         config.addAllowedHeader("*"); // Allow all headers
         config.setAllowCredentials(true); // Allow credentials (cookies)
