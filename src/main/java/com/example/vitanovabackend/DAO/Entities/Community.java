@@ -1,6 +1,7 @@
 package com.example.vitanovabackend.DAO.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -43,18 +44,18 @@ public class Community {
     boolean status ;
 
 
-    @JsonIgnore
+
     @NotNull(message = "Community should have a creator!")
-    @ManyToOne
+    @OneToOne
     User creator;
 
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "community")
     List<User> membres = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy ="community")
+    @JsonManagedReference
+    @OneToMany(mappedBy ="community", cascade = CascadeType.ALL)
     List<Challenges> challenges=new ArrayList<>();
 }
 

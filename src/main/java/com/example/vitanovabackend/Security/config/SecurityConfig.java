@@ -60,6 +60,8 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         ControllerUrls.ChallengesUrl.FindAllActiveChallenge,
                         ControllerUrls.CommunityUrls.UpdateCommunity,
                         ControllerUrls.CommunityUrls.FindAllCommunity,
+                        ControllerUrls.CommunicationUrl.getCommunicationByCommunity,
+                        ControllerUrls.CommunityUrls.DeleteCommunity,
                         "/ws/**").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**").authenticated()

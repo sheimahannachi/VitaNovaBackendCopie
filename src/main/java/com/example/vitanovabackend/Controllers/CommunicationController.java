@@ -1,10 +1,15 @@
 package com.example.vitanovabackend.Controllers;
 
+import com.example.vitanovabackend.Configuration.ControllerUrls;
+import com.example.vitanovabackend.Configuration.PageanationSize;
 import com.example.vitanovabackend.DAO.Entities.Communication;
 
+import com.example.vitanovabackend.DAO.Entities.Community;
 import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.Service.ICommunicationService;
+
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +50,12 @@ public class CommunicationController {
     @GetMapping("findBySenderAndReciever")
     public List<Communication> findBySenderAndReciever(@RequestBody User sender,@RequestBody User reciever){
         return service.findBySenderAndReciever(sender,reciever);
+    }
+
+    @GetMapping(ControllerUrls.CommunicationUrl.getCommunicationByCommunity)
+    public Page<Communication> getCommunicationByCommunity(@RequestParam long communityId,@RequestParam(defaultValue = "0")int page)
+    {
+        return service.findByCommunity(communityId,page, PageanationSize.size);
     }
 
 

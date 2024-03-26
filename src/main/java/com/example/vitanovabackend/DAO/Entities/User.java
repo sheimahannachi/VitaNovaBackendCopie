@@ -1,5 +1,6 @@
 package com.example.vitanovabackend.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -66,7 +67,8 @@ public class User implements UserDetails {
     List<Food>foods=new ArrayList<>();
 
 
-    @ManyToOne( cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ManyToOne( cascade = CascadeType.ALL )
     Community community;
 
 

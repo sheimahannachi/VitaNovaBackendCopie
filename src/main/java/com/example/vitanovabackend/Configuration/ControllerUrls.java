@@ -26,6 +26,12 @@ public   class ControllerUrls {
     }
     public static class chatUrl{
 
+
+
+    }
+
+    public static class CommunicationUrl{
+        public final static String getCommunicationByCommunity="getCommbyCommunity";
     }
 
 
