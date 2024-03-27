@@ -183,4 +183,14 @@ user.setPhone(signUpRequest.getPhone());
 
     }
 
+    @GetMapping("/checkUsername")
+    public boolean checkUsernameExists(@RequestParam String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @GetMapping("/checkEmail")
+    public boolean checkEmailExists(@RequestParam String email) {
+        return userRepository.existsByEmail(email);
+    }
 }
+

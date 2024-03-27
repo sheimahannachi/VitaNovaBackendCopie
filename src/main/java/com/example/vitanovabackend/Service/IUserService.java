@@ -10,7 +10,8 @@ public interface IUserService {
     List<User> SearchByName(String name);
     List<User> SearchByLastName(String LastName);
 
-    List<User> SearchByNameAndLastName(String name,String LastName);
+
+    List<User> SearchByNameAndLastName(String name, String LastName);
     User AddUser(User user);
 
     User loginUser(String email, String password);

@@ -6,7 +6,9 @@ import com.example.vitanovabackend.Service.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,7 +53,11 @@ public class UserController {
     }
 
 
+@GetMapping("/GetUserByUsername")
+    public User GetUserUsername(@PathParam("username") String username){
 
+        return iUserService.loadUserByUsername(username);
+}
 
 
 

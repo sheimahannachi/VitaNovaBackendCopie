@@ -48,7 +48,8 @@ public class SecurityConfig implements WebSecurityConfigurer {
                 .cors() // Enable CORS support
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/login","/api/generateToken","/api/getuserfromtoken","/api/sendEmail","/api/resetPassword","/api/sendSMS","/api/resetPasswordPhone","/api/signup").permitAll()
+                .requestMatchers("/api/login","/api/generateToken","/api/getuserfromtoken","/api/sendEmail","/api/resetPassword","/api/sendSMS","/api/resetPasswordPhone","/api/signup","/api/misc/copyToXampp",
+                        "/api/checkUsername","/api/checkEmail","/api/misc/takePic","/api/sendEmailWithAttachment","/api/user/GetUserByUsername").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**").authenticated()
                 .and()
