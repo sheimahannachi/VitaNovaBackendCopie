@@ -1,4 +1,4 @@
-package com.example.vitanovabackend.DAO.Controller;
+package com.example.vitanovabackend.Controllers;
 
 import jakarta.servlet.annotation.MultipartConfig;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.vitanovabackend.DAO.Controller;
+package com.example.vitanovabackend.Controllers;
 
 import com.example.vitanovabackend.Service.FTPService;
 import org.springframework.beans.factory.annotation.Autowired;

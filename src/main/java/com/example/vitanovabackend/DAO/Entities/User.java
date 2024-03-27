@@ -55,6 +55,8 @@ public class User {
     @ManyToMany( mappedBy = "membres",cascade = CascadeType.ALL)
     List<Community> communities = new ArrayList<>();
 
+
     @OneToMany( mappedBy = "user",cascade = CascadeType.ALL)
     private List<LikeProduct> likedProducts = new ArrayList<>();
+
 }
