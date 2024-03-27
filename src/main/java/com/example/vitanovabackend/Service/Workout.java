@@ -1,17 +1,21 @@
 package com.example.vitanovabackend.Service;
-import com.example.vitanovabackend.DAO.Entities.Exercise;
-import com.example.vitanovabackend.DAO.Entities.User;
-import com.example.vitanovabackend.DAO.Entities.UserRating;
-import com.example.vitanovabackend.DAO.Entities.WorkoutProgram;
+import com.example.vitanovabackend.DAO.Entities.*;
 import com.example.vitanovabackend.DAO.Repositories.ExerciseRepository;
 import com.example.vitanovabackend.DAO.Repositories.UserExerciseRatingRepository;
 import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import com.example.vitanovabackend.DAO.Repositories.WorkoutProgramRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,20 +38,58 @@ public class Workout implements Iworkout {
     UserRepository userRepository;
     public static String uploadDirectory = "C:/xampp/php/htdocs/uploads";
 
-    public WorkoutProgram addPlan(WorkoutProgram workoutProgram, MultipartFile file, String bodypart, String intensity, String typeEx) throws IOException {
-
-        List<Exercise> bodyPartExercises = exerciseRepository.getExercisesByBodypartAndIntensity(bodypart, intensity);
-        // Fetch exercises based on type of exercise and intensity
-        List<Exercise> typeExExercises = exerciseRepository.getExercisesByTypeExAndIntensity(typeEx, intensity);
-        // Merge the results
-        List<Exercise> mergedExercises = mergeLists(bodyPartExercises, typeExExercises);
-
-        // Associate fetched exercises with the workout program
-        workoutProgram.setExercises(mergedExercises);
+    public WorkoutProgram addPlan(WorkoutProgram workoutProgram, MultipartFile file, String[] selectedExerciseIds) throws IOException {
+        // Save the uploaded image
         String fileName = saveFile(file, uploadDirectory);
         workoutProgram.setImage(fileName);
+
+        // Fetch selected exercises by their IDs
+        List<Exercise> selectedExercises = new ArrayList<>();
+        int totalDuration = 0; // Initialize total duration
+
+        for (String exerciseId : selectedExerciseIds) {
+            Exercise exercise = exerciseRepository.findById(Long.parseLong(exerciseId))
+                    .orElseThrow(() -> new IllegalArgumentException("Exercise not found with ID: " + exerciseId));
+
+            // Parse sets and reps from strings in the format "3-4" and "12-15"
+            String setsString = exercise.getSets();
+            String repsString = exercise.getReps();
+
+            int setsStart = Integer.parseInt(setsString.split("-")[0]);
+            int setsEnd = Integer.parseInt(setsString.split("-")[1]);
+
+            int repsStart = Integer.parseInt(repsString.split("-")[0]);
+            int repsEnd = Integer.parseInt(repsString.split("-")[1]);
+
+            // Check if sets and reps fall within the specified range
+            if (setsStart >= 3 && setsEnd <= 4 && repsStart >= 12 && repsEnd <= 15) {
+                // Calculate duration for each exercise (including rest intervals between sets)
+                totalDuration += ((setsStart + setsEnd) / 2) * ((repsStart + repsEnd) / 2) * 2; // Each set is 2 minutes (1 minute exercise + 45 seconds rest)
+                totalDuration += 45 * (setsEnd - 1); // Add rest intervals between sets (45 seconds rest between each set)
+            }
+
+            selectedExercises.add(exercise);
+        }
+
+        // Associate fetched exercises with the workout program
+        workoutProgram.setExercises(selectedExercises);
+
+        // Set rest intervals
+        workoutProgram.setRestIntervals("60s");
+        workoutProgram.setRestIntervalsBetweenSets("45s");
+
+        // Convert total duration to a formatted string (assuming it represents minutes)
+        int totalMinutes = totalDuration / 60;
+        int totalSeconds = totalDuration % 60;
+        String formattedDuration = totalMinutes + " minutes " + totalSeconds + " seconds";
+
+        // Set the formatted duration for the workout program
+        workoutProgram.setDuration(formattedDuration);
+
+        // Save the workout program with associated exercises
         return workoutProgramRepository.save(workoutProgram);
     }
+
 
     private List<Exercise> mergeLists(List<Exercise> list1, List<Exercise> list2) {
         // Implement your merging logic here
@@ -146,9 +188,9 @@ public class Workout implements Iworkout {
     }
 
     @Override
-    public List<Exercise> GetExercise() {
-
-        return exerciseRepository.findAll();
+    public Page<Exercise> GetExercise(int page,int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return exerciseRepository.findAll(pageable);
     }
 
     public Page<Exercise> GetActiveExercise(int page, int size) {
@@ -207,5 +249,46 @@ public class Workout implements Iworkout {
 
         return averageRating;
     }
+        public void importExercisesFromCsv() {
+            try {
+                InputStream inputStream = getClass().getResourceAsStream("/exercises (1).csv");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-}
+                CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader());
+                for (CSVRecord csvRecord : csvParser) {
+                    Exercise exercise = new Exercise();
+                    exercise.setTitle(csvRecord.get("Title")); // Assuming "Name" is a column in the CSV file
+                    exercise.setDescription(csvRecord.get("Desc"));
+                    exercise.setArchived(false);
+                    exercise.setBodypart(csvRecord.get("BodyPart"));
+                    exercise.setTypeEx(csvRecord.get("Type"));
+                    exercise.setReps(csvRecord.get("Reps"));// Assuming "Description" is a column
+                    exercise.setSets(csvRecord.get("Sets"));
+                    String intensityStr = csvRecord.get("Level");
+                    Intensity intensity = Intensity.valueOf(intensityStr.toUpperCase());
+                    exercise.setIntensity(intensity);// Assuming "Description" is a column
+                    // Map other fields as needed
+
+                    exerciseRepository.save(exercise);
+                }
+
+                csvParser.close();
+            } catch (IOException e) {
+                // Handle IOException
+            }
+        }
+    public List<Exercise> getExercises(String bodyParts, String searchText) {
+        if (bodyParts == null && searchText == null) {
+            return exerciseRepository.findAll();
+        } else if (bodyParts != null && searchText != null) {
+            return exerciseRepository.findByBodypartAndTitle(bodyParts, searchText);
+        } else if (bodyParts != null) {
+            return exerciseRepository.findByBodypart(bodyParts);
+        } else {
+            return exerciseRepository.findByTitle(searchText);
+        }
+    }
+
+    }
+
+
