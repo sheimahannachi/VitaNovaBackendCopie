@@ -13,13 +13,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Order {
+public class Commandeline {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long idOrder;
-    LocalDate dateOrder;
-    float prixOrder;
-    int quantite;
+    LocalDate dateOrder =null;
+    float prixOrder ;
+    float quantite;
     boolean archiveOrder;
     @ManyToOne
     Cart cart;
