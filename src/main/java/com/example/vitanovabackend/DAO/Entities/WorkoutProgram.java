@@ -24,6 +24,7 @@ public class WorkoutProgram {
     Intensity intensity;
     String duration;
     String restIntervals;
+    String restIntervalsBetweenSets;
     String sportType;
     String progression;
     String image;

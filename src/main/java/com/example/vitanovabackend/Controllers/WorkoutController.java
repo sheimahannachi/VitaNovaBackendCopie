@@ -28,9 +28,10 @@ public class WorkoutController {
 
 
     @PostMapping("addPlan")
-    public WorkoutProgram addPlan(@ModelAttribute WorkoutProgram workoutProgram, @RequestParam("image") MultipartFile file,@RequestParam("bodypart") String bodypart,@RequestParam("intensity") String intensity,@RequestParam("typeEx") String typeEx) throws IOException {
-        return iWorkout.addPlan(workoutProgram,file,bodypart,intensity,typeEx);
+    public WorkoutProgram addPlan(@ModelAttribute WorkoutProgram workoutProgram, @RequestParam("fileImage") MultipartFile file, @RequestParam("selectedExerciseIds") String[] selectedExerciseIds) throws IOException {
+        return iWorkout.addPlan(workoutProgram, file, selectedExerciseIds);
     }
+
 
 
     @PutMapping("UpdatePlan")
@@ -80,8 +81,8 @@ public class WorkoutController {
     }
 
     @GetMapping("GetExercise")
-    public List<Exercise> GetExercise() {
-        return iWorkout.GetExercise();
+    public Page<Exercise> GetExercise(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10")int size) {
+        return iWorkout.GetExercise(page,size);
     }
     @GetMapping("GetActiveExercise")
     public Page<Exercise> GetActiveExercise(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10")int size) {
@@ -103,6 +104,10 @@ public Exercise getExerciseById(@PathVariable("exerciseId") long id){
     public double calculateAverageRating(@PathVariable("exerciseId") long exerciseId){
         return iWorkout.calculateAverageRating(exerciseId);
     }
-
+    @GetMapping("searchEx")
+    public List<Exercise> getExercises(@RequestParam(required = false) String bodyPart,@RequestParam(required = false) String searchText)
+    {
+        return iWorkout.getExercises(bodyPart, searchText);
+    }
 }
 

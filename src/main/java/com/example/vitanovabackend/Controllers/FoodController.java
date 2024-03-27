@@ -1,10 +1,13 @@
 package com.example.vitanovabackend.Controllers;
 
+
 import com.example.vitanovabackend.DAO.Entities.Food;
 import com.example.vitanovabackend.DAO.Entities.Hydration;
 import com.example.vitanovabackend.DAO.Entities.Tracker;
 import com.example.vitanovabackend.Service.IFoodService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,9 +46,9 @@ public class FoodController {
         return iFoodService.archiverFood(id);
     }
     @GetMapping("getFood")
-    public List<Food> getFood() {
+    public Page<Food> getFood(int page,int size) {
 
-        return iFoodService.getFood();
+        return iFoodService.getFood(page, size);
     }
     @GetMapping("getFood/{id}")
     public Food getFoodById(@PathVariable("id") long id){

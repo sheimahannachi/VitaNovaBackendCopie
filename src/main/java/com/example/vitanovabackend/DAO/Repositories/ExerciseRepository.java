@@ -19,4 +19,9 @@ public interface ExerciseRepository extends JpaRepository<Exercise,Long> {
     public List<Exercise> getExercisesByBodypartAndIntensity(String bodyPart,String intensity) ;
 
     public List<Exercise> getExercisesByTypeExAndIntensity(String typeEx,String intensity) ;
+    List<Exercise> findByBodypartAndTitle(String bodyParts, String searchText);
+
+    List<Exercise> findByBodypart(String bodyParts);
+
+    List<Exercise> findByTitle(String searchText);
 }

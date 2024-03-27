@@ -3,6 +3,7 @@ package com.example.vitanovabackend.Service;
 import com.example.vitanovabackend.DAO.Entities.Food;
 import com.example.vitanovabackend.DAO.Entities.Hydration;
 import com.example.vitanovabackend.DAO.Entities.Tracker;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ public interface IFoodService {
     public void deleteFood(Long idFood);
     public void deleteFood2(Food food);
     public Food archiverFood(long id);
-    public List<Food> getFood();
+    public Page<Food> getFood(int page, int size);
     public Food getFoodById(long id);
     /////////////////////////////////////////////
     public List<Tracker> addTracker  (List<Tracker> trackers);
