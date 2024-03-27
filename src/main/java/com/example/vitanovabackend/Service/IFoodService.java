@@ -15,6 +15,7 @@ public interface IFoodService {
     public void deleteFood2(Food food);
     public Food archiverFood(long id);
     public List<Food> getFood();
+    public Food getFoodById(long id);
     /////////////////////////////////////////////
     public List<Tracker> addTracker  (List<Tracker> trackers);
     public List<Tracker> updateTracker  (List<Tracker> trackers);
