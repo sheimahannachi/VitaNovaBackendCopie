@@ -18,11 +18,11 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idCard;
-    float priceCard;
-    LocalDate dateCard;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "cart")
-    List<Order>orders = new ArrayList<>();
+    Long idCart;
+    float priceCart;
+    LocalDate dateCart;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    private List<Commandeline> commandelineList = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "cart")
     User user;
 }

@@ -9,13 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @org.springframework.web.bind.annotation.RestController
 @AllArgsConstructor
 @RequestMapping("/Product")
 @MultipartConfig
-@CrossOrigin
+@CrossOrigin(origins="*")
 public class ProductController {
     ProductIService productIService;
 
@@ -69,4 +70,25 @@ public class ProductController {
             return List.of();
         }
     }
+
+
+    @PostMapping("/addLike/{idPr}")
+    public ResponseEntity<String> addLike(/*@RequestParam("idUser") Long idUser,*/ @PathVariable("idPr") Long idPr) {
+        productIService.addLike(idPr);
+        return ResponseEntity.ok("Like ajouté avec succès !");
+    }
+    @GetMapping("/sortedByLikes")
+    public ResponseEntity<List<Product>> getProductsSortedByLikes() {
+        List<Product> sortedProducts = productIService.getProductsSortedByLikes();
+        return ResponseEntity.ok(sortedProducts);
+    }
+
+    @PostMapping("/{productId}/like")
+    public ResponseEntity<?> likeProduct(@PathVariable Long productId) {
+        productIService.incrementLikeCount(productId);
+        return ResponseEntity.ok().build();
+    }
+
+
+
 }

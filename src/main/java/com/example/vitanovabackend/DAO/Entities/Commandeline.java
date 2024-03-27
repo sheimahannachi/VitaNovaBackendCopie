@@ -6,7 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
-@Table(name="orderr")
+@Table(name="Commandeline")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,10 +19,10 @@ public class Commandeline {
     long idOrder;
     LocalDate dateOrder =null;
     float prixOrder ;
-    float quantite;
+    float quantity;
     boolean archiveOrder;
     @ManyToOne
-    Cart cart;
+    private Cart cart;
     @ManyToOne
     Product product;
 }
