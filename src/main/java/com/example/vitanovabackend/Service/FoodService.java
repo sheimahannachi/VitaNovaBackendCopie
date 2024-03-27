@@ -1,22 +1,36 @@
 package com.example.vitanovabackend.Service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import com.example.vitanovabackend.DAO.Entities.Food;
 import com.example.vitanovabackend.DAO.Entities.Hydration;
 import com.example.vitanovabackend.DAO.Entities.Tracker;
 import com.example.vitanovabackend.DAO.Repositories.FoodRepository;
 import com.example.vitanovabackend.DAO.Repositories.HydrationRepository;
 import com.example.vitanovabackend.DAO.Repositories.TrackerRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+
+import java.io.FileReader;
+
+import java.util.ArrayList;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -25,6 +39,7 @@ public class FoodService implements IFoodService {
     FoodRepository foodRepository;
     TrackerRepository trackerRepository;
     HydrationRepository hydrationRepository;
+
     public static String uploadDirectory= "C:/xampp/htdocs/uploads";
     @Override
     public Food addFood(Food food ,MultipartFile file) throws IOException
@@ -164,4 +179,49 @@ public class FoodService implements IFoodService {
             throw new IllegalStateException("Le fichier est vide ou nul");
         }
     }
+    public void importFoodsFromJson() throws IOException, ParseException {
+        JSONParser parser = new JSONParser();
+
+        // Read the JSON file from the resources folder
+        try (FileReader reader = new FileReader("src/main/resources/food.json")) {
+            Object obj = parser.parse(reader);
+
+            // Convert JSON array to a list of Food objects
+            JSONArray jsonArray = (JSONArray) obj;
+            List<Food> foods = new ArrayList<>();
+            for (Object o : jsonArray) {
+                JSONObject jsonObject = (JSONObject) o;
+                Food food = new Food();
+                // Parse JSON object and set attributes of Food
+                food.setCategory((String) jsonObject.get("Category"));
+                food.setTitle((String) jsonObject.get("Product"));
+                food.setCalories(getDoubleValue(jsonObject, "Calories"));
+                food.setGlucides(getDoubleValue(jsonObject, "Sugar"));
+                food.setProtein(getDoubleValue(jsonObject, "Protein"));
+                food.setLipides(getDoubleValue(jsonObject, "Lipid"));
+                food.setVitaminB6(getDoubleValue(jsonObject, "Vitamin B6"));
+                food.setVitaminC(getDoubleValue(jsonObject, "Vitamin C"));
+                food.setVitaminE(getDoubleValue(jsonObject, "Vitamin E"));
+                food.setCalcium(getDoubleValue(jsonObject, "Calcium"));
+
+                // Similarly, parse other attributes
+
+                // Assuming archive is a boolean attribute in your Food entity
+                food.setArchive(false);
+                foods.add(food);
+            }
+
+            // Save the mapped entities to the database
+            foodRepository.saveAll(foods);
+        }
+    }
+
+    private double getDoubleValue(JSONObject jsonObject, String key) {
+        Object value = jsonObject.get(key);
+        if (value != null && !value.toString().isEmpty()) {
+            return Double.parseDouble(value.toString());
+        }
+        return 0.0; // or throw an exception if the value is mandatory
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.example.vitanovabackend.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,21 +17,34 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
+
 public class Food {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    String code;
+    @JsonProperty("Calories")
     double calories;
+    @JsonProperty("Sugar")
     double glucides;
+    @JsonProperty("Protein")
     double protein;
+    @JsonProperty("Lipid")
     double lipides;
+    @JsonProperty("Product")
     String title;
-    String ingredients;
+    @JsonProperty("FoodPic")
     String FoodPic;
-    LocalDate date;
     Boolean archive;
+    @JsonProperty("Category")
     String category;
+    @JsonProperty("Vitamin C")
+    double vitaminC;
+    @JsonProperty("Vitamin B6")
+    double vitaminB6;
+    @JsonProperty("Vitamin E")
+    double vitaminE;
+    @JsonProperty("Calcium")
+    double calcium;
     @ManyToMany
     List<User> person=new ArrayList<>();
     @ManyToOne
