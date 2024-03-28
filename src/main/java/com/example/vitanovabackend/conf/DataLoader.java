@@ -1,4 +1,4 @@
-package com.example.vitanovabackend;
+package com.example.vitanovabackend.conf;
 
 import com.example.vitanovabackend.DAO.Repositories.FoodRepository;
 import com.example.vitanovabackend.Service.FoodService;

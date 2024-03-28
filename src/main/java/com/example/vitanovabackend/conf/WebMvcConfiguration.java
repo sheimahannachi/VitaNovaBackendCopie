@@ -1,4 +1,4 @@
-package com.example.vitanovabackend;
+package com.example.vitanovabackend.conf;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

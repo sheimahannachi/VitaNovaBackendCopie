@@ -45,7 +45,7 @@ public class Community {
 
     @JsonIgnore
     @NotNull(message = "Community should have a creator!")
-    @ManyToOne
+    @OneToOne
     User creator;
 
 

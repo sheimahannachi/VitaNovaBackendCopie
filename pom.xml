@@ -48,6 +48,7 @@
             <scope>test</scope>
         </dependency>
 
+
         <!--    WebSocket dependency -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -110,6 +111,37 @@
             <version>1.8</version>
 
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-ftp</artifactId>
+            <version>5.5.0</version> <!-- Utilisez la version appropriée -->
+        </dependency>
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.8.0</version> <!-- Ou la version la plus récente -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ftpserver</groupId>
+            <artifactId>ftpserver-core</artifactId>
+            <version>1.1.1</version> <!-- Version actuelle -->
+            <scope>test</scope> <!-- Assure-toi de spécifier la portée de test -->
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.21</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
     </dependencies>
 
     <build>

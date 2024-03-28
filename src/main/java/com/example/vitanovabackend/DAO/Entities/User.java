@@ -1,5 +1,6 @@
 package com.example.vitanovabackend.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -64,15 +65,16 @@ public class User implements UserDetails {
     Cart cart;
 
     @ManyToMany
+
     List<Food>foods=new ArrayList<>();
 
 
     @ManyToOne( cascade = CascadeType.ALL)
     Community community;
 
-    @ManyToMany( mappedBy = "membres",cascade = CascadeType.ALL)
-    List<Community> communities = new ArrayList<>();
-
+    @OneToMany( mappedBy = "user",cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<LikeProduct> likedProducts = new ArrayList<>();
 
 
 
@@ -112,5 +114,8 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+
+
+
 
 }
