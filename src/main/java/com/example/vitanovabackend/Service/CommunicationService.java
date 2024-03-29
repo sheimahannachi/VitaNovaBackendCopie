@@ -98,8 +98,11 @@ public class CommunicationService implements  ICommunicationService{
             return null;
         }
 
-        Pageable pageable= PageRequest.of(page,size);
-        return repository.findAllByCommunity(community,pageable);
+
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findAllByCommunityOrderByIdDesc(community,pageable);
 
     }
+
+
 }

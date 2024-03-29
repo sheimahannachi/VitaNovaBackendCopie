@@ -11,6 +11,9 @@ public   class ControllerUrls {
         public static final String FindCommunityByName="/findCommunitiesByNom/{name}";
         public static final String AddMemberToCommunity="addMemberToComunity";
         public static final String getCommunitiesOrderByChallenger="getCommunitiesOrderedByChallenges";
+        public static final String fetchTopThree="getTopThreeByCommunity";
+        public static final String userLeaveCommunity="leaveCommunity";
+        public static final String getCommunityMembers="communityMembers";
 
     }
     public static class ChallengesUrl{
@@ -31,7 +34,8 @@ public   class ControllerUrls {
     }
 
     public static class CommunicationUrl{
-        public final static String getCommunicationByCommunity="getCommbyCommunity";
+        public final static String getCommunicationByCommunity="getCommbyCommunityFirst";
+        public final static String getCommunicationByCommunityMore="getCommbyCommunityMore";
     }
 
 

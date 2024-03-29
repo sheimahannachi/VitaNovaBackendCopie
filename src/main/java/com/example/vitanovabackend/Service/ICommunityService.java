@@ -24,5 +24,11 @@ public interface ICommunityService {
 
     Page<Community> findAllOrderByChallengesNumber(int page , int size);
 
+    List<User>fetchTopThree(long communityId);
+
+    boolean userLeaveCommunity(long userId,long communityId);
+
+    List<User> getCommunityMembers(long comunityId);
+
 
 }

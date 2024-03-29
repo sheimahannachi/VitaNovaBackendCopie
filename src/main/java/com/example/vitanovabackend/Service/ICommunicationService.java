@@ -22,4 +22,5 @@ public interface ICommunicationService {
 
     List<Communication> findBySenderAndReciever(User sender, User reciever);
     Page<Communication> findByCommunity(long communityId, int page, int size);
+
 }
