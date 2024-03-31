@@ -29,12 +29,11 @@ public class UserController {
         return iUserService.AddUser(user);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin("**")
     @PutMapping("/admin/UpdateUser")
     public User updateUser(@RequestBody User user) {
         return iUserService.updateUser(user);
     }
-
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/admin/AllUsers")
     public List<User> GetUsers() {
@@ -47,7 +46,7 @@ public class UserController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @DeleteMapping("admin/ActivateUser/{id}")
+    @DeleteMapping( "admin/ActivateUser/{id}")
     public void ActivateUser(@PathVariable("id") long id){
         iUserService.ActivateUser(id);
     }

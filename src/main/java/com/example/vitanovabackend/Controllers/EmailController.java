@@ -3,6 +3,7 @@ package com.example.vitanovabackend.Controllers;
 import com.example.vitanovabackend.Payload.Request.EmailRequest;
 import com.example.vitanovabackend.Service.EmailService;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -33,13 +40,17 @@ public class EmailController {
 
 
     @PostMapping("/sendEmailWithAttachment")
-    public ResponseEntity<String> sendEmailWithAttachment(@RequestBody EmailRequest request) {
+    public ResponseEntity<String> sendEmailWithAttachment(@RequestBody EmailRequest request, HttpServletRequest httpRequest) {
         String to = request.getTo();
         String subject = request.getSubject();
         String text = request.getText();
+        String ipAddress = emailService.getWANIPAddress();
+        String location = emailService.getLocationFromIPAddress(ipAddress);
+
         String attachmentPath = request.getAttachmentPath();
         if(attachmentPath==""){attachmentPath="C:\\Users\\hamad\\OneDrive\\Desktop\\test.jpg";}
         try {
+            text += "\nConnection from IP address: " + ipAddress+ " Location : "+location;
 
             emailService.sendEmailWithAttachment(to, subject, text, attachmentPath);
             return new ResponseEntity<>("Email sent successfully", HttpStatus.OK);
@@ -53,6 +64,8 @@ public class EmailController {
             throw new RuntimeException(e);
         }
     }
+
+
 
 
 
