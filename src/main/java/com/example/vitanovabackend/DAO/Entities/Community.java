@@ -35,7 +35,7 @@ public class Community {
 
 
     @NotBlank(message = "Community description is mandatory!")
-    @Size(min = 5,max = 40,message = "Invalid Community description size")
+    @Size(min = 5,max = 40,message = "Invalid Community description length")
     String description;
 
     LocalDate creationDate;
