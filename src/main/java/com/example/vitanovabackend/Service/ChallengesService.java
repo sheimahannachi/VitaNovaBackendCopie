@@ -28,6 +28,10 @@ public class ChallengesService implements IChallengesService {
 
         challenge.setActive(true);
         challenge.setCreationDate(LocalDate.now());
+        if(!community.isStatus()){
+            community.setStatus(true);
+        }
+        communityRepository.save(community);
         challenge.setCommunity(community);
 
 

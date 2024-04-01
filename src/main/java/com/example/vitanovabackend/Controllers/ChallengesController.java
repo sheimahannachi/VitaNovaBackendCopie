@@ -1,5 +1,6 @@
 package com.example.vitanovabackend.Controllers;
 
+import com.example.vitanovabackend.Configuration.ControllerUrls;
 import com.example.vitanovabackend.Configuration.PageanationSize;
 import com.example.vitanovabackend.DAO.Entities.Challenges;
 import com.example.vitanovabackend.Service.IChallengesService;
@@ -17,42 +18,42 @@ import java.util.List;
 public class ChallengesController {
      IChallengesService service;
 
-     @PostMapping("addChallenge")
+     @PostMapping(ControllerUrls.ChallengesUrl.AddChallenge)
     public ResponseEntity<Challenges> addChallenge (@Valid @RequestBody Challenges challenge, @RequestParam long communityId){
         return ResponseEntity.ok(service.addChallenge(challenge,communityId));
 
     }
 
 
-    @PutMapping("updateChallenge/{id}")
+    @PutMapping(ControllerUrls.ChallengesUrl.UpdateChallenge)
     public ResponseEntity<Challenges> updateChallenge (@PathVariable long id ,@Valid @RequestBody Challenges challenge){
          return ResponseEntity.ok( service.updateChallenge(id,challenge));
     }
 
 
-    @DeleteMapping("deleteChallenge/{id}")
+    @DeleteMapping(ControllerUrls.ChallengesUrl.DeleteChallenge)
     public void deleteChallenge(@PathVariable long id){
          service.deleteChallenge(id);
     }
 
-    @GetMapping("findChallenge/{id}")
+    @GetMapping(ControllerUrls.ChallengesUrl.FindChallenge)
     public Challenges findChallenges(@PathVariable long id){
          return service.findChallenges(id);
     }
 
 
-    @GetMapping("findActiveChallengeByCommunity/{id}")
+    @GetMapping(ControllerUrls.ChallengesUrl.FindActiveChallengeByCommunity)
     public Challenges findActiveByCommunity(@PathVariable long id){
          return service.findByCommunityIdAndActive(id);
 
     }
 
-    @GetMapping("findAllActiveChallenges")
+    @GetMapping(ControllerUrls.ChallengesUrl.FindAllActiveChallenge)
     public List<Challenges>findAllActive(){
          return service.findAllActive();
     }
 
-    @GetMapping("findAllChallenges")
+    @GetMapping(ControllerUrls.ChallengesUrl.FindAll)
     public Page<Challenges> findAll(@RequestParam(defaultValue = "0") int page){
          return this.service.findAll(page, PageanationSize.size);
     }

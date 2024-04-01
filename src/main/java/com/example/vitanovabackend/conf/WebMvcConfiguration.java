@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
+    /*
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         /*registry.addMapping("/*").
@@ -13,6 +14,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 allowedMethods("*").
                 allowedHeaders("*").
                 allowCredentials(true);
+<<<<<<< HEAD:src/main/java/com/example/vitanovabackend/conf/WebMvcConfiguration.java
    */ }
-}
+
 

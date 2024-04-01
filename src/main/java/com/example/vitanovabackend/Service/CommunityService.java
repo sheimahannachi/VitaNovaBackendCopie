@@ -1,8 +1,10 @@
 package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.Challenges;
+import com.example.vitanovabackend.DAO.Entities.Communication;
 import com.example.vitanovabackend.DAO.Entities.Community;
 import com.example.vitanovabackend.DAO.Entities.User;
+import com.example.vitanovabackend.DAO.Repositories.CommunicationRepository;
 import com.example.vitanovabackend.DAO.Repositories.CommunityRepository;
 import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -20,6 +22,7 @@ public class CommunityService implements ICommunityService{
 
     CommunityRepository repository;
     UserRepository userRepository;
+    CommunicationRepository communicationRepository;
     @Override
     public Community addCommmunity(Community community, long userId) {
         //CREATOR A AJOUTER
@@ -50,7 +53,12 @@ public class CommunityService implements ICommunityService{
 
     @Override
     public void deleteCommunity(long id) {
+        Community community=repository.findById(id).orElse(null);
+        if(community!=null){
+        List<Communication>communications=communicationRepository.findByCommunity(community);
+        communicationRepository.deleteAll(communications);
         repository.deleteById(id);
+        }
 
     }
 

@@ -1,6 +1,7 @@
 package com.example.vitanovabackend.DAO.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -48,11 +49,10 @@ public class User implements UserDetails {
     private String picture;
     @Column(name = "verified")
     private Boolean verified=false;
-    @Column(name = "score")
-    private int score=0;
+
 
     @Column(name = "Community_Activity")
-    long comunityActivity;
+    long comunityActivity=0;
 
 
     @OneToOne
@@ -69,7 +69,8 @@ public class User implements UserDetails {
     List<Food>foods=new ArrayList<>();
 
 
-    @ManyToOne( cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ManyToOne( cascade = CascadeType.ALL )
     Community community;
 
     @OneToMany( mappedBy = "user",cascade = CascadeType.ALL)

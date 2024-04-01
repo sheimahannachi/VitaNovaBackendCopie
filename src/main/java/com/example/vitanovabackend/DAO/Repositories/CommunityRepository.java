@@ -16,7 +16,7 @@ public interface CommunityRepository extends JpaRepository<Community,Long> {
 
     Page<Community> findAll(Pageable pageable);
 
-    @Query("select c from Community  c join c.challenges ch group by c.id order by count (ch)")
+    @Query("select c from Community  c left join c.challenges ch where c.status=true group by c.id order by count (ch) desc ")
     Page<Community> findAllOrderByCountChallenges(Pageable pageable);
 
 
