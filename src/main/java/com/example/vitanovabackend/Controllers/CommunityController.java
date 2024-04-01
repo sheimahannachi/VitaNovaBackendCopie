@@ -3,6 +3,7 @@ package com.example.vitanovabackend.Controllers;
 import com.example.vitanovabackend.Configuration.ControllerUrls;
 import com.example.vitanovabackend.Configuration.PageanationSize;
 import com.example.vitanovabackend.DAO.Entities.Community;
+import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.Service.CommunityService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -72,6 +74,21 @@ public class CommunityController {
     @GetMapping(ControllerUrls.CommunityUrls.getCommunitiesOrderByChallenger )
     public Page<Community> getCommunitiesOrderByChallenegs(@RequestParam(defaultValue = "0" )int page){
         return service.findAllOrderByChallengesNumber(page,PageanationSize.size);
+    }
+
+    @GetMapping(ControllerUrls.CommunityUrls.fetchTopThree)
+    public List<User> fetchTopThree(@RequestParam long communityId){
+        return service.fetchTopThree(communityId);
+    }
+
+    @PutMapping(ControllerUrls.CommunityUrls.userLeaveCommunity)
+    public boolean userLeaveCommunity(@RequestParam long userId,@RequestParam long communityId){
+        return service.userLeaveCommunity(userId,communityId);
+    }
+
+    @GetMapping(ControllerUrls.CommunityUrls.getCommunityMembers)
+    public List<User> getCommunityMembers(@RequestParam long comunityId){
+        return service.getCommunityMembers(comunityId);
     }
 
 }

@@ -1,6 +1,5 @@
 package com.example.vitanovabackend.Service;
 
-import com.example.vitanovabackend.DAO.Entities.Challenges;
 import com.example.vitanovabackend.DAO.Entities.Communication;
 import com.example.vitanovabackend.DAO.Entities.Community;
 import com.example.vitanovabackend.DAO.Entities.User;
@@ -33,8 +32,10 @@ public class CommunityService implements ICommunityService{
 
         community.setStatus(true);
         community.setCreationDate(LocalDate.now());
+        community.setCreator(creator);
         Community communitySaved =repository.save(community);
         creator.setCommunity(communitySaved);
+        userRepository.save(creator);
         return communitySaved;
     }
 
@@ -112,7 +113,30 @@ public class CommunityService implements ICommunityService{
         return repository.findAllOrderByCountChallenges(pageable);
     }
 
+    @Override
+    public List<User> fetchTopThree(long communityId) {
+        return repository.topThree(communityId,PageRequest.of(0,3));
+    }
 
+    @Override
+    public boolean userLeaveCommunity(long userId, long communityId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if(user==null)
+            return false;
+
+        Community community=repository.findById(communityId).orElse(null);
+        if(community==null)
+            return false;
+        user.setCommunity(null);
+        userRepository.save(user);
+
+        return true;
+    }
+
+    @Override
+    public List<User> getCommunityMembers(long comunityId) {
+        return repository.getCommunityMembers(comunityId);
+    }
 
 
 }

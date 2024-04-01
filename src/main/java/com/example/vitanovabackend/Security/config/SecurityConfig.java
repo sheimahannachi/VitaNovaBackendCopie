@@ -77,12 +77,17 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "/Product/addLike/{idPr}",
                         //firas
                         ControllerUrls.CommunityUrls.getCommunitiesOrderByChallenger,
-                        ControllerUrls.CommunityUrls.addCommunity,
+                        ControllerUrls.CommunityUrls.addCommunity+"**",
                         ControllerUrls.ChallengesUrl.FindAllActiveChallenge,
                         ControllerUrls.CommunityUrls.UpdateCommunity,
                         ControllerUrls.CommunityUrls.FindAllCommunity,
                         ControllerUrls.CommunicationUrl.getCommunicationByCommunity,
                         ControllerUrls.CommunityUrls.DeleteCommunity,
+                        ControllerUrls.CommunityUrls.FindCommunity,
+                        ControllerUrls.CommunityUrls.fetchTopThree,
+                        ControllerUrls.CommunityUrls.userLeaveCommunity,
+                        ControllerUrls.ChallengesUrl.AddChallenge,
+                        ControllerUrls.CommunityUrls.getCommunityMembers,
                         "/ws/**").permitAll()
 
 

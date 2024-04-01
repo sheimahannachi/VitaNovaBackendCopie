@@ -16,7 +16,9 @@ public interface CommunicationRepository extends JpaRepository<Communication,Lon
 
     List<Communication> findBySenderAndReciever(User sender, User reciever);
 
-    Page<Communication> findAllByCommunity(Community community, Pageable pageable);
+    Page<Communication> findAllByCommunityOrderByIdDesc(Community community, Pageable pageable);
 
     List<Communication>findByCommunity(Community community);
+
+    long countByCommunity(Community community);
 }
