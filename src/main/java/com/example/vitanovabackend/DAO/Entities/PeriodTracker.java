@@ -49,7 +49,7 @@ public class PeriodTracker {
     User user;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "periodTracker")
-    List<WorkoutProgram> workoutPrograms = new ArrayList<>();
+    List<Exercise> exercises = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "periodTracker")
     List<Food> foods = new ArrayList<>();

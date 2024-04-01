@@ -1,12 +1,8 @@
 package com.example.vitanovabackend.Service;
 
-import com.example.vitanovabackend.DAO.Entities.PeriodTracker;
-import com.example.vitanovabackend.DAO.Entities.SymptomRating;
-import com.example.vitanovabackend.DAO.Entities.User;
-import com.example.vitanovabackend.DAO.Repositories.PeriodTrackerRepository;
+import com.example.vitanovabackend.DAO.Entities.*;
+import com.example.vitanovabackend.DAO.Repositories.*;
 
-import com.example.vitanovabackend.DAO.Repositories.SymptomRatingRepository;
-import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -23,6 +19,8 @@ import java.util.stream.Collectors;
 public class PeriodTrackerService implements IPeriodTrackerService {
     PeriodTrackerRepository periodTrackerRepository;
     UserRepository userRepository;
+    ExerciseRepository exerciseRepository ;
+    FoodRepository foodRepository;
     private SymptomRatingRepository symptomRatingRepository;
 
     @Override
@@ -250,6 +248,14 @@ public class PeriodTrackerService implements IPeriodTrackerService {
         List<SymptomRating> symptomRatings = periodTracker.getSymptomRatings();
 
         return symptomRatings;
+    }
+    public List<Exercise> getPeriodExercises() {
+        return exerciseRepository.findAllByIntensity(Intensity.LOW);
+    }
+    public List<Food> getPeriodFood() {
+        return foodRepository.findByVitaminCGreaterThanAndVitaminB6GreaterThanAndCalciumGreaterThanAndVitaminEGreaterThan(
+                0.1, 0.1, 0.1, 0.1
+        );
     }
 }
 

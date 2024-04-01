@@ -1,10 +1,9 @@
 package com.example.vitanovabackend.Controllers;
 
-import com.example.vitanovabackend.DAO.Entities.PeriodTracker;
-import com.example.vitanovabackend.DAO.Entities.SymptomRating;
-import com.example.vitanovabackend.DAO.Entities.User;
+import com.example.vitanovabackend.DAO.Entities.*;
 import com.example.vitanovabackend.Service.IPeriodTrackerService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -96,5 +95,15 @@ public class PeriodTrackerController {
     @GetMapping("/getSymptomsAndRatingsForPeriod/{idPeriod}")
     public List<SymptomRating> getSymptomsAndRatingsForPeriod(@PathVariable long idPeriod) {
         return iPeriodTrackerService.getSymptomsAndRatingsForPeriod(idPeriod);
+    }
+
+    @GetMapping("/exercises")
+    public List<Exercise> getPeriodExercises() {
+        return iPeriodTrackerService.getPeriodExercises();
+    }
+
+    @GetMapping("/period-food")
+    public List<Food> getPeriodFood() {
+        return iPeriodTrackerService.getPeriodFood();
     }
 }

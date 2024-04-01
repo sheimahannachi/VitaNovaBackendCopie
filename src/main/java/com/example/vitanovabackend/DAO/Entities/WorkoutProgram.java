@@ -34,7 +34,6 @@ public class WorkoutProgram {
     List<Exercise>exercises=new ArrayList<>();
     @ManyToOne
     PersonalGoals personalGoal;
-    @ManyToOne
-    PeriodTracker periodTracker;
+
 
 }

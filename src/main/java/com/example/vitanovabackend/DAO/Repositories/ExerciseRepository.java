@@ -2,6 +2,7 @@ package com.example.vitanovabackend.DAO.Repositories;
 
 
 import com.example.vitanovabackend.DAO.Entities.Exercise;
+import com.example.vitanovabackend.DAO.Entities.Intensity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,4 +25,5 @@ public interface ExerciseRepository extends JpaRepository<Exercise,Long> {
     List<Exercise> findByBodypart(String bodyParts);
 
     List<Exercise> findByTitle(String searchText);
+    List<Exercise> findAllByIntensity(Intensity LOW);
 }

@@ -1,9 +1,6 @@
 package com.example.vitanovabackend.Service;
 
-import com.example.vitanovabackend.DAO.Entities.PeriodTracker;
-
-import com.example.vitanovabackend.DAO.Entities.SymptomRating;
-import com.example.vitanovabackend.DAO.Entities.User;
+import com.example.vitanovabackend.DAO.Entities.*;
 
 import java.time.LocalDate;
 
@@ -25,7 +22,7 @@ public interface IPeriodTrackerService {
     List<PeriodTracker> getNonArchivedPeriodTrackers();
     PeriodTracker getPeriodTrackerById (long idPeriod);
     List<SymptomRating> getSymptomsAndRatingsForPeriod(long periodId);
-
-
+     List<Exercise> getPeriodExercises();
+    List<Food> getPeriodFood();
 }
 

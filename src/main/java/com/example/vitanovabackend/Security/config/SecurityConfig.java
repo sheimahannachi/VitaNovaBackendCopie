@@ -48,7 +48,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                 .cors() // Enable CORS support
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/login","/api/generateToken","/api/getuserfromtoken","/api/sendEmail","/api/reset-password","RestController/GetActiveExercise","RestController/GetExercise").permitAll()
+                .requestMatchers("/api/login","/api/generateToken","/api/getuserfromtoken","/api/sendEmail","/api/reset-password","RestController/GetActiveExercise","RestController/GetExercise","/PeriodTracker/AddPeriodInformation","/PeriodTracker/UpdatePeriodinformation","/PeriodTracker/deletePeriodinformation","/PeriodTracker/getPeriodTracker","/PeriodTracker/getPeriodTrackerById/{idPeriod}","/PeriodTracker/archivePeriod","/PeriodTracker/ArchivedPeriods","/PeriodTracker/nonArchivedPeriodTrackers","/PeriodTracker/periodNotNull","/PeriodTracker/calculate-cycle-phase","/PeriodTracker/{idPeriod}/next-period-date","/PeriodTracker/{idPeriod}/ovulation-date","/PeriodTracker/getSymptomsAndRatingsForPeriod/{idPeriod}","/PeriodTracker/exercises","PeriodTracker/period-food").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**").authenticated()
                 .and()

@@ -14,4 +14,6 @@ import java.util.List;
 public interface FoodRepository extends JpaRepository<Food,Long> {
     @Query("SELECT f FROM Food f WHERE f.archive = false")
     Page<Food> findActiveFoods(Pageable pageable) ;
-}
+
+    List<Food> findByVitaminCGreaterThanAndVitaminB6GreaterThanAndCalciumGreaterThanAndVitaminEGreaterThan(
+            double vitaminC, double vitaminB6, double calcium, double vitaminE);}
