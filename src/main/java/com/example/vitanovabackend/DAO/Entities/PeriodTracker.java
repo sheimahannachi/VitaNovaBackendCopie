@@ -1,10 +1,9 @@
 package com.example.vitanovabackend.DAO.Entities;
-
-
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,9 @@ public class PeriodTracker {
     private Integer CycleLength;
 
     @ElementCollection
-    private List<String> symptoms = new ArrayList<>();
+    @CollectionTable(name = "PeriodTracker_SymptomRating", joinColumns = @JoinColumn(name = "period_id"))
+    @OneToMany(cascade = CascadeType.PERSIST) // Cascade persist operation
+    private List<SymptomRating> symptomRatings = new ArrayList<>();
 
     @Column(name = "mood")
     private String mood ;
@@ -35,6 +36,10 @@ public class PeriodTracker {
     private Boolean archive=false;
     @Column(name = "cyclePhase")
     private String cyclePhase;
+    @Column(name = "medications")
+    private String medications;
+
+
 
 
 
@@ -48,7 +53,6 @@ public class PeriodTracker {
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "periodTracker")
     List<Food> foods = new ArrayList<>();
-
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "periodTracker")
     List<Notification> notifications = new ArrayList<>();

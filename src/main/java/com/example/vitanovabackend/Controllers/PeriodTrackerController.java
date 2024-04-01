@@ -1,6 +1,7 @@
 package com.example.vitanovabackend.Controllers;
 
 import com.example.vitanovabackend.DAO.Entities.PeriodTracker;
+import com.example.vitanovabackend.DAO.Entities.SymptomRating;
 import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.Service.IPeriodTrackerService;
 import lombok.AllArgsConstructor;
@@ -60,15 +61,40 @@ public class PeriodTrackerController {
     public String calculateCyclePhase(@RequestBody PeriodTracker periodTracker) {
         return iPeriodTrackerService.calculateCyclePhase(periodTracker);
     }
-    @PostMapping("/calculate-next-period-date")
-    public ResponseEntity<String> calculateNextPeriodDate(@RequestBody PeriodTracker periodTracker) {
+    @GetMapping("/{idPeriod}/next-period-date")
+    public ResponseEntity<LocalDate> getNextPeriodDate(@PathVariable long idPeriod) {
+        // Retrieve PeriodTracker entity by ID
+        PeriodTracker periodTracker = iPeriodTrackerService.getPeriodTrackerById(idPeriod);
+        if (periodTracker == null) {
+            // Return 404 Not Found if PeriodTracker entity is not found
+            return ResponseEntity.notFound().build();
+        }
+
+        // Calculate the next period date
         LocalDate nextPeriodDate = iPeriodTrackerService.calculateNextPeriodDate(periodTracker);
-        return ResponseEntity.ok("Next period date: " + nextPeriodDate.toString());
-    }
-    @PostMapping("/calculate-ovulation-date")
-    public ResponseEntity<String> calculateOvulationDate(@RequestBody PeriodTracker periodTracker) {
-        LocalDate ovulationDate = iPeriodTrackerService.calculateOvulationDate(periodTracker);
-        return ResponseEntity.ok("Ovulation date: " + ovulationDate.toString());
+
+        // Return the next period date in the response body
+        return ResponseEntity.ok(nextPeriodDate);
     }
 
+
+
+    @GetMapping("/{idPeriod}/ovulation-date")
+    public ResponseEntity<LocalDate> calculateOvulationDate(@PathVariable Long idPeriod) {
+        // Fetch PeriodTracker from the database
+        PeriodTracker periodTracker = iPeriodTrackerService.getPeriodTrackerById(idPeriod);
+        if (periodTracker == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Calculate ovulation date
+        LocalDate ovulationDate = iPeriodTrackerService.calculateOvulationDate(periodTracker);
+
+        return ResponseEntity.ok(ovulationDate);
+    }
+
+    @GetMapping("/getSymptomsAndRatingsForPeriod/{idPeriod}")
+    public List<SymptomRating> getSymptomsAndRatingsForPeriod(@PathVariable long idPeriod) {
+        return iPeriodTrackerService.getSymptomsAndRatingsForPeriod(idPeriod);
+    }
 }
