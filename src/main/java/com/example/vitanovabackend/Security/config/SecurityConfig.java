@@ -92,10 +92,11 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "/ws/**").permitAll()
 
 
+
                 .and()
-                .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**").authenticated()
+                .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**","/api/user/admin/UpdateUser").authenticated()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/auth/admin/**").authenticated()
+                .authorizeHttpRequests().requestMatchers("/api/user/admin/**").hasRole("ADMIN")
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -28,9 +28,6 @@ public class UserService implements IUserService {
     }
 
 
-
-
-
     @Override
     public List<User> SearchByNameAndLastName(String name, String LastName){
         return userRepository.findAllByFirstNameAndLastName(name,LastName);
@@ -94,8 +91,15 @@ return userRepository.save(user);
     }
 
     @Override
+    public User ResetPasswordPhone(String Phone, String password) {
+        User user = userRepository.findByPhone(Phone);
+        user.setPassword(passwordEncoder.encode(password));
+        return userRepository.save(user);
+
+    }
+
+    @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Retrieve user details from the repository based on the email
         User user = userRepository.findByUsername(username);
 
         if (user == null) {

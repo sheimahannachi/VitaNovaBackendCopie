@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.Set;
 @Getter
@@ -28,6 +29,7 @@ public class SignupRequest {
     private String picture;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String dateOfBirth;
+    private String phone;
 
     public void setGender(Gender gender) {
         this.gender = gender;

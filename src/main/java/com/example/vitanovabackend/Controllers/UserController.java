@@ -6,7 +6,9 @@ import com.example.vitanovabackend.Service.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,12 +29,11 @@ public class UserController {
         return iUserService.AddUser(user);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin("**")
     @PutMapping("/admin/UpdateUser")
     public User updateUser(@RequestBody User user) {
         return iUserService.updateUser(user);
     }
-
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/admin/AllUsers")
     public List<User> GetUsers() {
@@ -45,13 +46,17 @@ public class UserController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @DeleteMapping("admin/ActivateUser/{id}")
+    @DeleteMapping( "admin/ActivateUser/{id}")
     public void ActivateUser(@PathVariable("id") long id){
         iUserService.ActivateUser(id);
     }
 
 
+@GetMapping("/GetUserByUsername")
+    public User GetUserUsername(@PathParam("username") String username){
 
+        return iUserService.loadUserByUsername(username);
+}
 
 
 

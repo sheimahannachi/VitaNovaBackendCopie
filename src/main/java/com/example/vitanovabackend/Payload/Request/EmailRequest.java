@@ -1,17 +1,21 @@
 package com.example.vitanovabackend.Payload.Request;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+
 public class EmailRequest {
     private String to;
     private String subject;
     private String text;
-
-    // Constructors, getters, and setters
+    private byte[] attachmentData;
+    private String attachmentFilename;
+    private String attachmentPath;
 
     public EmailRequest() {
     }
