@@ -16,12 +16,13 @@ public interface ExerciseRepository extends JpaRepository<Exercise,Long> {
 
     @Query("SELECT e FROM Exercise e WHERE e.archived = false")
     Page<Exercise> findActiveExercises(Pageable pageable);
-    public List<Exercise> getExercisesByBodypartAndIntensity(String bodyPart,String intensity) ;
+    Page<Exercise> findByBodypartAndTitle(String bodyParts, String searchText, Pageable pageable);
 
-    public List<Exercise> getExercisesByTypeExAndIntensity(String typeEx,String intensity) ;
-    List<Exercise> findByBodypartAndTitle(String bodyParts, String searchText);
+    Page<Exercise> findByBodypart(String bodypart, Pageable pageable);
 
-    List<Exercise> findByBodypart(String bodyParts);
+    Page<Exercise> findByTitle(String searchText,Pageable pageable);
+    @Query("SELECT e FROM Exercise e LEFT JOIN UserRating ur ON e.id = ur.exercise.id GROUP BY e.id ORDER BY AVG(ur.rate) DESC")
+    Page<Exercise> findExercisesOrderByAverageRating(Pageable pageable);
 
-    List<Exercise> findByTitle(String searchText);
 }
+

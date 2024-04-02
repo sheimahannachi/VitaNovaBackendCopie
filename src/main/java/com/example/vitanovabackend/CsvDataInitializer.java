@@ -4,6 +4,8 @@ import com.example.vitanovabackend.DAO.Entities.InitializationFlag;
 import com.example.vitanovabackend.DAO.Repositories.InitializationFlagRepository;
 import com.example.vitanovabackend.Service.Workout;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 public class CsvDataInitializer implements ApplicationRunner {
     private final Workout exerciseCsvService;
     private final InitializationFlagRepository flagRepository;
-
     @Autowired
     public CsvDataInitializer(Workout exerciseCsvService, InitializationFlagRepository flagRepository) {
         this.exerciseCsvService = exerciseCsvService;

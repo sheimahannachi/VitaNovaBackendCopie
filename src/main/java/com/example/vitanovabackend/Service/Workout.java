@@ -277,18 +277,31 @@ public class Workout implements Iworkout {
                 // Handle IOException
             }
         }
-    public List<Exercise> getExercises(String bodyParts, String searchText) {
+   /* public Page<Exercise> searchExercises(String bodyParts, String searchText,int page,int size) {
+        /*Pageable pageable = PageRequest.of(page, size);
         if (bodyParts == null && searchText == null) {
-            return exerciseRepository.findAll();
+            return exerciseRepository.findAll(pageable);
         } else if (bodyParts != null && searchText != null) {
-            return exerciseRepository.findByBodypartAndTitle(bodyParts, searchText);
+            return exerciseRepository.findByBodypartAndTitle(bodyParts, searchText,pageable);
         } else if (bodyParts != null) {
-            return exerciseRepository.findByBodypart(bodyParts);
+            return exerciseRepository.findByBodypart(bodyParts,pageable);
         } else {
-            return exerciseRepository.findByTitle(searchText);
+            return exerciseRepository.findByTitle(searchText, pageable);
         }
+    }*/
+
+    public Page<Exercise> getFilteredExercises(int page, int size, List<String> bodyPart) {
+        Pageable pageable = PageRequest.of(page, size);
+        // Combine multiple body parts into one string, for example, separated by commas
+        String combinedBodyParts = String.join(",", bodyPart);
+        return exerciseRepository.findByBodypart(combinedBodyParts, pageable);
+    }
+    public Page<Exercise> findExercisesOrderByAverageRating(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return exerciseRepository.findExercisesOrderByAverageRating(pageable);
     }
 
     }
+
 
 

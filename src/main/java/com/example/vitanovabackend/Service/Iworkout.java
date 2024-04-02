@@ -4,6 +4,7 @@ import com.example.vitanovabackend.DAO.Entities.Exercise;
 import com.example.vitanovabackend.DAO.Entities.UserRating;
 import com.example.vitanovabackend.DAO.Entities.WorkoutProgram;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -26,5 +27,7 @@ public interface Iworkout {
     public UserRating saveUserExerciseRating(UserRating userExerciseRating,long idExercise);
     public Exercise getExerciseById(long id);
     public double calculateAverageRating(long exerciseId);
-    public List<Exercise> getExercises(String bodyParts, String searchText);
+ //   public  Page<Exercise> searchExercises(String bodyParts, String searchText,int page,int size);
+ public Page<Exercise> getFilteredExercises(int page, int size, List<String> bodyPart);
+ public Page<Exercise> findExercisesOrderByAverageRating(int page, int size);
 }
