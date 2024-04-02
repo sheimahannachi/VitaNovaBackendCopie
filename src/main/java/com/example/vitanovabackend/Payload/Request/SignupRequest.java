@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.Set;
 @Getter

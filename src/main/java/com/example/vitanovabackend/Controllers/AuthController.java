@@ -1,6 +1,7 @@
 package com.example.vitanovabackend.Controllers;
 
 import com.example.vitanovabackend.DAO.Entities.ERole;
+import com.example.vitanovabackend.DAO.Entities.Gender;
 import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import com.example.vitanovabackend.Payload.Request.LoginRequest;
@@ -9,6 +10,7 @@ import com.example.vitanovabackend.Payload.Request.SignupRequest;
 import com.example.vitanovabackend.Payload.Response.MessageResponse;
 import com.example.vitanovabackend.Payload.Response.UserInfoResponse;
 import com.example.vitanovabackend.Security.services.UserDetailsImpl;
+import com.example.vitanovabackend.Service.FTPUploader;
 import com.example.vitanovabackend.Service.IUserService;
 import com.example.vitanovabackend.Service.JwtService;
 import jakarta.servlet.http.Cookie;
@@ -29,7 +31,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 
@@ -95,40 +99,63 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+    public ResponseEntity<?> registerUser(@RequestParam String username,
+                                          @RequestParam String email,
+                                          @RequestParam String password,
+                                          @RequestParam String role,
+                                          @RequestParam Gender gender,
+                                          @RequestParam int height,
+                                          @RequestParam int weight,
+                                          @RequestParam String dateOfBirth,
+                                          @RequestParam String firstName,
+                                          @RequestParam String lastName,
+                                          @RequestParam boolean verified,
+                                          @RequestParam String phone,
+                                          @RequestPart String picture) throws IOException {
+
+        if (userRepository.existsByUsername(username)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(email)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
         }
+        FTPUploader ftpUploader = new FTPUploader();
 
-        // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
-user.setDateOfBirth(LocalDate.parse(signUpRequest.getDateOfBirth()));
+        System.out.println("connectivity : " + ftpUploader.checkFTPConnectivity() );
 
-user.setGender(signUpRequest.getGender());
-user.setLastName(signUpRequest.getLastName());
-user.setFirstName(signUpRequest.getFirstName());
-user.setPicture(signUpRequest.getPicture());
-user.setWeight(signUpRequest.getWeight());
-user.setHeight(signUpRequest.getHeight());
-user.setPhone(signUpRequest.getPhone());
-        String strRoles = signUpRequest.getRole();
-        System.out.println("strroles " +strRoles);
-        if(strRoles.equals(ERole.ADMIN.toString()))user.setRole(ERole.ADMIN);
-        else if(strRoles.equals(ERole.USER.toString()))user.setRole(ERole.USER);
-        System.out.println(strRoles.equals(ERole.ADMIN.toString()));
-        System.out.println(user.getPicture()+user.getFirstName()+user.getLastName());
-        System.out.println("userRole : " + user.getRole());
-        System.out.println("roleadmin " + ERole.ADMIN.toString());
+        User user = new User(username,
+                email,
+                encoder.encode(password));
+
+
+        String dateOfBirthString = dateOfBirth.substring(0, 10);
+        dateOfBirth = String.valueOf(LocalDate.parse(dateOfBirthString));
+        user.setDateOfBirth(LocalDate.parse(dateOfBirth));
+        user.setGender(gender);
+        user.setLastName(lastName);
+        user.setFirstName(firstName);
+
+        if (picture != null) {
+
+            user.setPicture(picture);
+            ftpUploader.Upload(picture);
+
+           // ftpUploader.uploadImage(pictureBytes);
+        }
+
+        user.setWeight(weight);
+        user.setHeight(height);
+        user.setPhone(phone);
+
+        ERole userRole = ERole.valueOf(role.toUpperCase());
+        user.setRole(userRole);
+
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
 
     @GetMapping("/signout")
     public ResponseEntity<?> logoutUser(HttpServletRequest request, HttpServletResponse response) {

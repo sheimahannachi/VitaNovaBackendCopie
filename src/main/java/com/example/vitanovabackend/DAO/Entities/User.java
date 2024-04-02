@@ -43,7 +43,7 @@ public class User implements UserDetails {
     private String password;
     @Column(name = "archive")
     private Boolean archive=false;
-    @Column(name = "picture")
+
     private String picture;
     @Column(name = "verified")
     private Boolean verified=false;
