@@ -6,15 +6,16 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.Base64;
 import java.util.Optional;
 
 @Service
 public class FTPUploader {
-    final String server = "192.168.208.22";
+    final String server = "192.168.218.133";
     final int port = 21;
-  final  String username = "ftpuser";
-   final String password = "hammeda";
-    final String remoteDirPath = "/home/ftpuser/images";
+    final String username = "ftpuser";
+    final String password = "hammeda";
+    final String remoteDirPath = "/home/ftpuser/uploads";
     final String LocalDirPath = "C:\\Users\\hamad\\OneDrive\\Desktop\\FTPFOLDER";
 
 
@@ -34,52 +35,92 @@ public class FTPUploader {
             }
         }
     }
-    public void Upload(String imageFileName){
+
+
+    public boolean uploadImageToFTP(File imageFile) {
         FTPClient ftpClient = new FTPClient();
+        InputStream inputStream = null;
         try {
-            // Connect and login to the FTP server
-            ftpClient.connect(server);
-            ftpClient.login(username, password);
-            System.out.println(ftpClient.printWorkingDirectory());
-            // Change working directory
-            ftpClient.changeWorkingDirectory(remoteDirPath);
-
-            // Upload a file
-            InputStream inputStream = new FileInputStream(LocalDirPath+"//"+imageFileName);
-            ftpClient.storeFile(imageFileName, inputStream);
-
-            // List the files in the current directory
-            FTPFile[] files = ftpClient.listFiles();
-            for (FTPFile file : files) {
-                System.out.println("File: " + file.getName());
+            inputStream = new FileInputStream(imageFile);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
             }
+            byte[] imageBytes = outputStream.toByteArray();
+            String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            // Upload the encoded image as a text file to FTP server
+            ftpClient.connect(server, port);
+            if (ftpClient.login(username, password)) {
+                ByteArrayInputStream textStream = new ByteArrayInputStream(encodedImage.getBytes());
+                ftpClient.storeFile(remoteDirPath + "/" + imageFile.getName() + ".txt", textStream);
+                textStream.close();
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             try {
-                // Logout and disconnect from the FTP server
-                ftpClient.logout();
+                if (inputStream != null) {
+                    inputStream.close();
+                }
                 ftpClient.disconnect();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+        return false;
     }
 
 
+    public Optional<File> downloadImageFromFTP(String filename) {
+                FTPClient ftpClient = new FTPClient();
+                OutputStream outputStream = null;
+                try {
+                    ftpClient.connect(server, port);
+                    if (ftpClient.login(username, password)) {
+                        outputStream = new FileOutputStream(LocalDirPath + "/" + filename+".txt");
+                        ftpClient.retrieveFile(remoteDirPath + "/" + filename + ".txt", outputStream);
+                        System.out.println("downloading file : "+ remoteDirPath+"/"+filename+".txt");
+                        return Optional.of(new File(LocalDirPath + "/" + filename+".txt"));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (outputStream != null) {
+                            outputStream.close();
+                        }
+                        ftpClient.disconnect();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return Optional.empty();
+            }
 
-    public InputStream downloadFile(String remoteFileName) throws IOException {
-        FTPClient ftpClient = new FTPClient();
-        ftpClient.connect(server, port);
-        ftpClient.login(username, password);
-        ftpClient.changeWorkingDirectory(remoteDirPath);
 
-        FTPFile[] files = ftpClient.listFiles(remoteFileName);
-        if (files.length == 0) {
-            throw new FileNotFoundException("File not found: " + remoteDirPath+"/"+remoteFileName);
+
+            public byte[] decodeImageFromFile(File textFile) {
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader(textFile));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        stringBuilder.append(line);
+                    }
+                    reader.close();
+                    byte[] decodedBytes = Base64.getDecoder().decode(stringBuilder.toString());
+                    return decodedBytes;
+                } catch (IOException e) {
+                    e.printStackTrace();
         }
-        return ftpClient.retrieveFileStream(remoteFileName);
+        return null;
     }
-    }
+}
+
+
+
 
