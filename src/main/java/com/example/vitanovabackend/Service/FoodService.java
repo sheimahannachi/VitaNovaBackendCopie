@@ -207,7 +207,7 @@ public class FoodService implements IFoodService {
                 food.setVitaminC(getDoubleValue(jsonObject, "Vitamin C"));
                 food.setVitaminE(getDoubleValue(jsonObject, "Vitamin E"));
                 food.setCalcium(getDoubleValue(jsonObject, "Calcium"));
-
+                food.setFoodPic((String) jsonObject.get("FoodPic"));
                 // Similarly, parse other attributes
 
                 // Assuming archive is a boolean attribute in your Food entity
