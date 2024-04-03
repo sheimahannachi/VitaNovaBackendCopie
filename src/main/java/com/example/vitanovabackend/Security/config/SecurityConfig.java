@@ -50,7 +50,17 @@ public class SecurityConfig implements WebSecurityConfigurer {
                 .and()
                 .authorizeHttpRequests()
 
-                .requestMatchers("/api/login","/api/generateToken","/api/getuserfromtoken","/api/sendEmail","/api/reset-password","RestController/GetActiveExercise","RestController/GetExercise",
+                .requestMatchers("/api/login","/api/generateToken","/api/getuserfromtoken","/api/sendEmail","/api/reset-password",
+                        //yoser
+                        "RestController/GetActiveExercise",
+                        "RestController/GetExercise",
+                        "RestController/Rating/{exerciseId}",
+                        "RestController/saveUserExerciseRating/{idEx}",
+                        "RestController/ArchiverExercise/{idex}",
+                        "RestController/UpdateExercise/{id}",
+                        "RestController/addExercise",
+                        "RestController/searchEx",
+
                        //sheima
                         "/PeriodTracker/AddPeriodInformation",
                         "/PeriodTracker/UpdatePeriodinformation",
