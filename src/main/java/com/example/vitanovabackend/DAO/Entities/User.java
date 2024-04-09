@@ -95,6 +95,10 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    @OneToMany
+    List<IPAdresses> ipAdresses= new ArrayList<>();
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

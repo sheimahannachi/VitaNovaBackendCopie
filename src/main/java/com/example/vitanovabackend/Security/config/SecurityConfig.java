@@ -50,7 +50,11 @@ public class SecurityConfig implements WebSecurityConfigurer {
                 .and()
                 .authorizeHttpRequests()
 
-                .requestMatchers("/api/login","/api/generateToken","/api/getuserfromtoken","/api/sendEmail","/api/reset-password",
+                .requestMatchers(
+                        ControllerUrls.UserUrls.AuthLoginUrl, ControllerUrls.UserUrls.AuthSignupUrl,
+                        ControllerUrls.UserUrls.AuthResetPasswordE,ControllerUrls.UserUrls.AuthResetPasswordE,
+                        "/api/checkUsername","/api/checkEmail","/api/user/GetUserByUsername"
+                        ,"/api/getuserfromtoken","/api/sendEmail","/api/misc/uploadImage","api/misc/takePic","/api/sendEmailWithAttachment",
                         //yoser
                         "RestController/GetActiveExercise",
                         "RestController/GetExercise",

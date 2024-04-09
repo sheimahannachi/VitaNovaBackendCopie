@@ -1,8 +1,11 @@
 package com.example.vitanovabackend.Service;
 
+import com.example.vitanovabackend.DAO.Entities.IPAdresses;
 import com.example.vitanovabackend.DAO.Entities.User;
+import com.example.vitanovabackend.DAO.Repositories.IpAdressesRepository;
 import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +17,11 @@ import java.util.List;
 @AllArgsConstructor
 public class UserService implements IUserService {
     private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public User AddUser(User user) {
@@ -107,6 +114,9 @@ return userRepository.save(user);
         }
         return user;
     }
+
+
+
 
 
     }
