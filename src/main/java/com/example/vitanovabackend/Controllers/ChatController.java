@@ -31,7 +31,7 @@ public class ChatController {
         log.info(chatMessage.getCommunity().getId()+"");
 
 
-        service.addCommunication(chatMessage);
+        chatMessage=service.addCommunication(chatMessage);
         return chatMessage;
     }
 

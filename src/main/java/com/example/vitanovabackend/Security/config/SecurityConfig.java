@@ -99,6 +99,9 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         ControllerUrls.CommunityUrls.userLeaveCommunity,
                         ControllerUrls.ChallengesUrl.AddChallenge,
                         ControllerUrls.CommunityUrls.getCommunityMembers,
+                        ControllerUrls.CommunicationUrl.deleteComunicationUrl,
+                        ControllerUrls.CommunicationUrl.updateCommunication,
+
 
                         "/ws/**").permitAll()
 

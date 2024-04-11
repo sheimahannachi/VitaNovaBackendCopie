@@ -20,7 +20,9 @@ public interface ICommunicationService {
 
     List<Communication> findallCommunications();
 
-    List<Communication> findBySenderAndReciever(User sender, User reciever);
+    Page<Communication> findBySenderAndReciever(long sender, long reciever, int page, int size);
     Page<Communication> findByCommunity(long communityId, int page, int size);
+
+    boolean setSeenToComunication(long comunityId,long senderId);
 
 }

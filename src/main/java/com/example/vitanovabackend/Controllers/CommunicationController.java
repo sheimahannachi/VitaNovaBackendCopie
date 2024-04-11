@@ -27,12 +27,12 @@ public class CommunicationController {
         return service.addCommunication(communication);
     }
 
-    @PutMapping("updateCommunication/{id}")
+    @PutMapping(ControllerUrls.CommunicationUrl.updateCommunication)
     public Communication updateCommunication (@PathVariable long id ,@RequestBody Communication communication){
         return service.updateCommunication(id,communication);
     }
 
-    @DeleteMapping("deleteCommunication/{id}")
+    @DeleteMapping(ControllerUrls.CommunicationUrl.deleteComunicationUrl)
     public void deleteCommunication(@PathVariable long id){
         service.deleteCommunication(id);
     }
@@ -47,15 +47,21 @@ public class CommunicationController {
         return service.findallCommunications();
     }
 
-    @GetMapping("findBySenderAndReciever")
-    public List<Communication> findBySenderAndReciever(@RequestBody User sender,@RequestBody User reciever){
-        return service.findBySenderAndReciever(sender,reciever);
+    @GetMapping(ControllerUrls.CommunicationUrl.getComunicationbySenderAndReciever)
+    public Page<Communication> findBySenderAndReciever(@RequestParam long sender,@RequestParam long reciever,@RequestParam(defaultValue = "0") int page){
+        return service.findBySenderAndReciever(sender,reciever,page,PageanationSize.size);
     }
 
     @GetMapping(ControllerUrls.CommunicationUrl.getCommunicationByCommunity)
     public Page<Communication> getCommunicationByCommunity(@RequestParam long communityId,@RequestParam(defaultValue = "0")int page)
     {
         return service.findByCommunity(communityId,page, PageanationSize.size);
+    }
+
+
+    @PutMapping(ControllerUrls.CommunicationUrl.seenComunication)
+    public boolean setSeenToComunication(@RequestParam long comunityId,@RequestParam long senderId){
+        return service.setSeenToComunication(comunityId,senderId);
     }
 
 
