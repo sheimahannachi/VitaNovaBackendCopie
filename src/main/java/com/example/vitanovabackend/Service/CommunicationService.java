@@ -108,18 +108,32 @@ public class CommunicationService implements  ICommunicationService{
     }
 
     @Override
-    public boolean setSeenToComunication(long comunityId,long senderId) {
+    public boolean setSeenToComunicationComunity(long comunityId, long senderId) {
         Community community=communityRepository.findById(comunityId).orElse(null);
         if(community==null)
             return false;
         List<Communication> coms=new ArrayList<>();
         for(Communication c:repository.getCommunicationByCommunityIdAndSeenIsFalse(comunityId)){
-            if(c.getSender().getIdUser()==senderId) {
+            if(c.getSender().getIdUser()!=senderId) {
                 c.setSeen(true);
                 coms.add(c);
             }
         }
         repository.saveAll(coms);
+        return true;
+    }
+
+    @Override
+    public boolean setSeenToComunicationOneToOne(long senderId, long recieverId) {
+        List<Communication> listFound=repository.getCommunicationBySenderIdUserAndRecieverIdUserAndSeenIsFalse(senderId,recieverId);
+        if(listFound==null||listFound.isEmpty()){
+            return false;
+        }
+        for(Communication c : listFound){
+            c.setSeen(true);
+            repository.save(c);
+
+        }
         return true;
     }
 

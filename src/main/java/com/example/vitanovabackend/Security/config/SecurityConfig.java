@@ -101,6 +101,9 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         ControllerUrls.CommunityUrls.getCommunityMembers,
                         ControllerUrls.CommunicationUrl.deleteComunicationUrl,
                         ControllerUrls.CommunicationUrl.updateCommunication,
+                        ControllerUrls.CommunicationUrl.seenComunication+"**",
+                        ControllerUrls.CommunicationUrl.getComunicationbySenderAndReciever,
+                        ControllerUrls.CommunicationUrl.setSeenToCommunicationsOneToOne,
 
 
                         "/ws/**").permitAll()

@@ -27,4 +27,5 @@ public interface CommunicationRepository extends JpaRepository<Communication,Lon
 
     // select c from Communication c join Community q on q.id=c.comunity.id where q.id=?id
     List<Communication>getCommunicationByCommunityIdAndSeenIsFalse(long comunityId);
+    List<Communication>getCommunicationBySenderIdUserAndRecieverIdUserAndSeenIsFalse(long senderId,long revieverId);
 }

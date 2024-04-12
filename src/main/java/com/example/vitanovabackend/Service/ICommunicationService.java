@@ -1,8 +1,6 @@
 package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.Communication;
-import com.example.vitanovabackend.DAO.Entities.Community;
-import com.example.vitanovabackend.DAO.Entities.User;
 import org.springframework.data.domain.Page;
 
 
@@ -23,6 +21,7 @@ public interface ICommunicationService {
     Page<Communication> findBySenderAndReciever(long sender, long reciever, int page, int size);
     Page<Communication> findByCommunity(long communityId, int page, int size);
 
-    boolean setSeenToComunication(long comunityId,long senderId);
+    boolean setSeenToComunicationComunity(long comunityId, long senderId);
+    boolean setSeenToComunicationOneToOne(long senderId, long recieverId);
 
 }

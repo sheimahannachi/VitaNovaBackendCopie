@@ -4,11 +4,10 @@ import com.example.vitanovabackend.Configuration.ControllerUrls;
 import com.example.vitanovabackend.Configuration.PageanationSize;
 import com.example.vitanovabackend.DAO.Entities.Communication;
 
-import com.example.vitanovabackend.DAO.Entities.Community;
-import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.Service.ICommunicationService;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +16,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
+@Slf4j
 public class CommunicationController {
 
     ICommunicationService service;
@@ -61,7 +61,13 @@ public class CommunicationController {
 
     @PutMapping(ControllerUrls.CommunicationUrl.seenComunication)
     public boolean setSeenToComunication(@RequestParam long comunityId,@RequestParam long senderId){
-        return service.setSeenToComunication(comunityId,senderId);
+        log.info(""+comunityId);
+        return service.setSeenToComunicationComunity(comunityId,senderId);
+    }
+
+    @PutMapping(ControllerUrls.CommunicationUrl.setSeenToCommunicationsOneToOne)
+    public boolean setSeenToComunicationOneToOne(@RequestParam long senderId,@RequestParam long recieverId){
+        return service.setSeenToComunicationOneToOne(senderId,recieverId);
     }
 
 
