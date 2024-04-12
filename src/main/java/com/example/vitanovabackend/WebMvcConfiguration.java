@@ -17,7 +17,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     }*/
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/*")
-                .allowedOrigins("https://a65e-197-14-236-90.ngrok-free.app") // Add your ngrok URL here
+                .allowedOrigins("https://9b52-196-203-207-178.ngrok-free.app") // Add your ngrok URL here
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
     }
 }
