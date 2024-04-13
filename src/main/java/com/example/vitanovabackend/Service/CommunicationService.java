@@ -2,7 +2,6 @@ package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.Communication;
 import com.example.vitanovabackend.DAO.Entities.Community;
-import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.DAO.Repositories.CommunicationRepository;
 
 import com.example.vitanovabackend.DAO.Repositories.CommunityRepository;
@@ -13,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -86,8 +87,10 @@ public class CommunicationService implements  ICommunicationService{
     }
 
     @Override
-    public List<Communication> findBySenderAndReciever(User sender, User reciever) {
-        return repository.findBySenderAndReciever(sender,reciever);
+    public Page<Communication> findBySenderAndReciever(long sender, long reciever, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findBySenderAndOrReciever(sender,reciever,pageable);
+
     }
 
     @Override
@@ -102,6 +105,36 @@ public class CommunicationService implements  ICommunicationService{
         Pageable pageable = PageRequest.of(page, size);
         return repository.findAllByCommunityOrderByIdDesc(community,pageable);
 
+    }
+
+    @Override
+    public boolean setSeenToComunicationComunity(long comunityId, long senderId) {
+        Community community=communityRepository.findById(comunityId).orElse(null);
+        if(community==null)
+            return false;
+        List<Communication> coms=new ArrayList<>();
+        for(Communication c:repository.getCommunicationByCommunityIdAndSeenIsFalse(comunityId)){
+            if(c.getSender().getIdUser()!=senderId) {
+                c.setSeen(true);
+                coms.add(c);
+            }
+        }
+        repository.saveAll(coms);
+        return true;
+    }
+
+    @Override
+    public boolean setSeenToComunicationOneToOne(long senderId, long recieverId) {
+        List<Communication> listFound=repository.getCommunicationBySenderIdUserAndRecieverIdUserAndSeenIsFalse(senderId,recieverId);
+        if(listFound==null||listFound.isEmpty()){
+            return false;
+        }
+        for(Communication c : listFound){
+            c.setSeen(true);
+            repository.save(c);
+
+        }
+        return true;
     }
 
 

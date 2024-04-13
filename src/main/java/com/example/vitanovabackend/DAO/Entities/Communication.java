@@ -39,7 +39,7 @@ import java.time.LocalDate;
         @OneToOne
         User reciever;
 
-        @JsonBackReference
+
         @ManyToOne
         Community community;
 

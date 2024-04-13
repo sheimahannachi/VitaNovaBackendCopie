@@ -35,7 +35,12 @@ public   class ControllerUrls {
 
     public static class CommunicationUrl{
         public final static String getCommunicationByCommunity="getCommbyCommunityFirst";
-        public final static String getCommunicationByCommunityMore="getCommbyCommunityMore";
+
+        public final static String deleteComunicationUrl="deleteCommunication/{id}";
+        public final static String updateCommunication="updateCommunication/{id}";
+        public final static String seenComunication="seenComunications";
+        public final static String getComunicationbySenderAndReciever="findBySenderAndReciever";
+        public final static String setSeenToCommunicationsOneToOne="setSeenToComOneToOne";
     }
 
 
