@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -53,6 +54,13 @@ public class FoodController {
     @GetMapping("getFood/{id}")
     public Food getFoodById(@PathVariable("id") long id){
         return iFoodService.getFoodById(id);
+    }
+    @GetMapping("/lookup")
+    public Object lookupBarcode(@RequestParam String upc) {
+        RestTemplate restTemplate = new RestTemplate();
+        String barcodeApiUrl = "https://api.upcitemdb.com";
+        String url = barcodeApiUrl + "/prod/trial/lookup?upc=" + upc;
+        return restTemplate.getForObject(url, Object.class);
     }
     //////////////////////////////////////////////
     @PostMapping("addTracker")
