@@ -49,9 +49,14 @@ public class WorkoutController {
     }
 
     @GetMapping("GetPlan")
-    public List<WorkoutProgram> GetPlan() {
-        return iWorkout.GetPlan();
+    public Page<WorkoutProgram> GetPlan(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10")int size) {
+        return iWorkout.GetPlan(page, size);
     }
+    @GetMapping("getPlan/{id}")
+    public WorkoutProgram GetPlanById(@PathVariable("id") long id){
+        return iWorkout.GetPlanById(id);
+    }
+
     @PostMapping("addExercise")
     public ResponseEntity<Exercise> addExercise(@ModelAttribute  Exercise exercise, @RequestParam("file") MultipartFile imageFile) throws IOException {
         try {

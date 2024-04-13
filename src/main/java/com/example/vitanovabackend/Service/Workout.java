@@ -125,9 +125,12 @@ public class Workout implements Iworkout {
     }
 
     @Override
-    public List<WorkoutProgram> GetPlan() {
-
-        return workoutProgramRepository.findAll();
+    public Page<WorkoutProgram> GetPlan(int page,int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return workoutProgramRepository.findActiveWorkoutPlan(pageable);
+    }
+    public WorkoutProgram GetPlanById(long id){
+        return workoutProgramRepository.findById(id).get();
     }
 
     private String saveFile(MultipartFile file, String directoryName) throws IOException {

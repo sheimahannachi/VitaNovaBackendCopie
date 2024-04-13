@@ -16,7 +16,8 @@ public interface Iworkout {
     public WorkoutProgram UpdatePlan(WorkoutProgram workoutProgram, MultipartFile file) throws IOException ;
     public WorkoutProgram ArchiverPlan(long id);
     public void DeletePlan(WorkoutProgram workoutProgram);
-    public List<WorkoutProgram> GetPlan();
+    public Page<WorkoutProgram> GetPlan(int page,int size);
+    public WorkoutProgram GetPlanById(long id);
     public Exercise addExercise (Exercise exercise, MultipartFile imageFile) throws IOException;
     public Exercise UpdateExercise (Exercise exercise,MultipartFile file) throws IOException;
     public void DeleteExercise (Exercise exercise);
