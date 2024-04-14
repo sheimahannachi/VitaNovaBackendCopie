@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,7 +37,7 @@ public class Workout implements Iworkout {
     ExerciseRepository exerciseRepository;
     UserExerciseRatingRepository userExerciseRatingRepository;
     UserRepository userRepository;
-    public static String uploadDirectory = "C:/xampp/php/htdocs/uploads";
+    public static String uploadDirectory = "C:/xampp/htdocs/uploads";
 
     public WorkoutProgram addPlan(WorkoutProgram workoutProgram, MultipartFile file, String[] selectedExerciseIds) throws IOException {
         // Save the uploaded image
@@ -124,9 +125,12 @@ public class Workout implements Iworkout {
     }
 
     @Override
-    public List<WorkoutProgram> GetPlan() {
-
-        return workoutProgramRepository.findAll();
+    public Page<WorkoutProgram> GetPlan(int page,int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return workoutProgramRepository.findActiveWorkoutPlan(pageable);
+    }
+    public WorkoutProgram GetPlanById(long id){
+        return workoutProgramRepository.findById(id).get();
     }
 
     private String saveFile(MultipartFile file, String directoryName) throws IOException {
@@ -249,46 +253,70 @@ public class Workout implements Iworkout {
 
         return averageRating;
     }
-        public void importExercisesFromCsv() {
-            try {
-                InputStream inputStream = getClass().getResourceAsStream("/exercises (1).csv");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+    public void importExercisesFromCsv() {
+        try {
+            InputStream inputStream = getClass().getResourceAsStream("/exercises (1).csv");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-                CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader());
-                for (CSVRecord csvRecord : csvParser) {
+            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader());
+            for (CSVRecord csvRecord : csvParser) {
+                if (csvRecord.size() >= 10) { // Ensure the row has at least 10 values
                     Exercise exercise = new Exercise();
-                    exercise.setTitle(csvRecord.get("Title")); // Assuming "Name" is a column in the CSV file
+                    exercise.setTitle(csvRecord.get("Title"));
                     exercise.setDescription(csvRecord.get("Desc"));
                     exercise.setArchived(false);
                     exercise.setBodypart(csvRecord.get("BodyPart"));
                     exercise.setTypeEx(csvRecord.get("Type"));
-                    exercise.setReps(csvRecord.get("Reps"));// Assuming "Description" is a column
+                    exercise.setReps(csvRecord.get("Reps"));
                     exercise.setSets(csvRecord.get("Sets"));
-                    String intensityStr = csvRecord.get("Level");
-                    Intensity intensity = Intensity.valueOf(intensityStr.toUpperCase());
-                    exercise.setIntensity(intensity);// Assuming "Description" is a column
+                    exercise.setIntensity(Intensity.valueOf(csvRecord.get("Level").toUpperCase()));
+                    exercise.setPicture(csvRecord.get("Picture"));
                     // Map other fields as needed
 
                     exerciseRepository.save(exercise);
+                } else {
+                    // Handle rows with fewer values than expected
+                    System.err.println("Skipping row with insufficient values: " + csvRecord);
                 }
-
-                csvParser.close();
-            } catch (IOException e) {
-                // Handle IOException
             }
-        }
-    public List<Exercise> getExercises(String bodyParts, String searchText) {
-        if (bodyParts == null && searchText == null) {
-            return exerciseRepository.findAll();
-        } else if (bodyParts != null && searchText != null) {
-            return exerciseRepository.findByBodypartAndTitle(bodyParts, searchText);
-        } else if (bodyParts != null) {
-            return exerciseRepository.findByBodypart(bodyParts);
-        } else {
-            return exerciseRepository.findByTitle(searchText);
+
+            csvParser.close();
+        } catch (IOException e) {
+            // Handle IOException
+            e.printStackTrace();
         }
     }
 
+
+   /* public Page<Exercise> searchExercises(String bodyParts, String searchText,int page,int size) {
+        /*Pageable pageable = PageRequest.of(page, size);
+        if (bodyParts == null && searchText == null) {
+            return exerciseRepository.findAll(pageable);
+        } else if (bodyParts != null && searchText != null) {
+            return exerciseRepository.findByBodypartAndTitle(bodyParts, searchText,pageable);
+        } else if (bodyParts != null) {
+            return exerciseRepository.findByBodypart(bodyParts,pageable);
+        } else {
+            return exerciseRepository.findByTitle(searchText, pageable);
+        }
+    }*/
+
+    public Page<Exercise> getFilteredExercises(int page, int size, List<String> bodyParts) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<Exercise> allExercises = new ArrayList<>();
+        for (String bodyPart : bodyParts) {
+            Page<Exercise> exercisesForBodyPart = exerciseRepository.findByBodypart(bodyPart, pageable);
+            allExercises.addAll(exercisesForBodyPart.getContent());
+        }
+        return new PageImpl<>(allExercises, pageable, allExercises.size());
     }
+
+    public Page<Exercise> findExercisesOrderByAverageRating(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return exerciseRepository.findExercisesOrderByAverageRating(pageable);
+    }
+
+    }
+
 
 

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.apache.catalina.filters.CorsFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,9 +49,14 @@ public class WorkoutController {
     }
 
     @GetMapping("GetPlan")
-    public List<WorkoutProgram> GetPlan() {
-        return iWorkout.GetPlan();
+    public Page<WorkoutProgram> GetPlan(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10")int size) {
+        return iWorkout.GetPlan(page, size);
     }
+    @GetMapping("getPlan/{id}")
+    public WorkoutProgram GetPlanById(@PathVariable("id") long id){
+        return iWorkout.GetPlanById(id);
+    }
+
     @PostMapping("addExercise")
     public ResponseEntity<Exercise> addExercise(@ModelAttribute  Exercise exercise, @RequestParam("file") MultipartFile imageFile) throws IOException {
         try {
@@ -104,10 +110,26 @@ public Exercise getExerciseById(@PathVariable("exerciseId") long id){
     public double calculateAverageRating(@PathVariable("exerciseId") long exerciseId){
         return iWorkout.calculateAverageRating(exerciseId);
     }
-    @GetMapping("searchEx")
-    public List<Exercise> getExercises(@RequestParam(required = false) String bodyPart,@RequestParam(required = false) String searchText)
+   /* @GetMapping("searchEx")
+    public  Page<Exercise> searchExercises(@RequestParam(required = false) String bodyPart, @RequestParam(required = false) String searchText,@RequestParam int page,@RequestParam int size)
     {
-        return iWorkout.getExercises(bodyPart, searchText);
+        return iWorkout.searchExercises(bodyPart,searchText,page,size);
+    }*/
+    @GetMapping("/filtered")
+    public ResponseEntity<Page<Exercise>> getFilteredExercises(
+            @RequestParam( defaultValue = "0") int page,
+            @RequestParam( defaultValue = "10") int size,
+            @RequestParam List<String> bodyPart) {
+        Page<Exercise> exercises = iWorkout.getFilteredExercises(page, size, bodyPart);
+        return ResponseEntity.ok().body(exercises);
     }
+    @GetMapping("sorted-by-rating")
+    public Page<Exercise> getExercisesSortedByRating(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+            Page<Exercise> exercises = iWorkout.findExercisesOrderByAverageRating(page, size);
+            return exercises;}
+
 }
 
