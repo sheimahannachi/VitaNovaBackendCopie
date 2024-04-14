@@ -2,33 +2,27 @@ package com.example.vitanovabackend.Controllers;
 
 import com.example.vitanovabackend.DAO.Entities.ERole;
 import com.example.vitanovabackend.DAO.Entities.Gender;
+import com.example.vitanovabackend.DAO.Entities.IPAdresses;
 import com.example.vitanovabackend.DAO.Entities.User;
+import com.example.vitanovabackend.DAO.Repositories.IpAdressesRepository;
 import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import com.example.vitanovabackend.Payload.Request.LoginRequest;
 import com.example.vitanovabackend.Payload.Request.ResetPasswordRequest;
-import com.example.vitanovabackend.Payload.Request.SignupRequest;
 import com.example.vitanovabackend.Payload.Response.MessageResponse;
 import com.example.vitanovabackend.Payload.Response.UserInfoResponse;
-import com.example.vitanovabackend.Security.services.UserDetailsImpl;
-import com.example.vitanovabackend.Service.FTPUploader;
+import com.example.vitanovabackend.Service.EmailService;
 import com.example.vitanovabackend.Service.IUserService;
 import com.example.vitanovabackend.Service.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,6 +54,10 @@ public class AuthController {
     JwtService jwtService;
 
     IUserService services;
+    @Autowired
+    private EmailService emailService;
+    private final IpAdressesRepository ipAdressesRepository;
+
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
@@ -123,9 +121,8 @@ public class AuthController {
         if (userRepository.existsByEmail(email)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
         }
-        FTPUploader ftpUploader = new FTPUploader();
 
-        System.out.println("connectivity : " + ftpUploader.checkFTPConnectivity() );
+
 
         User user = new User(username,
                 email,
@@ -146,7 +143,6 @@ public class AuthController {
             picture.transferTo(tempFile);
 
             user.setPicture(pictureFileName);
-            ftpUploader.uploadImageToFTP(tempFile);
 
             tempFile.delete();
         }
@@ -157,6 +153,13 @@ public class AuthController {
 
         ERole userRole = ERole.valueOf(role.toUpperCase());
         user.setRole(userRole);
+
+        IPAdresses ipAdresses= new IPAdresses();
+        ipAdresses.setValue(emailService.getWANIPAddress());
+        ipAdresses.setLocation(emailService.getLocationFromIPAddress(ipAdresses.getValue()));
+        ipAdressesRepository.save(ipAdresses);
+        user.getIpAdresses().add(ipAdresses);
+
 
         userRepository.save(user);
 

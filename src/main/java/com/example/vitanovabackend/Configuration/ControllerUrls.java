@@ -44,6 +44,16 @@ public   class ControllerUrls {
     }
 
 
+    public static class UserUrls {
+        public final static String AuthLoginUrl="/api/generateToken";
+        public final static String AuthSignupUrl="/api/signup";
+        public final static String MiscTakePic="api/misc/takePic";
+        public final static String AuthResetPasswordE="api/misc/takePic";
+        public final static String AuthResetPasswordP="api/misc/takePic";
+
+    }
+
+
 
 
 
