@@ -5,14 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31abc077-4c1a-419e-b05b-4c77dc131f29" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Configuration/ControllerUrls.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Configuration/ControllerUrls.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/CommunicationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/CommunicationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/ChatController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Communication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Communication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/CommunicationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/CommunicationRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Security/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/CommunicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/CommunicationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/ICommunicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/ICommunicationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Configuration/ControllerUrls$CommunicationUrl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Configuration/ControllerUrls$CommunicationUrl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/ChatController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/ChatController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/CommunicationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/CommunicationController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Communication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Communication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/CommunicationRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/CommunicationRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Security/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Security/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/CommunicationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/CommunicationService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/ICommunicationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/ICommunicationService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,6 +100,7 @@
       <workItem from="1712687809440" duration="3612000" />
       <workItem from="1712853921110" duration="4766000" />
       <workItem from="1712922099045" duration="7976000" />
+      <workItem from="1713023361073" duration="3804000" />
     </task>
     <servers />
   </component>

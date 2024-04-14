@@ -26,17 +26,17 @@ import java.time.LocalDate;
         @NotBlank(message = "Message is mandatory")
         String message;
 
-        @NotNull(message = "Message is mandatory")
+        @NotNull(message = "Date is Mendatory")
         LocalDate sentDate;
 
         boolean seen;
 
 
-        @NotNull(message = "Message is mandatory")
+        @NotNull(message = "Sender is Mendatory")
         @ManyToOne
         User sender;
 
-        @OneToOne
+        @ManyToOne
         User reciever;
 
 

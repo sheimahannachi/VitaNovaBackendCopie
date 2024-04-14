@@ -28,7 +28,7 @@ public class ChatController {
         log.info(t);
         log.info(chatMessage.getMessage());
         log.info(chatMessage.getSender().getFirstName());
-        log.info(chatMessage.getCommunity().getId()+"");
+        //log.info(chatMessage.getCommunity().getId()+"");
 
 
         chatMessage=service.addCommunication(chatMessage);
