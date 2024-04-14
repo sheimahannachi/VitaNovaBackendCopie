@@ -33,7 +33,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 
 
@@ -111,7 +114,7 @@ public class AuthController {
                                           @RequestParam String lastName,
                                           @RequestParam boolean verified,
                                           @RequestParam String phone,
-                                          @RequestPart String picture) throws IOException {
+                                          @RequestPart("file") MultipartFile picture) throws IOException {
 
         if (userRepository.existsByUsername(username)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
@@ -137,11 +140,15 @@ public class AuthController {
         user.setFirstName(firstName);
 
         if (picture != null) {
+            String pictureFileName = picture.getOriginalFilename();
+            Path tempFilePath = Files.createTempFile("temp-picture", pictureFileName);
+            File tempFile = tempFilePath.toFile();
+            picture.transferTo(tempFile);
 
-            user.setPicture(picture);
-            ftpUploader.Upload(picture);
+            user.setPicture(pictureFileName);
+            ftpUploader.uploadImageToFTP(tempFile);
 
-           // ftpUploader.uploadImage(pictureBytes);
+            tempFile.delete();
         }
 
         user.setWeight(weight);
@@ -161,14 +168,12 @@ public class AuthController {
     public ResponseEntity<?> logoutUser(HttpServletRequest request, HttpServletResponse response) {
         ResponseCookie cookie = jwtService.getCleanJwtCookie();
         System.out.println("signing out : ");
-        // Set the expiration date of the cookie to a past time to delete it
         cookie = ResponseCookie.from(cookie.getName(), cookie.getValue())
                 .path(cookie.getPath())
-                .maxAge(0)  // Set maxAge to 0 to delete the cookie
+                .maxAge(0)
                 .httpOnly(true)
                 .build();
 
-        // Add the cookie to the response with maxAge=0 to delete it
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         return ResponseEntity.ok().body(new MessageResponse("You've been signed out!"));

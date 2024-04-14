@@ -2,6 +2,7 @@ package com.example.vitanovabackend.Controllers;
 
 
 import com.example.vitanovabackend.Service.FTPUploader;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import nu.pattern.OpenCV;
 import org.opencv.core.Core;
@@ -10,7 +11,9 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,6 +38,7 @@ public class MiscController {
     private static final String FTP_DIRECTORY_PATH = "C:\\Users\\hamad\\OneDrive\\Desktop\\FTPFOLDER";
     @Autowired
     private final FTPUploader ftpService;
+
     @CrossOrigin("**")
     @PostMapping("/copyToFTP")
     public ResponseEntity<String> copyToXAMPP(@RequestParam("file") MultipartFile file) {
@@ -95,19 +99,61 @@ public class MiscController {
         }
 
         // Release the camera
-            camera.release();
+        camera.release();
 
         System.out.println("Image captured and saved successfully at: " + filePath);
         return true;
     }
 
-    @GetMapping("/download/{filename}")
-    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String filename) throws IOException {
-        InputStream inputStream = ftpService.downloadFile(filename);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDispositionFormData("attachment", filename);
-        return new ResponseEntity<>(new InputStreamResource(inputStream), headers, HttpStatus.OK);
+    @CrossOrigin("**")
+    @PostMapping("/uploadImage")
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return new ResponseEntity<>("Please select a file to upload", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            // Define the directory to save the file
+            String uploadDirectory = "C:\\Users\\hamad\\OneDrive\\Desktop\\FTPFOLDER";
+            System.out.println(ftpService.checkFTPConnectivity());
+            // Save the uploaded file locally
+            File localFile = new File(uploadDirectory, file.getOriginalFilename());
+            file.transferTo(localFile);
+            // Upload the file to FTP server
+            boolean uploadStatus = ftpService.uploadImageToFTP(localFile);
+
+            if (uploadStatus) {
+                return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Failed to upload file to FTP server", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Failed to upload file: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+
+
+
+    @GetMapping("/downloadImage")
+    public ResponseEntity<Resource> downloadImage(@RequestParam("file") String filename) {
+        Optional<File> downloadedFile = ftpService.downloadImageFromFTP(filename);
+
+        if (downloadedFile.isPresent()) {
+            byte[] fileBytes = ftpService.decodeImageFromFile(downloadedFile.get());
+            ByteArrayResource resource = new ByteArrayResource(fileBytes);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); // Assuming the image format is JPEG
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(fileBytes.length)
+                    .body(resource);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
+
