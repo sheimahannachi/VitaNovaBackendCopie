@@ -32,6 +32,7 @@ public class UserController {
     @CrossOrigin("**")
     @PutMapping("/admin/UpdateUser")
     public User updateUser(@RequestBody User user) {
+        System.out.println("in function update user");
         return iUserService.updateUser(user);
     }
     @CrossOrigin(origins = "http://localhost:4200")
