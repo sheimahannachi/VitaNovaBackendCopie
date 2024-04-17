@@ -1,8 +1,6 @@
 package com.example.vitanovabackend.Service;
 
-import com.example.vitanovabackend.DAO.Entities.IPAdresses;
 import com.example.vitanovabackend.DAO.Entities.User;
-import com.example.vitanovabackend.DAO.Repositories.IpAdressesRepository;
 import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

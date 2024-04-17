@@ -153,6 +153,11 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>20.77.0</version> <!-- Replace with the latest version -->
+        </dependency>
     </dependencies>
 
     <build>

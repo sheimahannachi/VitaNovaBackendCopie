@@ -1,13 +1,13 @@
 package com.example.vitanovabackend.DAO.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,8 +23,10 @@ public class IPAdresses {
   private String value;
 
   private  String Location;
-
-
+    private LocalDateTime DateVerification= LocalDateTime.now();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
 }

@@ -52,8 +52,8 @@ public class SecurityConfig implements WebSecurityConfigurer {
 
                 .requestMatchers(
                         ControllerUrls.UserUrls.AuthLoginUrl, ControllerUrls.UserUrls.AuthSignupUrl,
-                        ControllerUrls.UserUrls.AuthResetPasswordE,ControllerUrls.UserUrls.AuthResetPasswordE,
-                        "/api/checkUsername","/api/checkEmail","/api/user/GetUserByUsername"
+                        ControllerUrls.UserUrls.AuthResetPasswordE,ControllerUrls.UserUrls.AuthResetPasswordE,"/api/CheckIpAddress","/api/AddIpAddress",
+                        "/api/checkUsername","/api/checkEmail","/api/user/GetUserByUsername","/PG/AddGoal","/api/user/AddUser","/checkout/create-checkout-session","/checkout/process-payment"
                         ,"/api/getuserfromtoken","/api/sendEmail","/api/misc/uploadImage","api/misc/takePic","/api/sendEmailWithAttachment",
                         //yoser
                         "RestController/GetActiveExercise",
