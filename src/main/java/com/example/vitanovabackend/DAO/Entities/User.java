@@ -54,4 +54,6 @@ public class User {
 
     @ManyToMany( mappedBy = "membres",cascade = CascadeType.ALL)
     List<Community> communities = new ArrayList<>();
+    @ManyToMany
+    List<FoodCard>foodCards = new ArrayList<>();
 }
