@@ -2,6 +2,7 @@ package com.example.vitanovabackend.DAO.Repositories;
 
 
 import com.example.vitanovabackend.DAO.Entities.Exercise;
+import com.example.vitanovabackend.DAO.Entities.Intensity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,6 +24,9 @@ public interface ExerciseRepository extends JpaRepository<Exercise,Long> {
     Page<Exercise> findByTitle(String searchText,Pageable pageable);
     @Query("SELECT e FROM Exercise e LEFT JOIN UserRating ur ON e.id = ur.exercise.id GROUP BY e.id ORDER BY AVG(ur.rate) DESC")
     Page<Exercise> findExercisesOrderByAverageRating(Pageable pageable);
+
+    List<Exercise> findByTitle(String searchText);
+    List<Exercise> findAllByIntensity(Intensity LOW);
 
 }
 
