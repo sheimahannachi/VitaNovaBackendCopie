@@ -2,14 +2,16 @@ package com.example.vitanovabackend.Controllers;
 
 
 import com.example.vitanovabackend.DAO.Entities.Product;
+import com.example.vitanovabackend.Service.CartIService;
+import com.example.vitanovabackend.Service.CartService;
 import com.example.vitanovabackend.Service.ProductIService;
 import jakarta.servlet.annotation.MultipartConfig;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @org.springframework.web.bind.annotation.RestController
@@ -19,7 +21,7 @@ import java.util.List;
 @CrossOrigin(origins="*")
 public class ProductController {
     ProductIService productIService;
-
+    CartIService cartIService;
 
     @PostMapping("addProduct")
     public Product addProduct(@ModelAttribute Product product, @RequestParam("image") MultipartFile file) {
@@ -51,10 +53,6 @@ public class ProductController {
     public List<Product> searchProductsByName(@RequestParam String term) {
         return productIService.searchProductsByName(term);
     }
-   /* @GetMapping("/filtered")
-    public     List<Product> findByCategoriePrAndStatusPrAndPricePrLessThanEqual(String categoriePr, String statusPr, float pricePr){
-        return productIService.filterProductsByCategoryAndStatusAndPriceRange(categoriePr,statusPr , pricePr);
-    }*/
 
     @GetMapping("/filter")
     public List<Product> filterProducts(@RequestParam(required = false) String categoriePr,
@@ -71,24 +69,34 @@ public class ProductController {
         }
     }
 
-
     @PostMapping("/addLike/{idPr}")
-    public ResponseEntity<String> addLike(/*@RequestParam("idUser") Long idUser,*/ @PathVariable("idPr") Long idPr) {
+    public ResponseEntity<Void> addLike(/*@RequestParam("idUser") Long idUser,*/ @PathVariable("idPr") Long idPr) {
         productIService.addLike(idPr);
-        return ResponseEntity.ok("Like ajouté avec succès !");
-    }
-    @GetMapping("/sortedByLikes")
-    public ResponseEntity<List<Product>> getProductsSortedByLikes() {
-        List<Product> sortedProducts = productIService.getProductsSortedByLikes();
-        return ResponseEntity.ok(sortedProducts);
-    }
-
-    @PostMapping("/{productId}/like")
-    public ResponseEntity<?> likeProduct(@PathVariable Long productId) {
-        productIService.incrementLikeCount(productId);
         return ResponseEntity.ok().build();
     }
 
+
+    /////////////////////////
+
+    @PostMapping("/addProductToCart/")
+    public ResponseEntity<String> addProductToCart(@RequestParam Long idPr, @RequestParam Long idUser) {
+        try {
+            productIService.addProductToCart(idPr, idUser);
+            return ResponseEntity.ok("Product successfully added to cart.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add product to cart: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/cart/{cartId}/product/{productId}")
+    public ResponseEntity<String> deleteProductFromCart(@PathVariable Long cartId, @PathVariable Long productId) {
+        try {
+            productIService.deleteProductFromCommandelines(productId, cartId);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
 
 }

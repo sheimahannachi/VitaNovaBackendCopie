@@ -19,9 +19,14 @@ public interface ProductIService {
   //List<Product> filterProductsByCategoryAndStatusAndPriceRange(String categoriePr, String statusPr, float pricePr);
   public List<Product> filterProducts(String categoriePr, Float pricePr);
 
-    void updateProductImage(Long productId, String imagePath);
+
     public void uploadImage(MultipartFile file,String fileName)  throws IOException;
-    public List<Product> getProductsSortedByLikes();
-    public void incrementLikeCount(Long productId);
+
     public  void addLike(/*Long idUser,*/ Long idPr);
-    }
+
+    public void addProductToCart(Long idPr, Long idUser);
+
+    public void deleteProductFromCommandelines(Long productId, Long cartId);
+
+
+}
