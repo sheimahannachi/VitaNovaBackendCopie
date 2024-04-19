@@ -1,10 +1,15 @@
 package com.example.vitanovabackend.Controllers;
 
+<<<<<<< HEAD
 import com.example.vitanovabackend.DAO.Entities.ERole;
 import com.example.vitanovabackend.DAO.Entities.Gender;
 import com.example.vitanovabackend.DAO.Entities.IPAdresses;
 import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.DAO.Repositories.IpAdressesRepository;
+=======
+import com.example.vitanovabackend.DAO.Entities.*;
+import com.example.vitanovabackend.DAO.Repositories.IpAddressesRepository;
+>>>>>>> main
 import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import com.example.vitanovabackend.Payload.Request.LoginRequest;
 import com.example.vitanovabackend.Payload.Request.ResetPasswordRequest;
@@ -13,9 +18,17 @@ import com.example.vitanovabackend.Payload.Response.UserInfoResponse;
 import com.example.vitanovabackend.Service.EmailService;
 import com.example.vitanovabackend.Service.IUserService;
 import com.example.vitanovabackend.Service.JwtService;
+<<<<<<< HEAD
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+=======
+import com.example.vitanovabackend.Service.MiscService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+>>>>>>> main
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,8 +36,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+<<<<<<< HEAD
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+=======
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+>>>>>>> main
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -32,6 +53,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+<<<<<<< HEAD
+=======
+import java.util.List;
+>>>>>>> main
 
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
@@ -52,11 +77,20 @@ public class AuthController {
 
     @Autowired
     JwtService jwtService;
+<<<<<<< HEAD
 
     IUserService services;
     @Autowired
     private EmailService emailService;
     private final IpAdressesRepository ipAdressesRepository;
+=======
+    @Autowired
+    MiscService miscService;
+    IUserService services;
+    @Autowired
+    private EmailService emailService;
+    private final IpAddressesRepository ipAddressesRepository;
+>>>>>>> main
 
 
     @PostMapping("/login")
@@ -75,6 +109,7 @@ public class AuthController {
     public ResponseEntity<UserInfoResponse> authenticateAndGetToken(@RequestBody LoginRequest authRequest) {
         UserInfoResponse response = new UserInfoResponse();
         System.out.println(authRequest);
+<<<<<<< HEAD
         if(authRequest!=null){
         User user = services.loginUser(authRequest.getUsername(), authRequest.getPassword());
         System.out.println(user);
@@ -99,6 +134,31 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // JWT token not found in cookie
     }
 
+=======
+        if (authRequest != null) {
+            User user = services.loginUser(authRequest.getUsername(), authRequest.getPassword());
+            System.out.println(user);
+            System.out.println("generating token : ");
+            if (user != null) {
+                // Authenticate user
+                String jwtToken = jwtService.generateToken(user.getUsername());
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", "Bearer " + jwtToken);
+
+                return ResponseEntity.ok().headers(headers)
+                        .body(new UserInfoResponse(user.getIdUser(),
+                                user.getUsername(),
+                                user.getRole().toString(),
+                                user.getEmail(),
+                                jwtToken
+                        ));
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+
+
+>>>>>>> main
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestParam String username,
                                           @RequestParam String email,
@@ -150,18 +210,31 @@ public class AuthController {
         user.setWeight(weight);
         user.setHeight(height);
         user.setPhone(phone);
+<<<<<<< HEAD
 
+=======
+        user.setPlan(Plan.FREE);
+>>>>>>> main
         ERole userRole = ERole.valueOf(role.toUpperCase());
         user.setRole(userRole);
 
         IPAdresses ipAdresses= new IPAdresses();
         ipAdresses.setValue(emailService.getWANIPAddress());
         ipAdresses.setLocation(emailService.getLocationFromIPAddress(ipAdresses.getValue()));
+<<<<<<< HEAD
         ipAdressesRepository.save(ipAdresses);
         user.getIpAdresses().add(ipAdresses);
 
 
         userRepository.save(user);
+=======
+        ipAdresses.setLocation(null);
+        ipAdresses.setUser(user);
+        userRepository.save(user);
+        ipAddressesRepository.save(ipAdresses);
+
+
+>>>>>>> main
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
@@ -169,6 +242,7 @@ public class AuthController {
 
     @GetMapping("/signout")
     public ResponseEntity<?> logoutUser(HttpServletRequest request, HttpServletResponse response) {
+<<<<<<< HEAD
         ResponseCookie cookie = jwtService.getCleanJwtCookie();
         System.out.println("signing out : ");
         cookie = ResponseCookie.from(cookie.getName(), cookie.getValue())
@@ -178,12 +252,20 @@ public class AuthController {
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+=======
+        response.setHeader("Authorization", "");
+
+        // Clear sessionStorage
+        HttpSession session = request.getSession();
+        session.invalidate();
+>>>>>>> main
 
         return ResponseEntity.ok().body(new MessageResponse("You've been signed out!"));
     }
 
 
 
+<<<<<<< HEAD
     @GetMapping("/getuserfromtoken")
     public ResponseEntity<?>GetUserFromToken(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
@@ -205,6 +287,29 @@ public class AuthController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // JWT token not found in cookie
     }
+=======
+
+
+    @GetMapping("/getuserfromtoken")
+    public ResponseEntity<?> getUserFromToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String jwtToken = authHeader.substring(7);
+            System.out.println(jwtToken);
+            String username = jwtService.extractUsername(jwtToken);
+            if (username != null) {
+                User user = services.loadUserByUsername(username);
+                if (user != null) {
+                    return ResponseEntity.ok(user);
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // JWT token not found in Authorization header
+    }
+
+
+
+>>>>>>> main
     @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/resetPassword")
     public User resetPassword(@RequestBody ResetPasswordRequest request) {
@@ -227,5 +332,43 @@ public class AuthController {
     public boolean checkEmailExists(@RequestParam String email) {
         return userRepository.existsByEmail(email);
     }
+<<<<<<< HEAD
+=======
+
+   @GetMapping("/CheckIpAddress")
+    public boolean IpAdressCheck(@RequestParam("username") String username  ){
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+
+IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
+
+            return ipAdresses != null;
+
+        }
+        return false;
+    }
+
+    @CrossOrigin("*")
+    @GetMapping("/AddIpAddress")
+    public void AddIpAddress(@RequestParam("qcxBb0ipkpAM") String EncryptedUsername, HttpServletResponse response) throws IOException {
+        String encryptedText = EncryptedUsername.replace(' ', '+');
+
+        String username = miscService.decrypt(encryptedText);
+
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            IPAdresses ipAdresses = new IPAdresses();
+            ipAdresses.setValue(emailService.getWANIPAddress());
+            ipAdresses.setLocation(emailService.getLocationFromIPAddress(emailService.getWANIPAddress()));
+            ipAdresses.setUser(user);
+            ipAddressesRepository.save(ipAdresses);
+            String redirectUrl = "http://localhost:4200/login?verificationLinkClicked=true";
+            response.sendRedirect(redirectUrl);
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+>>>>>>> main
 }
 
