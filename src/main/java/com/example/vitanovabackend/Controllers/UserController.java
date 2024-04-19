@@ -32,10 +32,7 @@ public class UserController {
     @CrossOrigin("**")
     @PutMapping("/admin/UpdateUser")
     public User updateUser(@RequestBody User user) {
-<<<<<<< HEAD
-=======
         System.out.println("in function update user");
->>>>>>> main
         return iUserService.updateUser(user);
     }
     @CrossOrigin(origins = "http://localhost:4200")
@@ -56,11 +53,11 @@ public class UserController {
     }
 
 
-@GetMapping("/GetUserByUsername")
+    @GetMapping("/GetUserByUsername")
     public User GetUserUsername(@PathParam("username") String username){
 
         return iUserService.loadUserByUsername(username);
-}
+    }
 
 
 

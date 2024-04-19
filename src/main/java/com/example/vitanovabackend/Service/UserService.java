@@ -1,12 +1,6 @@
 package com.example.vitanovabackend.Service;
 
-<<<<<<< HEAD
-import com.example.vitanovabackend.DAO.Entities.IPAdresses;
 import com.example.vitanovabackend.DAO.Entities.User;
-import com.example.vitanovabackend.DAO.Repositories.IpAdressesRepository;
-=======
-import com.example.vitanovabackend.DAO.Entities.User;
->>>>>>> main
 import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,12 +72,12 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> getAllUsers(){
-    return userRepository.findAll();
+        return userRepository.findAll();
 
     }
 
     @Override
-  public int ActivateUser(Long Id){
+    public int ActivateUser(Long Id){
         User user = userRepository.findById(Id).get();
         if (user != null) {
             user.setArchive(false);
@@ -95,9 +89,9 @@ public class UserService implements IUserService {
     }
     @Override
     public User ResetPassword(String Email,String password){
-User user = userRepository.findByEmail(Email);
-user.setPassword(passwordEncoder.encode(password));
-return userRepository.save(user);
+        User user = userRepository.findByEmail(Email);
+        user.setPassword(passwordEncoder.encode(password));
+        return userRepository.save(user);
 
     }
 
@@ -123,4 +117,4 @@ return userRepository.save(user);
 
 
 
-    }
+}

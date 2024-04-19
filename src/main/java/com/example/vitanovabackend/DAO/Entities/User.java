@@ -1,22 +1,14 @@
 package com.example.vitanovabackend.DAO.Entities;
 
-<<<<<<< HEAD
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-=======
 import com.example.vitanovabackend.Security.config.GrantedAuthorityDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
->>>>>>> main
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
-<<<<<<< HEAD
-=======
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
->>>>>>> main
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
@@ -79,12 +71,8 @@ public class User implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     Cart cart;
 
-<<<<<<< HEAD
-    @ManyToMany
-=======
     @ManyToMany(fetch = FetchType.EAGER)
 
->>>>>>> main
 
     List<Food>foods=new ArrayList<>();
 
@@ -100,16 +88,13 @@ public class User implements UserDetails {
 
 
     @Column(name = "role")
-   @Enumerated(EnumType.STRING)
-   private ERole role ;
+    @Enumerated(EnumType.STRING)
+    private ERole role ;
 
-<<<<<<< HEAD
-=======
     @Column(name = "plan")
     @Enumerated(EnumType.STRING)
     private Plan plan ;
 
->>>>>>> main
 
 
     public User(String username, String email, String password) {
@@ -118,17 +103,6 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-<<<<<<< HEAD
-    @OneToMany
-    List<IPAdresses> ipAdresses= new ArrayList<>();
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-=======
   /*  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
    private List<IPAdresses> ipAdresses= new ArrayList<>();*/
 
@@ -145,7 +119,6 @@ public class User implements UserDetails {
 
     // Custom deserializer for GrantedAuthority
 
->>>>>>> main
     @Override
     public boolean isAccountNonExpired() {
         return false;
