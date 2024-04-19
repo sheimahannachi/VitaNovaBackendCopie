@@ -1,5 +1,6 @@
 package com.example.vitanovabackend.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -18,11 +19,14 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     Long idCart;
     float priceCart;
     LocalDate dateCart;
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<Commandeline> commandelineList = new ArrayList<>();
+    @JsonIgnore
+    List<Commandeline> commandelineList = new ArrayList<>();
+
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "cart")
     User user;
 }

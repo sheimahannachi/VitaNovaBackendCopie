@@ -1,11 +1,15 @@
 package com.example.vitanovabackend.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Table(name = "User")
 @Entity
@@ -14,19 +18,20 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idUser;
+    @Column(name = "username")
+    private String username;
     @Column(name = "firstName")
     private String firstName;
     @Column(name = "lastName")
     private String lastName;
     @Column(name = "dateOfBirth")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private Role role;
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -38,8 +43,22 @@ public class User {
     private float height;
     @Column(name = "password")
     private String password;
+    @Column(name = "archive")
+    private Boolean archive=false;
+
+    private String picture;
+    @Column(name = "verified")
+    private Boolean verified=false;
 
 
+    @Column(name = "Community_Activity")
+    long comunityActivity=0;
+
+
+    @Column(name = "score")
+    private int score=0;
+    @Column(name = "phone")
+    private String phone;
     @OneToOne
     PersonalGoals personalGoals;
 
@@ -50,13 +69,62 @@ public class User {
     Cart cart;
 
     @ManyToMany
+
     List<Food>foods=new ArrayList<>();
 
-    @ManyToMany( mappedBy = "membres",cascade = CascadeType.ALL)
-    List<Community> communities = new ArrayList<>();
 
+    @JsonBackReference
+    @ManyToOne( cascade = CascadeType.ALL )
+    Community community;
 
     @OneToMany( mappedBy = "user",cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<LikeProduct> likedProducts = new ArrayList<>();
+
+
+
+    @Column(name = "role")
+   @Enumerated(EnumType.STRING)
+   private ERole role ;
+
+
+
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    @OneToMany
+    List<IPAdresses> ipAdresses= new ArrayList<>();
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+
+
 
 }

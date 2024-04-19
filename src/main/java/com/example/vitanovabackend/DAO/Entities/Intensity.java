@@ -1,7 +1,8 @@
 package com.example.vitanovabackend.DAO.Entities;
 
 public enum Intensity {
-    LOW,
+    HIGH,
     MEDIUM,
-    HIGH
+    LOW,
+
 }

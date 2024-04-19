@@ -19,13 +19,23 @@ public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    String exerciseName;
+    String title;
     String description;
     String typeEx;
+    String bodypart;
+    @Enumerated(EnumType.STRING)
+    Intensity intensity ;
     String sets;
     String reps;
-    String instruction;
+    //String instruction;
+    String picture;
+    boolean archived;
+    double rate;
+
 
     @ManyToMany
     List<WorkoutProgram>workoutPrograms=new ArrayList<>();
+
+    @ManyToOne
+    PeriodTracker periodTracker;
 }
