@@ -72,12 +72,12 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> getAllUsers(){
-        return userRepository.findAll();
+    return userRepository.findAll();
 
     }
 
     @Override
-    public int ActivateUser(Long Id){
+  public int ActivateUser(Long Id){
         User user = userRepository.findById(Id).get();
         if (user != null) {
             user.setArchive(false);
@@ -89,9 +89,9 @@ public class UserService implements IUserService {
     }
     @Override
     public User ResetPassword(String Email,String password){
-        User user = userRepository.findByEmail(Email);
-        user.setPassword(passwordEncoder.encode(password));
-        return userRepository.save(user);
+User user = userRepository.findByEmail(Email);
+user.setPassword(passwordEncoder.encode(password));
+return userRepository.save(user);
 
     }
 
@@ -117,4 +117,4 @@ public class UserService implements IUserService {
 
 
 
-}
+    }

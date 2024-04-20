@@ -15,9 +15,9 @@ public interface ProductIService {
     public ResponseEntity<String> archiverProduct(Long idPr);
     public Product getProductById(Long idPr);
     public List<Product> searchProductsByName(String searchTerm);
-  //  public  List<Product> findByCategoriePrAndPricePrAndStatusPr(String categoriePr, float pricePr, String statusPr);
-  //List<Product> filterProductsByCategoryAndStatusAndPriceRange(String categoriePr, String statusPr, float pricePr);
-  public List<Product> filterProducts(String categoriePr, Float pricePr);
+    //  public  List<Product> findByCategoriePrAndPricePrAndStatusPr(String categoriePr, float pricePr, String statusPr);
+    //List<Product> filterProductsByCategoryAndStatusAndPriceRange(String categoriePr, String statusPr, float pricePr);
+    public List<Product> filterProducts(String categoriePr, Float pricePr);
 
 
     public void uploadImage(MultipartFile file,String fileName)  throws IOException;

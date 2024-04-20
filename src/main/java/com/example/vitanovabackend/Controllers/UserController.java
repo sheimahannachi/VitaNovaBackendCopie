@@ -53,11 +53,11 @@ public class UserController {
     }
 
 
-    @GetMapping("/GetUserByUsername")
+@GetMapping("/GetUserByUsername")
     public User GetUserUsername(@PathParam("username") String username){
 
         return iUserService.loadUserByUsername(username);
-    }
+}
 
 
 

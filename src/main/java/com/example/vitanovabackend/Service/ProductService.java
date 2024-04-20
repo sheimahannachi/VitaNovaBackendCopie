@@ -24,7 +24,7 @@ public class ProductService implements ProductIService {
     CartRepository cartRepository;
     private final LikeProductRepository likeProductRepository;
     private UserRepository userRepository;
-private CommandelineRepository commandelineRepository;
+    private CommandelineRepository commandelineRepository;
     private final ProductRepository productRepository;
 
     public static String uploadDirectory = "C:/xampp/htdocs/aziz/";
@@ -58,41 +58,41 @@ private CommandelineRepository commandelineRepository;
         return savedProduct;
     }
 
-public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, @RequestParam("image") MultipartFile file) {
-    try {
-        Product pr = productRepository.findById(idPr)
-                .orElseThrow(() -> new RuntimeException("Produit introuvable"));
-        // Vérifier si le fichier est vide avant de le traiter
-        if (!file.isEmpty()) {
-            // Générer un nom de fichier unique pour l'image
-            String originalFilename = file.getOriginalFilename();
-            String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
-            // Téléverser la nouvelle image sur le serveur FTP
-            uploadImage(file, fileName);
-            // Mettre à jour le nom de l'image dans le produit avec le nouveau nom généré
-           // updatedProduct.setPicturePr(fileName); // Utilise le nouveau nom de fichier généré
-            pr.setPicturePr(fileName);
+    public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, @RequestParam("image") MultipartFile file) {
+        try {
+            Product pr = productRepository.findById(idPr)
+                    .orElseThrow(() -> new RuntimeException("Produit introuvable"));
+            // Vérifier si le fichier est vide avant de le traiter
+            if (!file.isEmpty()) {
+                // Générer un nom de fichier unique pour l'image
+                String originalFilename = file.getOriginalFilename();
+                String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
+                // Téléverser la nouvelle image sur le serveur FTP
+                uploadImage(file, fileName);
+                // Mettre à jour le nom de l'image dans le produit avec le nouveau nom généré
+                // updatedProduct.setPicturePr(fileName); // Utilise le nouveau nom de fichier généré
+                pr.setPicturePr(fileName);
+            }
+
+            // Récupérer le produit à mettre à jour depuis la base de données
+
+
+            // Mettre à jour les attributs du produit avec les nouvelles valeurs
+            pr.setNamePr(updatedProduct.getNamePr());
+            pr.setCategoriePr(updatedProduct.getCategoriePr());
+            pr.setPricePr(updatedProduct.getPricePr());
+            pr.setQuantityPr(updatedProduct.getQuantityPr());
+            pr.setDescriptionPr(updatedProduct.getDescriptionPr());
+            pr.setStatusPr(updatedProduct.getStatusPr());
+
+            // Sauvegarder et retourner le produit mis à jour
+            return productRepository.save(pr);
+        } catch (IOException e) {
+            // Gérer l'erreur de manière appropriée (par exemple, journaliser-la)
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de la mise à jour du produit", e);
         }
-
-        // Récupérer le produit à mettre à jour depuis la base de données
-
-
-        // Mettre à jour les attributs du produit avec les nouvelles valeurs
-        pr.setNamePr(updatedProduct.getNamePr());
-        pr.setCategoriePr(updatedProduct.getCategoriePr());
-        pr.setPricePr(updatedProduct.getPricePr());
-        pr.setQuantityPr(updatedProduct.getQuantityPr());
-        pr.setDescriptionPr(updatedProduct.getDescriptionPr());
-        pr.setStatusPr(updatedProduct.getStatusPr());
-
-        // Sauvegarder et retourner le produit mis à jour
-        return productRepository.save(pr);
-    } catch (IOException e) {
-        // Gérer l'erreur de manière appropriée (par exemple, journaliser-la)
-        e.printStackTrace();
-        throw new RuntimeException("Erreur lors de la mise à jour du produit", e);
     }
-}
 
 
     @Override
@@ -207,7 +207,7 @@ public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, 
 
     public void addLike(/*Long idUser,*/ Long idPr) {
         // Recherche de l'utilisateur et du produit correspondants
-       // User user = userRepository.findById(idUser).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'ID : " + idUser));
+        // User user = userRepository.findById(idUser).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'ID : " + idUser));
         Product product = productRepository.findById(idPr).orElseThrow(() -> new EntityNotFoundException("Produit non trouvé avec l'ID : " + idPr));
 
         // Création du like pour le produit
@@ -268,7 +268,7 @@ public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, 
                 commandLine.setProduct(product);
                 commandLine.setQuantity(1); // Set default quantity to 1
                 commandLine.setPrixOrder(product.getPricePr()); // Set total price as price of one unit
-    commandLine.setCart(cart);
+                commandLine.setCart(cart);
                 commandelineRepository.save(commandLine);
 
             } else {

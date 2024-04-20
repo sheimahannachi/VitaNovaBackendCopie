@@ -20,9 +20,9 @@ public class IPAdresses {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String value;
+  private String value;
 
-    private  String Location;
+  private  String Location;
     private LocalDateTime DateVerification= LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "user_id")

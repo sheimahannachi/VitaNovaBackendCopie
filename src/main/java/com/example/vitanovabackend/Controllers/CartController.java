@@ -15,31 +15,21 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/Cart")
 @MultipartConfig
-@CrossOrigin(origins="*")
+@CrossOrigin
 public class CartController {
 
     CartService cartService;
-    @GetMapping("/{idCart}/commandelines")
+
+
+
+    @GetMapping("/commandelines/{idCart}")
     public List<Commandeline> getAllCommandelinesInCart(@PathVariable Long idCart) {
         return cartService.getAllCommandelinesInCart(idCart);
     }
-    @GetMapping("/{cartId}/count")
+    @GetMapping("/count/{cartId}")
     public int getNumberOfCommandelinesInCart(@PathVariable Long cartId) {
+        System.out.println("number "  + cartService.getNumberOfCommandelinesInCart(cartId));
         // Assuming you have a method in your service to get the count of command lines in the cart
         return cartService.getNumberOfCommandelinesInCart(cartId);
     }
-/*
-    @PutMapping("/{cartId}/products/{productId}")
-    public ResponseEntity<?> updateProductQuantityInCart(@PathVariable Long cartId,
-                                                         @PathVariable Long productId,
-                                                         @RequestParam("newQuantity") int newQuantity) {
-        try {
-            cartService.updateProductQuantityInCart(cartId, productId, newQuantity);
-            return ResponseEntity.ok("La quantité du produit dans le panier a été mise à jour avec succès.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }*/
-
-
 }
