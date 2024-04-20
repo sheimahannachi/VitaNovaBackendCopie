@@ -76,6 +76,7 @@ public class User implements UserDetails {
 
     List<Food>foods=new ArrayList<>();
 
+<<<<<<< HEAD
 
     @JsonBackReference
     @ManyToOne( cascade = CascadeType.ALL )
@@ -142,4 +143,10 @@ public class User implements UserDetails {
 
 
 
+=======
+    @ManyToMany( mappedBy = "membres",cascade = CascadeType.ALL)
+    List<Community> communities = new ArrayList<>();
+    @ManyToMany
+    List<FoodCard>foodCards = new ArrayList<>();
+>>>>>>> ONS
 }
