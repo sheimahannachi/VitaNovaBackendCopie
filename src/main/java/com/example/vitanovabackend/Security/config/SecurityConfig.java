@@ -109,7 +109,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         ControllerUrls.CommunicationUrl.getComunicationbySenderAndReciever,
                         ControllerUrls.CommunicationUrl.setSeenToCommunicationsOneToOne,
 
-                        "/api/user/admin/**","/Cart/**",
+                        "/api/user/admin/**","/Cart/**","/Product/**",
                         "/ws/**").permitAll()
 
 

@@ -33,6 +33,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -144,6 +146,10 @@ public class AuthController {
             Path tempFilePath = Files.createTempFile("temp-picture", pictureFileName);
             File tempFile = tempFilePath.toFile();
             picture.transferTo(tempFile);
+
+            // Copy the file to the desired location
+            Path destinationPath = Paths.get("C:\\xampp\\htdocs\\cats", pictureFileName);
+            Files.copy(tempFilePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
 
             user.setPicture(pictureFileName);
 
