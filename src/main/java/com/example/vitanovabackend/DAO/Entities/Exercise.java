@@ -35,4 +35,7 @@ public class Exercise {
 
     @ManyToMany
     List<WorkoutProgram>workoutPrograms=new ArrayList<>();
+
+    @ManyToOne
+    PeriodTracker periodTracker;
 }
