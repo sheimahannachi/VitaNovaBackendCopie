@@ -10,15 +10,31 @@ import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @org.springframework.stereotype.Service
 @AllArgsConstructor
 public class CartService implements CartIService{
-
     CartRepository  cartRepository;
     CommandelineRepository commandelineRepository;
     ProductRepository productRepository;
     UserRepository userRepository;
+
+
+
+    public List<Commandeline> getAllCommandelinesInCart(Long idCart) {
+        Cart cart = cartRepository.findById(idCart).get();
+        System.out.println(cart.getPriceCart());
+        return cart.getCommandelineList();
+    }
+
+    public int getNumberOfCommandelinesInCart(Long cartId) {
+        Cart cart = cartRepository.findById(cartId).orElse(null);
+        if (cart != null) {
+            return cart.getCommandelineList().size();
+        }
+        return 0;
+    }
 
     public void addProductToCart(Long idUser, Long idPr, Long quantity) {
         // Vérifier si l'utilisateur a déjà un panier

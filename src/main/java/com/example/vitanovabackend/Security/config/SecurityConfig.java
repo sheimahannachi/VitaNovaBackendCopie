@@ -109,7 +109,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         ControllerUrls.CommunicationUrl.getComunicationbySenderAndReciever,
                         ControllerUrls.CommunicationUrl.setSeenToCommunicationsOneToOne,
 
-
+                        "/api/user/admin/**","/Cart/**",
                         "/ws/**").permitAll()
 
 
@@ -117,8 +117,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                 .and()
                 .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**","/api/user/admin/UpdateUser").authenticated()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/api/user/admin/**").hasRole("ADMIN")
-                .and()
+
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
