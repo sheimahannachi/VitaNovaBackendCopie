@@ -3,6 +3,7 @@ package com.example.vitanovabackend.DAO.Entities;
 import com.example.vitanovabackend.Security.config.GrantedAuthorityDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.*;
@@ -69,6 +70,7 @@ public class User implements UserDetails {
     PeriodTracker periodTracker;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     Cart cart;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -76,7 +78,6 @@ public class User implements UserDetails {
 
     List<Food>foods=new ArrayList<>();
 
-<<<<<<< HEAD
 
     @JsonBackReference
     @ManyToOne( cascade = CascadeType.ALL )
@@ -89,8 +90,8 @@ public class User implements UserDetails {
 
 
     @Column(name = "role")
-   @Enumerated(EnumType.STRING)
-   private ERole role ;
+    @Enumerated(EnumType.STRING)
+    private ERole role ;
 
     @Column(name = "plan")
     @Enumerated(EnumType.STRING)
@@ -143,10 +144,4 @@ public class User implements UserDetails {
 
 
 
-=======
-    @ManyToMany( mappedBy = "membres",cascade = CascadeType.ALL)
-    List<Community> communities = new ArrayList<>();
-    @ManyToMany
-    List<FoodCard>foodCards = new ArrayList<>();
->>>>>>> ONS
 }

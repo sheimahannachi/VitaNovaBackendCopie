@@ -26,5 +26,6 @@ public interface IPeriodTrackerService {
     List<Food> getPeriodFood();
     List<LocalDate> calculateFertileWindow(PeriodTracker periodTracker);
 
+
 }
 

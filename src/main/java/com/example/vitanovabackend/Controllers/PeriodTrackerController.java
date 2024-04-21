@@ -107,6 +107,7 @@ public class PeriodTrackerController {
         return iPeriodTrackerService.getPeriodFood();
     }
 
+
     @GetMapping("/fertile-window/{idPeriod}")
     public ResponseEntity<List<LocalDate>> getFertileWindow(@PathVariable("idPeriod") Long idPeriod) {
         PeriodTracker periodTracker = iPeriodTrackerService.getPeriodTrackerById(idPeriod);
