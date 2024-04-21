@@ -17,8 +17,8 @@ import java.util.List;
 @ComponentScan
 public class SchedulerPeriod {
     private final IPeriodTrackerService iPeriodTrackerService;
-     //@Scheduled(cron = "0 0 0 * * *") // Run once a day at midnight
-    @Scheduled(cron = "0/10 * * * * *") // Run every 10 second
+     @Scheduled(cron = "0 0 0 * * *") // Run once a day at midnight
+    //@Scheduled(cron = "0/10 * * * * *") // Run every 10 second
     public void updateCyclePhases() {
         log.info("Scheduler executing updateCyclePhases() method...");
         // Retrieve users with period information from the database

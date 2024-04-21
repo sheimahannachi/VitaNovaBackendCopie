@@ -5,6 +5,7 @@ import com.example.vitanovabackend.DAO.Entities.SymptomRating;
 import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.Service.IPeriodTrackerService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -96,5 +97,11 @@ public class PeriodTrackerController {
     @GetMapping("/getSymptomsAndRatingsForPeriod/{idPeriod}")
     public List<SymptomRating> getSymptomsAndRatingsForPeriod(@PathVariable long idPeriod) {
         return iPeriodTrackerService.getSymptomsAndRatingsForPeriod(idPeriod);
+    }
+    @GetMapping("/fertile-window/{idPeriod}")
+    public ResponseEntity<List<LocalDate>> getFertileWindow(@PathVariable("idPeriod") Long idPeriod) {
+        PeriodTracker periodTracker = iPeriodTrackerService.getPeriodTrackerById(idPeriod);
+        List<LocalDate> fertileWindow = iPeriodTrackerService.calculateFertileWindow(periodTracker);
+        return new ResponseEntity<>(fertileWindow, HttpStatus.OK);
     }
 }
