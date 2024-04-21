@@ -91,4 +91,9 @@ public class CommunityController {
         return service.getCommunityMembers(comunityId);
     }
 
+    @GetMapping(ControllerUrls.CommunityUrls.getCommunityByUser)
+    public Community getCommunityByUserId(@RequestParam long userId){
+        return service.getCommunityByUserId(userId);
+    }
+
 }

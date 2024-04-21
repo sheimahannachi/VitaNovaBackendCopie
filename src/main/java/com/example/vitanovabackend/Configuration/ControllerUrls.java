@@ -14,6 +14,7 @@ public   class ControllerUrls {
         public static final String fetchTopThree="getTopThreeByCommunity";
         public static final String userLeaveCommunity="leaveCommunity";
         public static final String getCommunityMembers="communityMembers";
+        public static final String getCommunityByUser="communityByUser";
 
     }
     public static class ChallengesUrl{

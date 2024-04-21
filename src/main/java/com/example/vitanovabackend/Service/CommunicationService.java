@@ -78,6 +78,9 @@ public class CommunicationService implements  ICommunicationService{
             return null;
 
         communication.setId(id);
+        communication.setMessage(
+                EncryptionUtils.encrypt(communication.getMessage())
+        );
         communication.setSeen(false);
 
         return repository.save(communication);
@@ -109,7 +112,13 @@ public class CommunicationService implements  ICommunicationService{
     @Override
     public Page<Communication> findBySenderAndReciever(long sender, long reciever, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return repository.findBySenderAndOrReciever(sender,reciever,pageable);
+        Page<Communication> retour=repository.findBySenderAndOrReciever(sender,reciever,pageable);
+        for(Communication communication:retour){
+            communication.setMessage(
+                    EncryptionUtils.decrypt(communication.getMessage())
+            );
+        }
+        return retour;
 
     }
 
@@ -126,8 +135,10 @@ public class CommunicationService implements  ICommunicationService{
          Page<Communication> p =repository.findAllByCommunityOrderByIdDesc(community,pageable);
          try {
              for (Communication communication : p) {
-                 String decryptedMessage = EncryptionUtils.decrypt(communication.getMessage());
-                 communication.setMessage(decryptedMessage);
+
+                 communication.setMessage(
+                         EncryptionUtils.decrypt(communication.getMessage())
+                 );
              }
          } catch (Exception e) {
              e.printStackTrace();

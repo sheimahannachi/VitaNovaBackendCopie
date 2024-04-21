@@ -138,5 +138,10 @@ public class CommunityService implements ICommunityService{
         return repository.getCommunityMembers(comunityId);
     }
 
+    @Override
+    public Community getCommunityByUserId(long userId) {
+        return repository.getCommunityByUserId(userId).orElse(null);
+    }
+
 
 }

@@ -30,5 +30,7 @@ public interface ICommunityService {
 
     List<User> getCommunityMembers(long comunityId);
 
+    Community getCommunityByUserId(long userId);
+
 
 }
