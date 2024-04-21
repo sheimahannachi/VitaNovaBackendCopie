@@ -106,4 +106,11 @@ public class PeriodTrackerController {
     public List<Food> getPeriodFood() {
         return iPeriodTrackerService.getPeriodFood();
     }
+
+    @GetMapping("/fertile-window/{idPeriod}")
+    public ResponseEntity<List<LocalDate>> getFertileWindow(@PathVariable("idPeriod") Long idPeriod) {
+        PeriodTracker periodTracker = iPeriodTrackerService.getPeriodTrackerById(idPeriod);
+        List<LocalDate> fertileWindow = iPeriodTrackerService.calculateFertileWindow(periodTracker);
+        return new ResponseEntity<>(fertileWindow, HttpStatus.OK);
+    }
 }
