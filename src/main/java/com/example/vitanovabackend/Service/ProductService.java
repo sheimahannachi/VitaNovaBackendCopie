@@ -307,50 +307,48 @@ public class ProductService implements ProductIService {
 
 
     // Calculate total price of the cart
-    public static float calculateTotalPrice(Cart cart) {
-        float totalPrice = 0.0f;
-        for (Commandeline commandLine : cart.getCommandelineList()) {
-            totalPrice += commandLine.getPrixOrder();
+    private float calculateTotalPrice(Cart cart) {
+        float totalPrice = 0;
+        for (Commandeline commandeline : cart.getCommandelineList()) {
+            totalPrice += commandeline.getProduct().getPricePr() * commandeline.getQuantity();
         }
         return totalPrice;
     }
+    public void deleteProductFromCart(Long userId, Long productId) {
+        // Retrieve the user from the database based on userId
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
-    public void deleteProductFromCommandelines(Long productId, Long cartId) throws RuntimeException {
-        // Retrieve the cart based on its ID
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
-
-        // Check if the cart has any command lines
-        if (cart.getCommandelineList().isEmpty()) {
-            throw new RuntimeException("Cart is empty");
+        // Get the cart associated with the user
+        Cart cart = user.getCart();
+        if (cart == null) {
+            throw new RuntimeException("Cart not found for user with ID: " + userId);
         }
 
-        // Retrieve the command line associated with the given product ID
-        Commandeline commandLineToRemove = null;
-        for (Commandeline commandLine : cart.getCommandelineList()) {
-            if (commandLine.getProduct().getIdPr().equals(productId)) {
-                commandLineToRemove = commandLine;
+        // Find the command line associated with the specified product ID
+        Commandeline commandelineToRemove = null;
+        for (Commandeline commandeline : cart.getCommandelineList()) {
+            if (commandeline.getProduct().getIdPr().equals(productId)) {
+                commandelineToRemove = commandeline;
                 break;
             }
         }
 
-        if (commandLineToRemove == null) {
-            throw new RuntimeException("Product not found in the cart");
+        if (commandelineToRemove == null) {
+            throw new RuntimeException("Commandeline not found for product ID: " + productId);
         }
 
-        // Remove the command line from the cart's list of command lines
-        cart.getCommandelineList().remove(commandLineToRemove);
-
-        // Calculate the new total price of the cart
-        float totalPrice = calculateTotalPrice(cart);
+        // Remove the commandeline from the cart
+        cart.getCommandelineList().remove(commandelineToRemove);
 
         // Update the total price of the cart
+        float totalPrice = calculateTotalPrice(cart);
         cart.setPriceCart(totalPrice);
 
         // Save changes to the database
-        cartRepository.save(cart);
-        commandelineRepository.delete(commandLineToRemove); // Delete the command line from the database
+        commandelineRepository.delete(commandelineToRemove);
     }
+
     public void generateQRCodeForProduct(Long productId) {
         // Retrieve the product from the database or wherever it's stored
         Product product = getProductById(productId);
@@ -392,21 +390,6 @@ public class ProductService implements ProductIService {
     }
 
 
-
-    public Long getAvailableQuantity(Long productId) {
-        // Retrieve the product from the database
-        Optional<Product> optionalProduct = productRepository.findById(productId);
-
-        // Check if the product exists
-        if (optionalProduct.isPresent()) {
-            Product product = optionalProduct.get();
-            // Return the available quantity of the product
-            return product.getQuantityPr();
-        } else {
-            // Product not found
-            return null;
-        }
-    }
 
 
 }

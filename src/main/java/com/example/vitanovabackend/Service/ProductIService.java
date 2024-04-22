@@ -26,7 +26,7 @@ public interface ProductIService {
 
     public void addProductToCart(Long idPr, Long idUser);
 
-    public void deleteProductFromCommandelines(Long productId, Long cartId);
+    public void deleteProductFromCart(Long productId, Long userId);
     public void generateQRCodeForProduct(Long productId);
 
 

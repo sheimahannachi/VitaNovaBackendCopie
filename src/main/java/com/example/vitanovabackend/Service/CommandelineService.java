@@ -24,14 +24,14 @@ public class CommandelineService implements CommandelineIService {
     }
 
     public void updateCommandelineQuantity(Long commandelineId, int newQuantity) {
-        // Rechercher la commande ligne (commandeline) dans la base de données
+        // Retrieve the command line from the database
         Commandeline commandeline = commandelineRepository.findById(commandelineId)
-                .orElseThrow(() -> new RuntimeException("Ligne de commande non trouvée pour l'ID : " + commandelineId));
+                .orElseThrow(() -> new RuntimeException("Command line not found for ID: " + commandelineId));
 
-        // Mettre à jour la quantité de la commande ligne
+        // Update the quantity of the command line
         commandeline.setQuantity(newQuantity);
 
-        // Enregistrer les modifications dans la base de données
+        // Save the updated command line
         commandelineRepository.save(commandeline);
     }
 

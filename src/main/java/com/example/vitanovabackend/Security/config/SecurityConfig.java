@@ -90,6 +90,11 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "/Product/search",
                         "/Product/filter",
                         "/Product/addLike/{idPr}",
+                        "/Commandeline/{commandelineId}",
+                        "/Commandeline/{commandelineId}/update",
+                        "/Product/{userId}/cart/products/{productId}",
+
+
                         //firas
                         ControllerUrls.CommunityUrls.getCommunitiesOrderByChallenger,
                         ControllerUrls.CommunityUrls.addCommunity+"**",

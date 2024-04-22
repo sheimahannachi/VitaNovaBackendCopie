@@ -3,6 +3,7 @@ package com.example.vitanovabackend.Service;
 import com.example.vitanovabackend.DAO.Entities.Cart;
 import com.example.vitanovabackend.DAO.Entities.Commandeline;
 import com.example.vitanovabackend.DAO.Entities.Product;
+import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.DAO.Repositories.CartRepository;
 import com.example.vitanovabackend.DAO.Repositories.CommandelineRepository;
 import com.example.vitanovabackend.DAO.Repositories.ProductRepository;
@@ -11,9 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @org.springframework.stereotype.Service
 @AllArgsConstructor
@@ -80,6 +79,26 @@ public class CartService implements CartIService{
     }
 */
 
+    public void createUserCart(long userId) {
+        // Retrieve the user from the database
+        User user = userRepository.findById(userId).get();
+
+        // Create a new cart
+        Cart cart = new Cart();
+        user.setCart(cart);
+
+        // Save the cart to associate it with the user
+        cartRepository.save(cart);
+        userRepository.save(user);
+    }
+
+    public List<Commandeline> getProductsInCart(Long userId) {
+        Cart cart = cartRepository.findByUserIdUser(userId);
+        if (cart == null) {
+            throw new RuntimeException("Cart not found for user ID: " + userId);
+        }
+        return cart.getCommandelineList();
+    }
 
 
 

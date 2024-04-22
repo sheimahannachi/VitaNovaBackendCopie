@@ -34,12 +34,12 @@ public class CommandelineController {
         return ResponseEntity.ok(commandeline);
     }
 
-    @PutMapping("/{commandelineId}")
+    @PutMapping("/{commandelineId}/update")
     public ResponseEntity<?> updateCommandelineQuantity(@PathVariable Long commandelineId,
                                                         @RequestParam("newQuantity") int newQuantity) {
         try {
             commandelineIService.updateCommandelineQuantity(commandelineId, newQuantity);
-            return ResponseEntity.ok("La quantité de la ligne de commande a été mise à jour avec succès.");
+            return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
