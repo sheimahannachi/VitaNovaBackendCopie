@@ -27,9 +27,9 @@ public class CartController {
         return cartService.getAllCommandelinesInCart(idCart);
     }
     @GetMapping("/count/{cartId}")
-    public int getNumberOfCommandelinesInCart(@PathVariable Long cartId) {
-        System.out.println("number "  + cartService.getNumberOfCommandelinesInCart(cartId));
+    public ResponseEntity<Integer> getNumberOfCommandelinesInCart(@PathVariable Long cartId) {
         // Assuming you have a method in your service to get the count of command lines in the cart
-        return cartService.getNumberOfCommandelinesInCart(cartId);
+        int numberOfCommandelines = cartService.getNumberOfCommandelinesInCart(cartId);
+        return ResponseEntity.ok(numberOfCommandelines);
     }
 }

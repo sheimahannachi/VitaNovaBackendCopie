@@ -56,7 +56,7 @@ public class User implements UserDetails {
 
 
     @Column(name = "Community_Activity")
-    long comunityActivity=0;
+    private long comunityActivity=0;
 
 
     @Column(name = "score")

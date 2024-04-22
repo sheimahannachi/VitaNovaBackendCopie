@@ -8,13 +8,17 @@ import com.example.vitanovabackend.DAO.Repositories.CommandelineRepository;
 import com.example.vitanovabackend.DAO.Repositories.ProductRepository;
 import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @org.springframework.stereotype.Service
 @AllArgsConstructor
 public class CartService implements CartIService{
+
     CartRepository  cartRepository;
     CommandelineRepository commandelineRepository;
     ProductRepository productRepository;
@@ -35,35 +39,48 @@ public class CartService implements CartIService{
         }
         return 0;
     }
+    /*
+    public void updateProductQuantityInCart(Long cartId, Long productId, int newQuantity) {
+        // Rechercher le panier dans la base de données en fonction de l'ID du panier
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Panier non trouvé"));
 
-    public void addProductToCart(Long idUser, Long idPr, Long quantity) {
-        // Vérifier si l'utilisateur a déjà un panier
-        Cart cart = cartRepository.findByUserIdUser(idUser);
+        // Rechercher le produit dans la base de données en fonction de l'ID du produit
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Produit non trouvé"));
 
-        if (cart == null) {
-            // Si l'utilisateur n'a pas de panier, créer un nouveau panier
-            cart = new Cart();
-            cart.setUser(userRepository.findById(idUser).get());
+        // Rechercher la ligne de commande correspondant au produit dans le panier
+        Commandeline commandeline = cart.getCommandelineList().stream()
+                .filter(cl -> cl.getProduct().getIdPr().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Ligne de commande non trouvée pour le produit ID: " + productId));
+
+        // Vérifier si la nouvelle quantité est inférieure ou égale à la quantité disponible du produit
+        if (newQuantity <= product.getQuantityPr()) {
+            // Calculer la différence entre la nouvelle quantité et l'ancienne quantité
+            float quantityDifference = newQuantity - commandeline.getQuantity();
+
+            // Mettre à jour la quantité de la ligne de commande
+            commandeline.setQuantity(newQuantity);
+
+            // Mettre à jour le prix de la commande pour refléter la nouvelle quantité
+            float unitPrice = product.getPricePr();
+            float newTotalPrice = unitPrice * newQuantity;
+            commandeline.setPrixOrder(newTotalPrice);
+
+            // Mettre à jour le prix total du panier
+            float totalPrice = ProductService.calculateTotalPrice(cart);
+            cart.setPriceCart(totalPrice);
+
+            // Enregistrer les modifications dans la base de données
+            cartRepository.save(cart);
+        } else {
+            throw new RuntimeException("La quantité du produit dépasse la quantité disponible pour le produit ID: " + productId);
         }
-
-        // Récupérer le produit
-        Product product = productRepository.findById(idPr).get();
-
-        // Créer une nouvelle ligne de commande
-        Commandeline nouvelleCommandeLigne = new Commandeline();
-        nouvelleCommandeLigne.setProduct(product);
-        nouvelleCommandeLigne.setQuantity(quantity);
-        nouvelleCommandeLigne.setPrixOrder(product.getPricePr() * quantity);
-        nouvelleCommandeLigne.setDateOrder(LocalDate.now());
-
-        // Ajouter la nouvelle ligne de commande au panier
-        cart.getCommandelineList().add(nouvelleCommandeLigne);
-
-        // Mettre à jour le prix total du panier
-        float nouveauPrixTotal = cart.getPriceCart() + (product.getPricePr() * quantity);
-        cart.setPriceCart(nouveauPrixTotal);
-
-        // Sauvegarder les modifications du panier
-        cartRepository.save(cart);
     }
+*/
+
+
+
+
 }

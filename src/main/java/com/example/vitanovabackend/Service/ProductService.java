@@ -2,6 +2,11 @@ package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.*;
 import com.example.vitanovabackend.DAO.Repositories.*;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.net.ftp.FTP;
@@ -13,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,30 +39,42 @@ public class ProductService implements ProductIService {
 
     public Product addProduct(@ModelAttribute Product product, @RequestParam("image") MultipartFile file) {
         try {
-            // Récupération du nom de fichier d'origine de l'image
+            // Retrieve the original filename of the image
             String originalFilename = file.getOriginalFilename();
 
-            // Génération d'un nom de fichier unique à l'aide d'UUID pour éviter les conflits de noms de fichiers
+            // Generate a unique filename using UUID to avoid filename conflicts
             String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
 
-            // Téléchargement de l'image sur le serveur avec le nom de fichier généré
+            // Upload the image to the server with the generated filename
             uploadImage(file, fileName);
 
-            // Attribution du nom de fichier généré à l'attribut 'picturePr' du produit
+            // Set the generated filename to the 'picturePr' attribute of the product
             product.setPicturePr(fileName);
 
-            // Définition de l'attribut 'archivePr' du produit à 'false' car le nouveau produit ne doit pas être archivé par défaut
+            // Set the 'archivePr' attribute of the product to 'false' as the new product should not be archived by default
             product.setArchivePr(false);
+
+            // Save the product in the database
+            Product savedProduct = productRepository.save(product);
+
+            // Generate QR code for the product
+            generateQRCodeForProduct(savedProduct.getIdPr());
+
+            // Get the QR code URL for the generated QR code
+            String qrCodeUrl = "http://localhost:80/aziz/QRCode_" + savedProduct.getIdPr() + ".png";
+
+            // Set the QR code URL to the 'qrCodeUrl' attribute of the saved product
+            savedProduct.setQrCodeUrl(qrCodeUrl);
+            // Save the product with the QR code URL in the database
+            savedProduct = productRepository.save(savedProduct);
+
+            // Return the saved product with the QR code URL
+            return savedProduct;
         } catch (IOException e) {
-            // Gestion des erreurs d'entrée/sortie lors du téléchargement de l'image
+            // Handle IO errors when uploading the image
             e.printStackTrace();
+            return null;
         }
-
-        // Sauvegarde du produit dans la base de données
-        Product savedProduct = productRepository.save(product);
-
-        // Renvoi du produit sauvegardé
-        return savedProduct;
     }
 
     public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, @RequestParam("image") MultipartFile file) {
@@ -332,6 +351,63 @@ public class ProductService implements ProductIService {
         cartRepository.save(cart);
         commandelineRepository.delete(commandLineToRemove); // Delete the command line from the database
     }
+    public void generateQRCodeForProduct(Long productId) {
+        // Retrieve the product from the database or wherever it's stored
+        Product product = getProductById(productId);
+        if (product == null) {
+            throw new RuntimeException("Product not found with ID: " + productId);
+        }
+
+        // Generate QR code text (you can customize this based on product details)
+        String qrCodeText = "Product ID: " + productId + "\n"
+                + "Description: " + product.getDescriptionPr() + "\n"
+                + "Price: " + product.getPricePr() + "\n"
+                + "Quantity: " + product.getQuantityPr();
+
+
+        // Set QR code image width and height
+        int width = 300;
+        int height = 300;
+
+        // Set file path for saving the QR code image (change as needed)
+        String uploadDirectory = "C:/xampp/htdocs/aziz/";
+        String fileName = "QRCode_" + productId + ".png";
+        String filePath = uploadDirectory + fileName;
+
+        // Generate QR code and save it to file
+        try {
+            generateQRCode(qrCodeText, width, height, filePath);
+            System.out.println("QR Code generated successfully for product ID: " + productId);
+        } catch (WriterException | IOException e) {
+            System.out.println("Error generating QR Code for product ID " + productId + ": " + e.getMessage());
+        }
+    }
+
+    private void generateQRCode(String text, int width, int height, String filePath)
+            throws WriterException, IOException {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
+        Path path = FileSystems.getDefault().getPath(filePath);
+        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+    }
+
+
+
+    public Long getAvailableQuantity(Long productId) {
+        // Retrieve the product from the database
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+
+        // Check if the product exists
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            // Return the available quantity of the product
+            return product.getQuantityPr();
+        } else {
+            // Product not found
+            return null;
+        }
+    }
+
 
 }
 

@@ -27,10 +27,11 @@ public class Product {
     float pricePr ;
     String picturePr;
     String descriptionPr ;
-    int quantityPr;
+    Long quantityPr;
     String statusPr;
     boolean archivePr;
     int likeCount;
+    private String qrCodeUrl;
 
     @ManyToOne
     private FTPServe ftpServe;
@@ -38,7 +39,6 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "product")
     @JsonIgnore
     List<LikeProduct> likeProducts = new ArrayList<>();
-
 
 
 }
