@@ -51,7 +51,7 @@ public class Community {
 
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "community")
+    @ManyToMany
     List<User> membres = new ArrayList<>();
 
     @JsonManagedReference

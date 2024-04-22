@@ -24,11 +24,9 @@ public class Tracker {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-<<<<<<< HEAD
     @OneToOne
     Hydration hydration;
 
-=======
     private double consumedcalories;
     private Boolean archive;
     private String notification;
@@ -39,5 +37,4 @@ public class Tracker {
 
     @OneToMany(mappedBy = "tracker")
     private List<FoodCard> foodCards = new ArrayList<>();
->>>>>>> ONS
 }

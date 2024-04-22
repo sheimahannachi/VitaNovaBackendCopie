@@ -5,25 +5,46 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31abc077-4c1a-419e-b05b-4c77dc131f29" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/FoodCard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/FoodCardRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/FoodCard$FoodCardBuilder.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/FoodCard.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/FoodCardRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/FoodController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/FoodController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Food.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Food.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Community.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Community.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Tracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Tracker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/FoodCardRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/FoodCardRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Security/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/FoodService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/FoodService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/IFoodService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/IFoodService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/WebMvcConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/WebMvcConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/WebMvcConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Configuration/ControllerUrls$CommunicationUrl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Configuration/ControllerUrls$CommunicationUrl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Configuration/ControllerUrls$UserUrls.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Configuration/ControllerUrls$UserUrls.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/ChatController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/ChatController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/CommunicationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/CommunicationController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/FoodController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/FoodController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/WorkoutController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/WorkoutController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Communication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Communication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Community.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Community.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/InitializationFlag.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Tracker$TrackerBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Tracker$TrackerBuilder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Tracker.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/Tracker.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/User$UserBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/User$UserBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Entities/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/CommunicationRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/CommunicationRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/ExerciseRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/ExerciseRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/FoodCardRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/FoodCardRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/InitializationFlagRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/WorkoutProgramRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/DAO/Repositories/WorkoutProgramRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Security/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Security/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/CommunicationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/CommunicationService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/FoodService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/FoodService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/IFoodService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/IFoodService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/WebMvcConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/WebMvcConfiguration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/ICommunicationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/ICommunicationService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/Iworkout.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/Iworkout.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/Workout.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/Workout.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/WebMvcConfiguration.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/conf/CsvDataInitializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/conf/CsvDataInitializer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/conf/WebMvcConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/conf/WebMvcConfiguration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/exercises (1).csv" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/exercises (1).csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/food.json" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/food.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,24 +78,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Merging main",
-    "last_opened_file_path": "C:/Users/ASUS/Desktop/gitMerge/VitaNovaBackendCopie",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "spring.configuration.checksum": "4830f180d003b73dc020af228d26b462",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ONS&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ASUS/Desktop/gitMerge/VitaNovaBackendCopie&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;4830f180d003b73dc020af228d26b462&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Spring Boot.VitaNovabackendApplication">
     <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.vitanovabackend.VitaNovabackendApplication" />
@@ -111,10 +132,16 @@
       <workItem from="1713186067096" duration="12873000" />
       <workItem from="1713244289283" duration="16943000" />
       <workItem from="1713609842700" duration="9000" />
+      <workItem from="1713697922947" duration="7816000" />
+      <workItem from="1713732698084" duration="2891000" />
+      <workItem from="1713824021120" duration="579000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>
