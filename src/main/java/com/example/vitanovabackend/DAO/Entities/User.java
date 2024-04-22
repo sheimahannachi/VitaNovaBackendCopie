@@ -79,7 +79,7 @@ public class User implements UserDetails {
     List<Food>foods=new ArrayList<>();
 
 
-    @JsonBackReference
+    @JsonBackReference("communityBackRef")
     @ManyToOne( cascade = CascadeType.ALL )
     Community community;
 

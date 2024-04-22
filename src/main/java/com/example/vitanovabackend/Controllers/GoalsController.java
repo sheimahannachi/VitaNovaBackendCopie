@@ -24,9 +24,10 @@ IPersonalGoalsService iservices;
     }
 
     @PostMapping("AddGoal")
-    public PersonalGoals AddGoal(@RequestBody PersonalGoals personalGoals){
+    public User AddGoal(@RequestBody PersonalGoals personalGoals , @RequestParam("userId") long userId){
         System.out.println("adding");
-        return (iservices.AddPersonalGoal(personalGoals));
+
+        return (iservices.AddPersonalGoalAndAffect(personalGoals,userId));
     }
 
 

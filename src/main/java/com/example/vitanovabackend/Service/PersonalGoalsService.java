@@ -2,7 +2,9 @@ package com.example.vitanovabackend.Service;
 
 
 import com.example.vitanovabackend.DAO.Entities.PersonalGoals;
+import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.DAO.Repositories.PersonalGoalsRepository;
+import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +15,22 @@ import java.util.List;
 public class PersonalGoalsService implements IPersonalGoalsService{
     PersonalGoalsRepository personalGoalsRepository;
 
+UserRepository userRepository;
     @Override
     public PersonalGoals AddPersonalGoal (PersonalGoals personalGoals){
         return personalGoalsRepository.save(personalGoals);
     }
+
+    @Override
+    public User AddPersonalGoalAndAffect(PersonalGoals personalGoals, long userId) {
+if(userRepository.findById(userId).isPresent()){
+User user=userRepository.findById(userId).get();
+        personalGoalsRepository.save(personalGoals);
+        user.setPersonalGoals(personalGoals);
+        return userRepository.save(user);}
+return null;
+    }
+
 
     @Override
     public int DeleteGoal(Long Id){
