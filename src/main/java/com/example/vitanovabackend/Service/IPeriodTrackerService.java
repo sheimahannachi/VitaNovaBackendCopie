@@ -1,6 +1,8 @@
 package com.example.vitanovabackend.Service;
 
-import com.example.vitanovabackend.DAO.Entities.PeriodTracker;
+import com.example.vitanovabackend.DAO.Entities.*;
+
+import java.time.LocalDate;
 
 import java.util.List;
 
@@ -13,5 +15,14 @@ public interface IPeriodTrackerService {
     String archivePeriod(Long idPeriod);
     List<PeriodTracker> searchArchivedPeriodsForUser( Long idUser);
 
+    LocalDate calculateOvulationDate (PeriodTracker periodTracker);
+    LocalDate calculateNextPeriodDate (PeriodTracker periodTracker);
+    String calculateCyclePhase (PeriodTracker periodTracker);
+    List<User> findByPeriodNotNull();
+    List<PeriodTracker> getNonArchivedPeriodTrackers();
+    PeriodTracker getPeriodTrackerById (long idPeriod);
+    List<SymptomRating> getSymptomsAndRatingsForPeriod(long periodId);
+     List<Exercise> getPeriodExercises();
+    List<Food> getPeriodFood();
 }
 

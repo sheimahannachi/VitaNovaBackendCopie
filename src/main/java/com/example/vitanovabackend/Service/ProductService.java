@@ -1,18 +1,16 @@
 package com.example.vitanovabackend.Service;
 
-import com.example.vitanovabackend.DAO.Entities.LikeProduct;
-import com.example.vitanovabackend.DAO.Entities.Product;
-import com.example.vitanovabackend.DAO.Entities.User;
-import com.example.vitanovabackend.DAO.Repositories.LikeProductRepository;
-import com.example.vitanovabackend.DAO.Repositories.ProductRepository;
-import com.example.vitanovabackend.DAO.Repositories.UserRepository;
+import com.example.vitanovabackend.DAO.Entities.*;
+import com.example.vitanovabackend.DAO.Repositories.*;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.Value;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,99 +18,85 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
 @AllArgsConstructor
 public class ProductService implements ProductIService {
 
-
+    CartRepository cartRepository;
     private final LikeProductRepository likeProductRepository;
     private UserRepository userRepository;
-
+    private CommandelineRepository commandelineRepository;
     private final ProductRepository productRepository;
 
     public static String uploadDirectory = "C:/xampp/htdocs/aziz/";
 
 
-   /* public Product addProduct(@ModelAttribute Product product, @RequestParam("image") MultipartFile file ) {
+    public Product addProduct(@ModelAttribute Product product, @RequestParam("image") MultipartFile file) {
         try {
-            // Récupération du chemin du répertoire de téléchargement
-            Path directoryPath = Paths.get(uploadDirectory);
-            // Vérification de l'existence du répertoire, s'il n'existe pas, il est créé
-            if (!Files.exists(directoryPath)) {
-                Files.createDirectories(directoryPath);
-            }
-            // Récupération du nom de fichier d'origine
+            // Retrieve the original filename of the image
             String originalFilename = file.getOriginalFilename();
-            // Génération d'un nom de fichier unique en utilisant UUID pour éviter les conflits de noms
+
+            // Generate a unique filename using UUID to avoid filename conflicts
             String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
-            // Définition du chemin complet du fichier à télécharger
-            Path filePath = Paths.get(uploadDirectory, fileName);
-            // Écriture du contenu du fichier dans le chemin spécifié
-            Files.write(filePath, file.getBytes());
-            // Construction de l'URL de l'image en utilisant le nom du fichier
-            String imageUrl = fileName;
-            // Définition de l'URL de l'image sur l'objet Product
-            product.setPicturePr(imageUrl);
-            // Définition de l'archivePr sur false, indiquant que le produit n'est pas archivé
-            product.setArchivePr(false);
-        } catch (IOException e) {
-            // Gestion des erreurs d'entrée/sortie en cas de problème lors de l'écriture du fichier
-            e.printStackTrace();
-        }
-        // Sauvegarde du produit dans la base de données
-        Product savedProduct = productRepository.save(product);
-        // Renvoi du produit sauvegardé
-        return savedProduct;
-    }
-*/
 
-
-    public Product addProduct(@ModelAttribute Product product, @RequestParam("image") MultipartFile file ) {
-        try {
-
-            String originalFilename = file.getOriginalFilename();
-            String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
+            // Upload the image to the server with the generated filename
             uploadImage(file, fileName);
 
+            // Set the generated filename to the 'picturePr' attribute of the product
             product.setPicturePr(fileName);
+
+            // Set the 'archivePr' attribute of the product to 'false' as the new product should not be archived by default
             product.setArchivePr(false);
 
+            // Save the product in the database
+            Product savedProduct = productRepository.save(product);
 
+            // Generate QR code for the product
+            generateQRCodeForProduct(savedProduct.getIdPr());
+
+            // Get the QR code URL for the generated QR code
+            String qrCodeUrl = "http://localhost:80/aziz/QRCode_" + savedProduct.getIdPr() + ".png";
+
+            // Set the QR code URL to the 'qrCodeUrl' attribute of the saved product
+            savedProduct.setQrCodeUrl(qrCodeUrl);
+            // Save the product with the QR code URL in the database
+            savedProduct = productRepository.save(savedProduct);
+
+            // Return the saved product with the QR code URL
+            return savedProduct;
         } catch (IOException e) {
-
-
+            // Handle IO errors when uploading the image
             e.printStackTrace();
+            return null;
         }
-        // Sauvegarde du produit dans la base de données
-        Product savedProduct = productRepository.save(product);
-        // Renvoi du produit sauvegardé
-        return savedProduct;
     }
 
-
-/*
-    public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, @RequestParam("image") MultipartFile newImage) {
+    public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, @RequestParam("image") MultipartFile file) {
         try {
-
-            Path directoryPath = Paths.get(uploadDirectory);
-            if (!Files.exists(directoryPath)) {
-                Files.createDirectories(directoryPath);
+            Product pr = productRepository.findById(idPr)
+                    .orElseThrow(() -> new RuntimeException("Produit introuvable"));
+            // Vérifier si le fichier est vide avant de le traiter
+            if (!file.isEmpty()) {
+                // Générer un nom de fichier unique pour l'image
+                String originalFilename = file.getOriginalFilename();
+                String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
+                // Téléverser la nouvelle image sur le serveur FTP
+                uploadImage(file, fileName);
+                // Mettre à jour le nom de l'image dans le produit avec le nouveau nom généré
+                // updatedProduct.setPicturePr(fileName); // Utilise le nouveau nom de fichier généré
+                pr.setPicturePr(fileName);
             }
-            String originalFilename = newImage.getOriginalFilename();
-            String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
-            Path newFilePath = Paths.get(uploadDirectory, fileName);
-            Files.write(newFilePath, newImage.getBytes());
 
-            Product pr = productRepository.findById(idPr).orElseThrow(() -> new RuntimeException("Produit introuvable"));
+            // Récupérer le produit à mettre à jour depuis la base de données
+
+
+            // Mettre à jour les attributs du produit avec les nouvelles valeurs
             pr.setNamePr(updatedProduct.getNamePr());
             pr.setCategoriePr(updatedProduct.getCategoriePr());
             pr.setPricePr(updatedProduct.getPricePr());
@@ -120,49 +104,14 @@ public class ProductService implements ProductIService {
             pr.setDescriptionPr(updatedProduct.getDescriptionPr());
             pr.setStatusPr(updatedProduct.getStatusPr());
 
-            // Mise à jour du nom de l'image avec le nouveau nom généré
-            pr.setPicturePr(fileName);
+            // Sauvegarder et retourner le produit mis à jour
             return productRepository.save(pr);
         } catch (IOException e) {
-            e.printStackTrace(); // Gérer l'erreur de manière appropriée (par exemple, journalisez-la)
+            // Gérer l'erreur de manière appropriée (par exemple, journaliser-la)
+            e.printStackTrace();
             throw new RuntimeException("Erreur lors de la mise à jour du produit", e);
         }
-    }*/
-public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, @RequestParam("image") MultipartFile file) {
-    try {
-        Product pr = productRepository.findById(idPr)
-                .orElseThrow(() -> new RuntimeException("Produit introuvable"));
-        // Vérifier si le fichier est vide avant de le traiter
-        if (!file.isEmpty()) {
-            // Générer un nom de fichier unique pour l'image
-            String originalFilename = file.getOriginalFilename();
-            String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
-            // Téléverser la nouvelle image sur le serveur FTP
-            uploadImage(file, fileName);
-            // Mettre à jour le nom de l'image dans le produit avec le nouveau nom généré
-           // updatedProduct.setPicturePr(fileName); // Utilise le nouveau nom de fichier généré
-            pr.setPicturePr(fileName);
-        }
-
-        // Récupérer le produit à mettre à jour depuis la base de données
-
-
-        // Mettre à jour les attributs du produit avec les nouvelles valeurs
-        pr.setNamePr(updatedProduct.getNamePr());
-        pr.setCategoriePr(updatedProduct.getCategoriePr());
-        pr.setPricePr(updatedProduct.getPricePr());
-        pr.setQuantityPr(updatedProduct.getQuantityPr());
-        pr.setDescriptionPr(updatedProduct.getDescriptionPr());
-        pr.setStatusPr(updatedProduct.getStatusPr());
-
-        // Sauvegarder et retourner le produit mis à jour
-        return productRepository.save(pr);
-    } catch (IOException e) {
-        // Gérer l'erreur de manière appropriée (par exemple, journaliser-la)
-        e.printStackTrace();
-        throw new RuntimeException("Erreur lors de la mise à jour du produit", e);
     }
-}
 
 
     @Override
@@ -176,16 +125,28 @@ public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, 
     }
     @Override
     public ResponseEntity<String> archiverProduct(Long idPr) {
+        // Recherche du produit dans la base de données par son identifiant
         Optional<Product> optionalProduct = productRepository.findById(idPr);
+
+        // Vérifier si le produit existe dans la base de données
         if (optionalProduct.isPresent()) {
+            // Si le produit existe, le récupérer de l'Optional
             Product produit = optionalProduct.get();
-            produit.setArchivePr(true); // Met à jour la valeur d'archivePr à true
+
+            // Mettre à jour la valeur de l'attribut 'archivePr' du produit à true pour l'archiver
+            produit.setArchivePr(true);
+
+            // Sauvegarder le produit mis à jour dans la base de données
             productRepository.save(produit);
+
+            // Renvoyer une réponse HTTP 200 (OK) avec un message de succès
             return ResponseEntity.ok().body("Le produit a été archivé avec succès.");
         } else {
+            // Si le produit n'est pas trouvé, renvoyer une réponse HTTP 404 (Not Found)
             return ResponseEntity.notFound().build();
         }
     }
+
 
     @Override
     public List<Product> searchProductsByName(String searchTerm) {
@@ -194,64 +155,46 @@ public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, 
 
 
     public void uploadImage(MultipartFile file, String fileName) throws IOException {
+        // Création d'une instance FTPClient
         FTPClient ftpClient = new FTPClient();
         try {
+            // Connexion au serveur FTP
             ftpClient.connect("192.168.174.134", 21);
+            // Authentification avec un nom d'utilisateur et un mot de passe
             ftpClient.login("aziz", "aziz123");
+            // Activation du mode passif pour éviter les problèmes de connexion
             ftpClient.enterLocalPassiveMode();
+            // Définition du type de fichier comme binaire
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
+            // Récupération du flux d'entrée du fichier
             InputStream inputStream = file.getInputStream();
 
-
-            boolean done = ftpClient.storeFile(fileName, inputStream);
+            // Stockage du fichier sur le serveur FTP avec le nom spécifié
+            boolean done = ftpClient.storeFile(fileName, inputStream); // obtenir un flux d'entre à partir du fichier téléchargé
             if (done) {
                 System.out.println("File uploaded successfully.");
-
             } else {
                 System.out.println("Failed to upload file.");
             }
         } catch (IOException e) {
+            // Gestion des exceptions en cas d'erreur lors du téléchargement du fichier
             System.out.println("Error occurred during file upload: " + e.getMessage());
             e.printStackTrace();
         } finally {
+            // Déconnexion du client FTP dans une clause finally pour garantir qu'elle est toujours exécutée
             try {
                 if (ftpClient.isConnected()) {
                     ftpClient.logout();
                 }
                 ftpClient.disconnect();
             } catch (IOException ex) {
+                // Gestion des exceptions lors de la déconnexion du client FTP
                 System.out.println("Error occurred while disconnecting FTP client: " + ex.getMessage());
                 ex.printStackTrace();
             }
         }
     }
-
-    public void addLike(/*Long idUser,*/ Long idPr) {
-        // Recherche de l'utilisateur et du produit correspondants
-       // User user = userRepository.findById(idUser).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'ID : " + idUser));
-        Product product = productRepository.findById(idPr).orElseThrow(() -> new EntityNotFoundException("Produit non trouvé avec l'ID : " + idPr));
-
-        // Création du like pour le produit
-        LikeProduct likeProduct = new LikeProduct();
-        //likeProduct.setUser(user);
-        likeProduct.setProduct(product);
-        likeProductRepository.save(likeProduct);
-
-        // Incrémentation du nombre de likes du produit
-        product.setLikeCount(product.getLikeCount() + 1);
-        productRepository.save(product);
-    }
-        public List<Product> getProductsSortedByLikes () {
-            return productRepository.findAllByOrderByLikeCountDesc();
-        }
-
-        public void incrementLikeCount (Long productId){
-            Product product = productRepository.findById(productId)
-                    .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
-            product.setLikeCount(product.getLikeCount() + 1);
-            productRepository.save(product);
-        }
 
     @Override
     public List<Product> filterProducts(String categoriePr, Float pricePr) {
@@ -281,13 +224,172 @@ public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, 
         return filteredProducts;
     }
 
-    @Override
-    public void updateProductImage(Long productId, String imagePath) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Produit non trouvé avec l'ID : " + productId));
-        product.setPicturePr(imagePath);
+    public void addLike(/*Long idUser,*/ Long idPr) {
+        // Recherche de l'utilisateur et du produit correspondants
+        // User user = userRepository.findById(idUser).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'ID : " + idUser));
+        Product product = productRepository.findById(idPr).orElseThrow(() -> new EntityNotFoundException("Produit non trouvé avec l'ID : " + idPr));
+
+        // Création du like pour le produit
+        LikeProduct likeProduct = new LikeProduct();
+        //likeProduct.setUser(user);
+        likeProduct.setProduct(product);
+        likeProductRepository.save(likeProduct);
+
+        // Incrémentation du nombre de likes du produit
+        product.setLikeCount(product.getLikeCount() + 1);
         productRepository.save(product);
     }
+
+    public void addProductToCart(Long idPr, Long idUser) throws RuntimeException {
+        // Retrieve the user from the database based on userId
+        User user = userRepository.findById(idUser).orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Retrieve the product from the database based on productId
+        Product product = getProductById(idPr);
+
+        // Check if the product exists
+        if (product == null) {
+            throw new RuntimeException("Product not found");
+        }
+
+        // Retrieve the cart associated with the user
+        Cart cart = user.getCart();
+
+        // If user doesn't have a cart, create a new one and associate it
+        if (cart == null) {
+            cart = new Cart();
+            cart = cartRepository.save(cart);
+            user.setCart(cart); // Associate the cart with the user
+        }
+
+        // Check if the product already exists in the cart's command lines
+        Commandeline existingCommandLine = cart.getCommandelineList().stream()
+                .filter(commandLine -> commandLine.getProduct().getIdPr().equals(idPr))
+                .findFirst()
+                .orElse(null);
+
+        // Calculate total price of the cart
+        float totalPrice = calculateTotalPrice(cart);
+
+        if (existingCommandLine != null) {
+            // If the product already exists in the cart, update the existing command line
+            float newQuantity = existingCommandLine.getQuantity() + 1; // Increment quantity by 1
+            if (newQuantity <= product.getQuantityPr()) {
+                existingCommandLine.setQuantity(newQuantity);
+                existingCommandLine.setPrixOrder(existingCommandLine.getProduct().getPricePr() * newQuantity);
+            } else {
+                throw new RuntimeException("Product quantity exceeded for product ID: " + idPr);
+            }
+        } else {
+            // If the product doesn't exist in the cart, create a new command line
+            if (1 <= product.getQuantityPr()) { // Check if product has enough quantity
+                Commandeline commandLine = new Commandeline();
+                commandLine.setProduct(product);
+                commandLine.setQuantity(1); // Set default quantity to 1
+                commandLine.setPrixOrder(product.getPricePr()); // Set total price as price of one unit
+                commandLine.setCart(cart);
+                commandelineRepository.save(commandLine);
+
+            } else {
+                throw new RuntimeException("Insufficient quantity for product ID: " + idPr);
+            }
+        }
+
+        // Update the total price of the cart
+        totalPrice = calculateTotalPrice(cart);
+
+        // Save changes to the database
+        cart.setPriceCart(totalPrice);
+        cartRepository.save(cart);
+        userRepository.save(user);
+
+    }
+
+
+    // Calculate total price of the cart
+    private float calculateTotalPrice(Cart cart) {
+        float totalPrice = 0;
+        for (Commandeline commandeline : cart.getCommandelineList()) {
+            totalPrice += commandeline.getProduct().getPricePr() * commandeline.getQuantity();
+        }
+        return totalPrice;
+    }
+    public void deleteProductFromCart(Long userId, Long productId) {
+        // Retrieve the user from the database based on userId
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        // Get the cart associated with the user
+        Cart cart = user.getCart();
+        if (cart == null) {
+            throw new RuntimeException("Cart not found for user with ID: " + userId);
+        }
+
+        // Find the command line associated with the specified product ID
+        Commandeline commandelineToRemove = null;
+        for (Commandeline commandeline : cart.getCommandelineList()) {
+            if (commandeline.getProduct().getIdPr().equals(productId)) {
+                commandelineToRemove = commandeline;
+                break;
+            }
+        }
+
+        if (commandelineToRemove == null) {
+            throw new RuntimeException("Commandeline not found for product ID: " + productId);
+        }
+
+        // Remove the commandeline from the cart
+        cart.getCommandelineList().remove(commandelineToRemove);
+
+        // Update the total price of the cart
+        float totalPrice = calculateTotalPrice(cart);
+        cart.setPriceCart(totalPrice);
+
+        // Save changes to the database
+        commandelineRepository.delete(commandelineToRemove);
+    }
+
+    public void generateQRCodeForProduct(Long productId) {
+        // Retrieve the product from the database or wherever it's stored
+        Product product = getProductById(productId);
+        if (product == null) {
+            throw new RuntimeException("Product not found with ID: " + productId);
+        }
+
+        // Generate QR code text (you can customize this based on product details)
+        String qrCodeText = "Product ID: " + productId + "\n"
+                + "Description: " + product.getDescriptionPr() + "\n"
+                + "Price: " + product.getPricePr() + "\n"
+                + "Quantity: " + product.getQuantityPr();
+
+
+        // Set QR code image width and height
+        int width = 300;
+        int height = 300;
+
+        // Set file path for saving the QR code image (change as needed)
+        String uploadDirectory = "C:/xampp/htdocs/aziz/";
+        String fileName = "QRCode_" + productId + ".png";
+        String filePath = uploadDirectory + fileName;
+
+        // Generate QR code and save it to file
+        try {
+            generateQRCode(qrCodeText, width, height, filePath);
+            System.out.println("QR Code generated successfully for product ID: " + productId);
+        } catch (WriterException | IOException e) {
+            System.out.println("Error generating QR Code for product ID " + productId + ": " + e.getMessage());
+        }
+    }
+
+    private void generateQRCode(String text, int width, int height, String filePath)
+            throws WriterException, IOException {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
+        Path path = FileSystems.getDefault().getPath(filePath);
+        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+    }
+
+
 
 
 }
@@ -295,35 +397,8 @@ public Product updateProduct(Long idPr, @ModelAttribute Product updatedProduct, 
 
 
 
-/*public Product addProduct(@ModelAttribute Product product, @RequestParam("image") MultipartFile file ,Long idOrder) {
 
-            try {
-                Path directoryPath = Paths.get(uploadDirectory);
-                if (!Files.exists(directoryPath)) {
-                    Files.createDirectories(directoryPath);
-                }
-                String originalFilename = file.getOriginalFilename();
-                String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
-                Path filePath = Paths.get(uploadDirectory, fileName);
-                Files.write(filePath, file.getBytes());
-                // Construire l'URL de l'image
-                String imageUrl = fileName;
-                // Définir l'URL de l'image sur l'objet Product
-                product.setPicturePr(imageUrl);
-                product.setArchivePr(false);
 
-                // Enregistrer le produit dans la base de données
-                Product savedProduct = productRepository.save(product);
 
-                // Si orderId est fourni, ajouter le produit à la commande
-                if (idOrder != null) {
-                    orderServcie.addProductToOrder(idOrder, savedProduct.getIdPr());
-                }
 
-                return savedProduct;
-            } catch (IOException e) {
-                e.printStackTrace();
-                // Gérer l'erreur de manière appropriée
-                throw new RuntimeException("Erreur lors de l'ajout du produit", e);
-            }
-        }*/
+

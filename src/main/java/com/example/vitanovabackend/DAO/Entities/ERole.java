@@ -1,6 +1,6 @@
 package com.example.vitanovabackend.DAO.Entities;
 
-public enum Role {
+public enum ERole {
     ADMIN,USER,COACH,NUTRITIONIST
 
 }
