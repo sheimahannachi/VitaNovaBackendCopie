@@ -27,5 +27,6 @@ public interface IPeriodTrackerService {
     List<LocalDate> calculateFertileWindow(PeriodTracker periodTracker);
 
 
+
 }
 

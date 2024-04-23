@@ -1,5 +1,7 @@
 package com.example.vitanovabackend.DAO.Entities;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,5 +30,6 @@ public class Cart {
     List<Commandeline> commandelineList = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "cart")
+    @JsonBackReference
     User user;
 }

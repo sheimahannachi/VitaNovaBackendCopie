@@ -23,16 +23,16 @@ public class PeriodTrackerController {
     }
     @DeleteMapping ("deletePeriodinformation")
     public void deletePeriodInformation(@RequestParam long idPeriod ) {
-         iPeriodTrackerService.deletePeriodInformation(idPeriod );
+        iPeriodTrackerService.deletePeriodInformation(idPeriod );
     }
     @PutMapping ("UpdatePeriodinformation")
     public PeriodTracker UpdatePeriodinformation(@RequestBody PeriodTracker UpdatedperiodTracker ,@RequestParam long idPeriod ) {
         return iPeriodTrackerService.UpdatePeriodInformation(UpdatedperiodTracker,idPeriod);
     }
-   @GetMapping("getPeriodTracker")
-   public List<PeriodTracker> getPeriodTracker(){
+    @GetMapping("getPeriodTracker")
+    public List<PeriodTracker> getPeriodTracker(){
         return iPeriodTrackerService.getPeriodTracker();
-}
+    }
 
     @GetMapping("getPeriodTrackerById/{idPeriod}")
     public PeriodTracker getPeriodTrackerById(@PathVariable("idPeriod") long idPeriod) {
@@ -43,10 +43,10 @@ public class PeriodTrackerController {
         String result = iPeriodTrackerService.archivePeriod(idPeriod);
         return ResponseEntity.ok(result);
     }
-  @GetMapping("ArchivedPeriods")
+    @GetMapping("ArchivedPeriods")
     public List<PeriodTracker>searchArchivedPeriodsForUser(@RequestParam long idUser){
-      return iPeriodTrackerService.searchArchivedPeriodsForUser(idUser);
-  }
+        return iPeriodTrackerService.searchArchivedPeriodsForUser(idUser);
+    }
 
     @GetMapping("/nonArchivedPeriodTrackers")
     public List<PeriodTracker> getNonArchivedPeriodTrackers() {

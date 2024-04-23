@@ -77,6 +77,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "RestController/deleteFoodCard",
                         "RestController/updateFoodCard/{id}",
 
+
                        //sheima
                         "/PeriodTracker/AddPeriodInformation",
                         "/PeriodTracker/UpdatePeriodinformation",
@@ -102,6 +103,17 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "/Product/search",
                         "/Product/filter",
                         "/Product/addLike/{idPr}",
+
+                        "Cart/Commandeline/{commandelineId}",
+                        "Cart/Commandeline/{commandelineId}/update",
+                        "Cart/Product/{userId}/cart/products/{productId}",
+                       " Cart/{userId}/cart/products",
+                        "Cart/create/{userId}",
+                        "Cart/count/{cartId}",
+                        "Cart/commandelines/{idCart}",
+
+
+
                         //firas
                         ControllerUrls.CommunityUrls.getCommunitiesOrderByChallenger,
                         ControllerUrls.CommunityUrls.addCommunity+"**",
@@ -122,6 +134,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         ControllerUrls.CommunicationUrl.setSeenToCommunicationsOneToOne,
 
 
+                        "/api/user/admin/**","/Cart/**","/Product/**",
                         "/ws/**").permitAll()
 
 
@@ -131,6 +144,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/user/admin/**").hasRole("ADMIN")
                 .and()
+
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

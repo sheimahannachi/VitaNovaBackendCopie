@@ -150,12 +150,12 @@ public class FoodService implements IFoodService {
 
     @Override
     public void deleteHydra(Long id) {
-    hydrationRepository.deleteById(id);
+        hydrationRepository.deleteById(id);
     }
 
     @Override
     public void deleteHydra2(Hydration hydration) {
-    hydrationRepository.delete(hydration);
+        hydrationRepository.delete(hydration);
     }
 
     @Override
