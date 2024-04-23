@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface IPeriodTrackerService {
     PeriodTracker AddPeriodInformation(PeriodTracker periodTracker);
+
+    JournalEntry AddJournal(JournalEntry journalEntry);
     void deletePeriodInformation(long idPeriod);
     List<PeriodTracker> getPeriodTracker();
     PeriodTracker UpdatePeriodInformation(PeriodTracker UpdatedperiodTracker , long idPeriod );
