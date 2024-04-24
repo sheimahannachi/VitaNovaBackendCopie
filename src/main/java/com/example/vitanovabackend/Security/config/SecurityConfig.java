@@ -64,6 +64,19 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "RestController/UpdateExercise/{id}",
                         "RestController/addExercise",
                         "RestController/searchEx",
+                         //ons
+                        "RestController/addFood",
+                        "RestController/updateFood/{id}",
+                        "RestController/deleteFood",
+                        "RestController/archiveFood/{id}",
+                        "RestController/getFood",
+                        "RestController/lookup",
+                        "RestController/getcalories",
+                        "RestController/ListTracker",
+                        "RestController/get-food-cards",
+                        "RestController/deleteFoodCard",
+                        "RestController/updateFoodCard/{id}",
+
 
                        //sheima
                         "/PeriodTracker/AddPeriodInformation",
@@ -90,9 +103,15 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "/Product/search",
                         "/Product/filter",
                         "/Product/addLike/{idPr}",
-                        "/Commandeline/{commandelineId}",
-                        "/Commandeline/{commandelineId}/update",
-                        "/Product/{userId}/cart/products/{productId}",
+
+                        "Cart/Commandeline/{commandelineId}",
+                        "Cart/Commandeline/{commandelineId}/update",
+                        "Cart/Product/{userId}/cart/products/{productId}",
+                       " Cart/{userId}/cart/products",
+                        "Cart/create/{userId}",
+                        "Cart/count/{cartId}",
+                        "Cart/commandelines/{idCart}",
+
 
 
                         //firas
@@ -114,6 +133,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         ControllerUrls.CommunicationUrl.getComunicationbySenderAndReciever,
                         ControllerUrls.CommunicationUrl.setSeenToCommunicationsOneToOne,
 
+
                         "/api/user/admin/**","/Cart/**","/Product/**",
                         "/ws/**").permitAll()
 
@@ -121,6 +141,8 @@ public class SecurityConfig implements WebSecurityConfigurer {
 
                 .and()
                 .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**","/api/user/admin/UpdateUser").authenticated()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/api/user/admin/**").hasRole("ADMIN")
                 .and()
 
                 .sessionManagement()

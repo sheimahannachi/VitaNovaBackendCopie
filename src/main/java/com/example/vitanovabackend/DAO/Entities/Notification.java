@@ -18,10 +18,7 @@ import java.util.List;
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-
-
+    private long idNotif;
     @Column(name = "Content")
     private String Content;
     @Column(name = "priority")
@@ -34,5 +31,6 @@ public class Notification {
 
     @ManyToOne
     PeriodTracker periodTracker;
+
 
 }

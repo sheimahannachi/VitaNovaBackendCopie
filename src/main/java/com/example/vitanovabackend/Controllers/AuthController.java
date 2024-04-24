@@ -228,12 +228,12 @@ public class AuthController {
         return userRepository.existsByEmail(email);
     }
 
-   @GetMapping("/CheckIpAddress")
+    @GetMapping("/CheckIpAddress")
     public boolean IpAdressCheck(@RequestParam("username") String username  ){
         User user = userRepository.findByUsername(username);
         if (user != null) {
 
-IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
+            IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
 
             return ipAdresses != null;
 
@@ -250,8 +250,6 @@ IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailServ
 
         User user = userRepository.findByUsername(username);
         if (user != null) {
-            IPAdresses ipAdresses2 = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
-if(ipAdresses2==null){
             IPAdresses ipAdresses = new IPAdresses();
             ipAdresses.setValue(emailService.getWANIPAddress());
             ipAdresses.setLocation(emailService.getLocationFromIPAddress(emailService.getWANIPAddress()));
@@ -259,10 +257,9 @@ if(ipAdresses2==null){
             ipAddressesRepository.save(ipAdresses);
             String redirectUrl = "http://localhost:4200/login?verificationLinkClicked=true";
             response.sendRedirect(redirectUrl);
-        } }else {
+        } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
 }
-

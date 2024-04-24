@@ -1,5 +1,6 @@
 package com.example.vitanovabackend.DAO.Entities;
 
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

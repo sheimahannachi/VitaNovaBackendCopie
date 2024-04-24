@@ -50,4 +50,5 @@ public class Food {
     @ManyToOne
     PeriodTracker periodTracker;
 
+
 }

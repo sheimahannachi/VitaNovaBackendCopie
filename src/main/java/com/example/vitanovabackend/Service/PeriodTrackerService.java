@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -257,6 +259,27 @@ public class PeriodTrackerService implements IPeriodTrackerService {
                 0.1, 0.1, 0.1, 0.1
         );
     }
+    @Override
+    public List<LocalDate> calculateFertileWindow(PeriodTracker periodTracker) {
+        LocalDate lastPeriodStartDate = LocalDate.parse(periodTracker.getStartDate());
+        int cycleLength = periodTracker.getCycleLength();
+
+        // Adjust cycle length based on medications
+        double medicationFactor = calculateMedicationFactor(periodTracker.getMedications());
+        cycleLength = (int) Math.round(cycleLength * medicationFactor);
+
+        // Ovulation typically occurs about 14 days before the next period
+        LocalDate ovulationDate = lastPeriodStartDate.plusDays(cycleLength - 14);
+
+        // Fertile window starts 5 days before ovulation and ends 1 day after
+        LocalDate fertileWindowStart = ovulationDate.minusDays(5);
+        LocalDate fertileWindowEnd = ovulationDate.plusDays(1);
+
+        // Return the start and end dates of the fertile window
+        return Arrays.asList(fertileWindowStart, fertileWindowEnd);
+    }
+
+
 }
 
 

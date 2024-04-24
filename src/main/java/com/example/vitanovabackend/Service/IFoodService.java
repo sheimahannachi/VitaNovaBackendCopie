@@ -1,13 +1,16 @@
 package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.Food;
+import com.example.vitanovabackend.DAO.Entities.FoodCard;
 import com.example.vitanovabackend.DAO.Entities.Hydration;
 import com.example.vitanovabackend.DAO.Entities.Tracker;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface IFoodService {
     public Food addFood(Food food , MultipartFile file) throws IOException;
@@ -18,7 +21,7 @@ public interface IFoodService {
     public Page<Food> getFood(int page, int size);
     public Food getFoodById(long id);
     /////////////////////////////////////////////
-    public List<Tracker> addTracker  (List<Tracker> trackers);
+    public Tracker addTracker(Tracker tracker);
     public List<Tracker> updateTracker  (List<Tracker> trackers);
     public void deleteTracker(List<Tracker> trackers);
     public Tracker archiverTracker(Long idTracker);
@@ -30,5 +33,11 @@ public interface IFoodService {
     public void deleteHydra2(Hydration hydration);
     public Hydration  archiverHydra(Long id);
     public List<Hydration> getHydra();
+    public Map<LocalDate, Double> calculateConsumedCaloriesPerDay(List<Tracker> trackers);
+    public void addFoodListToTracker(Tracker tracker, Map<Food, Integer> foodQuantityMap);
+    public void addFoodCards(List<Food> foods, int quantity);
+    public List<FoodCard> getFoodCards();
+    public void deleteFoodCard(FoodCard foodCard);
+    public void updateFoodCard(List<Food> foods, int quantity);
 
 }
