@@ -356,12 +356,9 @@ public class ProductService implements ProductIService {
             throw new RuntimeException("Product not found with ID: " + productId);
         }
 
-        // Generate QR code text (you can customize this based on product details)
-        String qrCodeText = "Product ID: " + productId + "\n"
-                + "Description: " + product.getDescriptionPr() + "\n"
-                + "Price: " + product.getPricePr() + "\n"
-                + "Quantity: " + product.getQuantityPr();
-
+        // Generate QR code text with the product URL
+        String productUrl = "http://localhost:4200/ProductDetails/" + productId; // Modify the URL format as needed
+        String qrCodeText = productUrl;
 
         // Set QR code image width and height
         int width = 300;
