@@ -26,7 +26,7 @@ public interface ICommunityService {
 
     List<User>fetchTopThree(long communityId);
 
-    boolean userLeaveCommunity(long userId,long communityId);
+    boolean userLeaveCommunity(long userId);
 
     List<User> getCommunityMembers(long comunityId);
 

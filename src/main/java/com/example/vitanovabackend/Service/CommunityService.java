@@ -119,14 +119,12 @@ public class CommunityService implements ICommunityService{
     }
 
     @Override
-    public boolean userLeaveCommunity(long userId, long communityId) {
+    public boolean userLeaveCommunity(long userId) {
         User user = userRepository.findById(userId).orElse(null);
         if(user==null)
             return false;
 
-        Community community=repository.findById(communityId).orElse(null);
-        if(community==null)
-            return false;
+
         user.setCommunity(null);
         userRepository.save(user);
 

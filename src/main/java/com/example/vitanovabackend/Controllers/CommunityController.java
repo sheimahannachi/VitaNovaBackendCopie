@@ -82,8 +82,8 @@ public class CommunityController {
     }
 
     @PutMapping(ControllerUrls.CommunityUrls.userLeaveCommunity)
-    public boolean userLeaveCommunity(@RequestParam long userId,@RequestParam long communityId){
-        return service.userLeaveCommunity(userId,communityId);
+    public boolean userLeaveCommunity(@PathVariable long userId){
+        return service.userLeaveCommunity(userId);
     }
 
     @GetMapping(ControllerUrls.CommunityUrls.getCommunityMembers)
@@ -92,7 +92,7 @@ public class CommunityController {
     }
 
     @GetMapping(ControllerUrls.CommunityUrls.getCommunityByUser)
-    public Community getCommunityByUserId(@RequestParam long userId){
+    public Community getCommunityByUserId(@PathVariable long userId){
         return service.getCommunityByUserId(userId);
     }
 
