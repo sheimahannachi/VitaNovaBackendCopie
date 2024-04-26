@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -210,23 +211,40 @@ public class Workout implements Iworkout {
 */
     public UserRating saveUserExerciseRating(UserRating userExerciseRating, long userId, long idExercise) {
         // Find the exercise by its ID
-        Exercise exercise = exerciseRepository.findById(idExercise).orElse(null);
+        Optional <Exercise>  exerciseOptional = exerciseRepository.findById(idExercise);
+        if (exerciseOptional.isPresent()) {
+            Exercise exercise = exerciseOptional.get();
 
-        // Find the user by their ID
-        User user = userRepository.findById(userId).orElse(null);
+            // Find the user by their ID
+            Optional<User> userOptional = userRepository.findById(userId);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
 
-        // Check if both exercise and user exist
-        if (exercise != null && user != null) {
-            // Associate the exercise and user with the user rating
-            userExerciseRating.setExercise(exercise);
-            userExerciseRating.setUser(user);
+                // Check if the user has already rated the exercise
+                Optional<UserRating> existingRating = userExerciseRatingRepository.findByUserAndExercise(user, exercise);
 
-            // Save the user exercise rating
-            return userExerciseRatingRepository.save(userExerciseRating);
+                if (existingRating.isPresent()) {
+                    // Update the existing rating
+                    UserRating ratingToUpdate = existingRating.get();
+                    ratingToUpdate.setRate(userExerciseRating.getRate()); // Update the rating value if needed
+                    return userExerciseRatingRepository.save(ratingToUpdate);
+                } else {
+                    // Associate the exercise and user with the user rating
+                    userExerciseRating.setExercise(exercise);
+                    userExerciseRating.setUser(user);
+
+                    // Save the user exercise rating
+                    return userExerciseRatingRepository.save(userExerciseRating);
+                }
+            } else {
+                // Handle the case where user is not found
+                return null;
+            }
         } else {
-            // Handle the error if the exercise or user is not found
+            // Handle the case where exercise is not found
             return null;
         }
+
     }
 
 
