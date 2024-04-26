@@ -38,3 +38,4 @@ public class Tracker {
     @OneToMany(mappedBy = "tracker")
     private List<FoodCard> foodCards = new ArrayList<>();
 }
+

@@ -257,21 +257,33 @@ public class FoodService implements IFoodService {
     public void addFoodCards(List<Food> foods, int quantity) {
         LocalDateTime entryTimestamp = LocalDateTime.now(); // Get current timestamp
 
-        List<FoodCard> foodCards = new ArrayList<>();
         for (Food food : foods) {
-            double calcCalories = food.getCalories() * quantity; // Calculating calcCalories
-            FoodCard foodCard = FoodCard.builder()
-                    // .tracker(tracker)
-                    .food(food)
-                    .quantity(quantity)
-                    .calcCalories(calcCalories) // Setting calcCalories
-                    .entryTimestamp(entryTimestamp)
-                    .build();
-            foodCards.add(foodCard);
-        }
+            // Check if a FoodCard with the same foodId already exists
+            Optional<FoodCard> existingFoodCardOptional = foodCardRepository.findByFoodId(food.getId());
 
-        foodCardRepository.saveAll(foodCards);
+            if (existingFoodCardOptional.isPresent()) {
+                // If FoodCard already exists, update its quantity
+                FoodCard existingFoodCard = existingFoodCardOptional.get();
+                int updatedQuantity = existingFoodCard.getQuantity() + quantity;
+                double calcCalories = existingFoodCard.getFood().getCalories() * updatedQuantity; // Recalculate calories
+                existingFoodCard.setQuantity(updatedQuantity);
+                existingFoodCard.setCalcCalories(calcCalories); // Update calcCalories
+                existingFoodCard.setEntryTimestamp(entryTimestamp); // Update timestamp
+                foodCardRepository.save(existingFoodCard); // Save updated FoodCard
+            } else {
+                // If FoodCard doesn't exist, create a new one
+                double calcCalories = food.getCalories() * quantity; // Calculating calcCalories
+                FoodCard foodCard = FoodCard.builder()
+                        .food(food)
+                        .quantity(quantity)
+                        .calcCalories(calcCalories) // Setting calcCalories
+                        .entryTimestamp(entryTimestamp)
+                        .build();
+                foodCardRepository.save(foodCard); // Save new FoodCard
+            }
+        }
     }
+
     public List<FoodCard> getFoodCards() {
         return foodCardRepository.findFoodCardWithNullTrackerId();
     }
@@ -285,17 +297,29 @@ public class FoodService implements IFoodService {
     public void updateFoodCard(List<Food> foods, int quantity) {
         LocalDateTime entryTimestamp = LocalDateTime.now(); // Get current timestamp
 
-        List<FoodCard> foodCards = new ArrayList<>();
         for (Food food : foods) {
-            FoodCard foodCard = FoodCard.builder()
-                    // .tracker(tracker)
-                    .food(food)
-                    .quantity(quantity)
-                    .entryTimestamp(entryTimestamp)
-                    .build();
-            foodCards.add(foodCard);
-        }
+            // Check if a FoodCard with the same foodId already exists
+            Optional<FoodCard> existingFoodCardOptional = foodCardRepository.findByFoodId(food.getId());
 
-        foodCardRepository.saveAll(foodCards);
+            if (existingFoodCardOptional.isPresent()) {
+                // If FoodCard already exists, update its quantity and other attributes
+                FoodCard existingFoodCard = existingFoodCardOptional.get();
+                int updatedQuantity =  quantity;
+                double calcCalories = existingFoodCard.getFood().getCalories() * updatedQuantity; // Recalculate calories
+                existingFoodCard.setCalcCalories(calcCalories); // Update calcCalories
+                existingFoodCard.setQuantity(updatedQuantity);
+                existingFoodCard.setEntryTimestamp(entryTimestamp); // Update timestamp
+                // You may need to update other attributes as well based on your requirements
+                foodCardRepository.save(existingFoodCard); // Save updated FoodCard
+            } else {
+                // If FoodCard doesn't exist, create a new one
+                FoodCard foodCard = FoodCard.builder()
+                        .food(food)
+                        .quantity(quantity)
+                        .entryTimestamp(entryTimestamp)
+                        .build();
+                foodCardRepository.save(foodCard); // Save new FoodCard
+            }
+        }
     }
 }
