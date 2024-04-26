@@ -1,9 +1,6 @@
 package com.example.vitanovabackend.Service;
 
-import com.example.vitanovabackend.DAO.Entities.Food;
-import com.example.vitanovabackend.DAO.Entities.FoodCard;
-import com.example.vitanovabackend.DAO.Entities.Hydration;
-import com.example.vitanovabackend.DAO.Entities.Tracker;
+import com.example.vitanovabackend.DAO.Entities.*;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,9 +32,12 @@ public interface IFoodService {
     public List<Hydration> getHydra();
     public Map<LocalDate, Double> calculateConsumedCaloriesPerDay(List<Tracker> trackers);
     public void addFoodListToTracker(Tracker tracker, Map<Food, Integer> foodQuantityMap);
-    public void addFoodCards(List<Food> foods, int quantity);
-    public List<FoodCard> getFoodCards();
+    public void addFoodCards(List<Food> foods, int quantity, MealType mealType) ;
+        public List<FoodCard> getFoodCards();
     public void deleteFoodCard(FoodCard foodCard);
     public void updateFoodCard(List<Food> foods, int quantity);
+    /////////
 
+    public List<FoodCard> getFoodCardsByMealType( MealType mealType,
+                                                  Long idTracker);
 }
