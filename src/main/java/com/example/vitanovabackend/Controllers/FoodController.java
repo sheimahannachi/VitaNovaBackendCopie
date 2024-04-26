@@ -1,10 +1,7 @@
 package com.example.vitanovabackend.Controllers;
 
 
-import com.example.vitanovabackend.DAO.Entities.Food;
-import com.example.vitanovabackend.DAO.Entities.FoodCard;
-import com.example.vitanovabackend.DAO.Entities.Hydration;
-import com.example.vitanovabackend.DAO.Entities.Tracker;
+import com.example.vitanovabackend.DAO.Entities.*;
 import com.example.vitanovabackend.Service.IFoodService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -120,8 +117,8 @@ public class FoodController {
         return iFoodService.calculateConsumedCaloriesPerDay(trackers);
     }
     @PostMapping("ListTracker")
-    public void addFoodCards(@RequestParam List<Food> foods,@RequestParam int quantity){
-        iFoodService.addFoodCards(foods, quantity);
+    public void addFoodCards(@RequestParam List<Food> foods, @RequestParam int quantity, @RequestParam MealType mealType){
+        iFoodService.addFoodCards(foods, quantity,mealType);
 
     }
     @GetMapping("get-food-cards")

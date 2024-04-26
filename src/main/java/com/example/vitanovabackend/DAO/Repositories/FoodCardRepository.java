@@ -1,6 +1,7 @@
 package com.example.vitanovabackend.DAO.Repositories;
 
 import com.example.vitanovabackend.DAO.Entities.FoodCard;
+import com.example.vitanovabackend.DAO.Entities.MealType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,5 +15,6 @@ public interface FoodCardRepository extends JpaRepository<FoodCard,Long> {
     List<FoodCard> findFoodCardWithNullTrackerId();
 
     Optional<FoodCard> findByFoodId(Long foodId);
-
+    @Query("SELECT f FROM FoodCard f WHERE f.mealType = :mealType AND f.tracker.id = :idTracker")
+    List<FoodCard>getFoodCardsByMealTypeAndTrackerId(MealType mealType, long idTracker);
 }
