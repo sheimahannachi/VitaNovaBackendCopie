@@ -33,6 +33,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -145,6 +147,10 @@ public class AuthController {
             File tempFile = tempFilePath.toFile();
             picture.transferTo(tempFile);
 
+            // Copy the file to the desired location
+            Path destinationPath = Paths.get("C:\\xampp\\htdocs\\cats", pictureFileName);
+            Files.copy(tempFilePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+
             user.setPicture(pictureFileName);
 
             tempFile.delete();
@@ -250,6 +256,8 @@ IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailServ
 
         User user = userRepository.findByUsername(username);
         if (user != null) {
+            IPAdresses ipAdresses2 = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
+if(ipAdresses2==null){
             IPAdresses ipAdresses = new IPAdresses();
             ipAdresses.setValue(emailService.getWANIPAddress());
             ipAdresses.setLocation(emailService.getLocationFromIPAddress(emailService.getWANIPAddress()));
@@ -257,7 +265,7 @@ IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailServ
             ipAddressesRepository.save(ipAdresses);
             String redirectUrl = "http://localhost:4200/login?verificationLinkClicked=true";
             response.sendRedirect(redirectUrl);
-        } else {
+        } }else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }

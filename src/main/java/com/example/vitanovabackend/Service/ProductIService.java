@@ -15,13 +15,18 @@ public interface ProductIService {
     public ResponseEntity<String> archiverProduct(Long idPr);
     public Product getProductById(Long idPr);
     public List<Product> searchProductsByName(String searchTerm);
-  //  public  List<Product> findByCategoriePrAndPricePrAndStatusPr(String categoriePr, float pricePr, String statusPr);
-  //List<Product> filterProductsByCategoryAndStatusAndPriceRange(String categoriePr, String statusPr, float pricePr);
-  public List<Product> filterProducts(String categoriePr, Float pricePr);
+    //  public  List<Product> findByCategoriePrAndPricePrAndStatusPr(String categoriePr, float pricePr, String statusPr);
+    //List<Product> filterProductsByCategoryAndStatusAndPriceRange(String categoriePr, String statusPr, float pricePr);
+    public List<Product> filterProducts(String categoriePr, Float pricePr);
 
-    void updateProductImage(Long productId, String imagePath);
+
     public void uploadImage(MultipartFile file,String fileName)  throws IOException;
-    public List<Product> getProductsSortedByLikes();
-    public void incrementLikeCount(Long productId);
+
     public  void addLike(/*Long idUser,*/ Long idPr);
-    }
+
+    public void addProductToCart(Long idPr, Long idUser);
+
+    public void deleteProductFromCommandelines(Long productId, Long cartId);
+
+
+}

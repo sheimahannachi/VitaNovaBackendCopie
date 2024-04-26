@@ -5,6 +5,7 @@ import com.example.vitanovabackend.DAO.Entities.Product;
 import com.example.vitanovabackend.Service.ProductIService;
 import jakarta.servlet.annotation.MultipartConfig;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,22 +74,28 @@ public class ProductController {
 
 
     @PostMapping("/addLike/{idPr}")
-    public ResponseEntity<String> addLike(/*@RequestParam("idUser") Long idUser,*/ @PathVariable("idPr") Long idPr) {
+    public ResponseEntity<Void> addLike(/*@RequestParam("idUser") Long idUser,*/ @PathVariable("idPr") Long idPr) {
         productIService.addLike(idPr);
-        return ResponseEntity.ok("Like ajouté avec succès !");
-    }
-    @GetMapping("/sortedByLikes")
-    public ResponseEntity<List<Product>> getProductsSortedByLikes() {
-        List<Product> sortedProducts = productIService.getProductsSortedByLikes();
-        return ResponseEntity.ok(sortedProducts);
-    }
-
-    @PostMapping("/{productId}/like")
-    public ResponseEntity<?> likeProduct(@PathVariable Long productId) {
-        productIService.incrementLikeCount(productId);
         return ResponseEntity.ok().build();
     }
 
 
+    @PostMapping("/addProductToCart/")
+    public void addProductToCart(@RequestParam Long idPr, @RequestParam Long idUser) {
+        try {
+            productIService.addProductToCart(idPr, idUser);
+        } catch (Exception e) {
+        }
+    }
+
+    @DeleteMapping("/cart/{cartId}/product/{productId}")
+    public ResponseEntity<String> deleteProductFromCart(@PathVariable Long cartId, @PathVariable Long productId) {
+        try {
+            productIService.deleteProductFromCommandelines(productId, cartId);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
 }
