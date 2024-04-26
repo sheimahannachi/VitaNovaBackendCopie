@@ -53,13 +53,28 @@ public class CommunityService implements ICommunityService{
     }
 
     @Override
-    public void deleteCommunity(long id) {
+    public boolean deleteCommunity(long id) {
         Community community=repository.findById(id).orElse(null);
         if(community!=null){
         List<Communication>communications=communicationRepository.findByCommunity(community);
         communicationRepository.deleteAll(communications);
-        repository.deleteById(id);
+
+        for(User member:community.getMembres()){
+            member=userRepository.findById(member.getIdUser()).orElse(null);
+            if(member!=null){
+                member.setCommunity(null);
+                userRepository.save(member);
+            }
+
         }
+
+
+
+
+        repository.deleteById(id);
+        return  true;
+        }
+        return false;
 
     }
 

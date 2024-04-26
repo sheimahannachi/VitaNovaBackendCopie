@@ -12,7 +12,7 @@ public interface ICommunityService {
 
     Community updateCommmunity ( long id , Community community);
 
-    void deleteCommunity(long id);
+    boolean deleteCommunity(long id);
 
     Community findCommunity(long id);
 

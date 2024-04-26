@@ -38,8 +38,8 @@ public class CommunityController {
     }
 
     @DeleteMapping(ControllerUrls.CommunityUrls.DeleteCommunity)
-    public void deleteCommunity(@PathVariable long id){
-        service.deleteCommunity(id);
+    public boolean deleteCommunity(@PathVariable long id){
+        return service.deleteCommunity(id);
     }
 
 
