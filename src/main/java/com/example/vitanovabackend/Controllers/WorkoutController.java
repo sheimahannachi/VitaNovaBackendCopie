@@ -98,9 +98,9 @@ public class WorkoutController {
     public Exercise rateExercise(@PathVariable("id") long id,@PathVariable("rate") int rate){
         return iWorkout.rateExercise(id,rate);
     }*/
-    @PostMapping("saveUserExerciseRating/{idEx}")
-    public UserRating saveUserExerciseRating(@RequestBody UserRating userExerciseRating,@PathVariable("idEx") long idExercise){
-        return iWorkout.saveUserExerciseRating(userExerciseRating,idExercise);
+    @PostMapping("saveUserExerciseRating/{idEx}/{iduser}")
+    public UserRating saveUserExerciseRating(@RequestBody UserRating userExerciseRating,@PathVariable("idEx") long idExercise ,@PathVariable("iduser") long iduser){
+        return iWorkout.saveUserExerciseRating(userExerciseRating,idExercise,iduser);
     }
 @GetMapping("getExerciseById/{exerciseId}")
 public Exercise getExerciseById(@PathVariable("exerciseId") long id){

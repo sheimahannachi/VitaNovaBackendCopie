@@ -15,9 +15,9 @@ public class UserRating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long idRate;
     int rate;
-   /* @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "idUser")
-    User user;*/
+    User user;
     @ManyToOne
     @JoinColumn(name = "id")
     Exercise exercise;

@@ -208,17 +208,27 @@ public class Workout implements Iworkout {
         return exerciseRepository.save(exercise);
     }
 */
-    public UserRating saveUserExerciseRating(UserRating userExerciseRating, long idExercise) {
+    public UserRating saveUserExerciseRating(UserRating userExerciseRating, long userId, long idExercise) {
+        // Find the exercise by its ID
         Exercise exercise = exerciseRepository.findById(idExercise).orElse(null);
-        if (exercise != null) {
+
+        // Find the user by their ID
+        User user = userRepository.findById(userId).orElse(null);
+
+        // Check if both exercise and user exist
+        if (exercise != null && user != null) {
+            // Associate the exercise and user with the user rating
             userExerciseRating.setExercise(exercise);
+            userExerciseRating.setUser(user);
+
+            // Save the user exercise rating
             return userExerciseRatingRepository.save(userExerciseRating);
         } else {
-            // Gérer l'erreur si l'exercice n'est pas trouvé
+            // Handle the error if the exercise or user is not found
             return null;
-
         }
     }
+
 
     public Exercise getExerciseById(long id) {
         return exerciseRepository.findById(id).get();

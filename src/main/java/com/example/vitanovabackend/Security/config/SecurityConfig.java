@@ -59,11 +59,23 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "RestController/GetActiveExercise",
                         "RestController/GetExercise",
                         "RestController/Rating/{exerciseId}",
-                        "RestController/saveUserExerciseRating/{idEx}",
+                        "RestController/saveUserExerciseRating/{idEx}/{iduser}",
                         "RestController/ArchiverExercise/{idex}",
                         "RestController/UpdateExercise/{id}",
                         "RestController/addExercise",
                         "RestController/searchEx",
+                       "RestController/addPlan",
+                       "RestController/UpdatePlan",
+                       "RestController/ArchiverPlan/{idplan}",
+                       "RestController/GetPlan",
+                       "RestController/getPlan/{id}",
+                       "RestController/saveUserExerciseRating/{idEx}",
+                       "RestController/getExerciseById/{exerciseId}",
+                       "RestController/Rating/{exerciseId}",
+                       "RestController/filtered",
+                       "RestControllersorted-by-rating",
+
+
 
                        //sheima
                         "/PeriodTracker/AddPeriodInformation",

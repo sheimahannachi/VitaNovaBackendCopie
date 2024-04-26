@@ -25,7 +25,7 @@ public interface Iworkout {
     public Exercise ArchiverExercise(long id);
     public Page<Exercise> GetActiveExercise(int page, int size);
     //public Exercise rateExercise(long id,int rate);
-    public UserRating saveUserExerciseRating(UserRating userExerciseRating,long idExercise);
+    public UserRating saveUserExerciseRating(UserRating userExerciseRating, long userId, long idExercise) ;
     public Exercise getExerciseById(long id);
     public double calculateAverageRating(long exerciseId);
  //   public  Page<Exercise> searchExercises(String bodyParts, String searchText,int page,int size);
