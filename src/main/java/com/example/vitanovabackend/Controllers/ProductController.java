@@ -88,13 +88,23 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/cart/{cartId}/product/{productId}")
-    public ResponseEntity<String> deleteProductFromCart(@PathVariable Long cartId, @PathVariable Long productId) {
+    @DeleteMapping("/{userId}/cart/products/{productId}")
+    public ResponseEntity<String> deleteProductFromCart(@PathVariable Long userId, @PathVariable Long productId) {
         try {
-            productIService.deleteProductFromCommandelines(productId, cartId);
+            productIService.deleteProductFromCart( userId,productId);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+    @GetMapping("/{productId}/generate-qrcode")
+    public ResponseEntity<String> generateQRCodeForProduct(@PathVariable Long productId) {
+        try {
+            productIService.generateQRCodeForProduct(productId);
+            return ResponseEntity.ok("QR Code generated successfully for product ID: " + productId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error generating QR Code for product ID " + productId + ": " + e.getMessage());
         }
     }
 

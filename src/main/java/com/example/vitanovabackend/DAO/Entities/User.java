@@ -90,8 +90,8 @@ public class User implements UserDetails {
 
 
     @Column(name = "role")
-   @Enumerated(EnumType.STRING)
-   private ERole role ;
+    @Enumerated(EnumType.STRING)
+    private ERole role ;
 
     @Column(name = "plan")
     @Enumerated(EnumType.STRING)

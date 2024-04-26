@@ -2,6 +2,7 @@ package com.example.vitanovabackend.Controllers;
 
 
 import com.example.vitanovabackend.DAO.Entities.Food;
+import com.example.vitanovabackend.DAO.Entities.FoodCard;
 import com.example.vitanovabackend.DAO.Entities.Hydration;
 import com.example.vitanovabackend.DAO.Entities.Tracker;
 import com.example.vitanovabackend.Service.IFoodService;
@@ -13,7 +14,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -64,8 +68,8 @@ public class FoodController {
     }
     //////////////////////////////////////////////
     @PostMapping("addTracker")
-    public List<Tracker> addTracker(List<Tracker> trackers) {
-        return iFoodService.addTracker(trackers);
+    public Tracker addTracker(Tracker tracker) {
+        return iFoodService.addTracker(tracker);
     }
     @PutMapping("updateTracker")
     public List<Tracker> updateTracker(List<Tracker> trackers){
@@ -109,5 +113,24 @@ public class FoodController {
         return iFoodService.getHydra();
     }
 
+    @GetMapping("getcalories")
+    public Map<LocalDate, Double> calculateConsumedCaloriesPerDay(@RequestParam List<Tracker> trackers) {
+
+
+        return iFoodService.calculateConsumedCaloriesPerDay(trackers);
+    }
+    @PostMapping("ListTracker")
+    public void addFoodCards(@RequestParam List<Food> foods,@RequestParam int quantity){
+        iFoodService.addFoodCards(foods, quantity);
+
+    }
+    @GetMapping("get-food-cards")
+    public List<FoodCard> getFoodCards() {
+        return iFoodService.getFoodCards();
+    }
+    @DeleteMapping("deleteFoodCard")
+    void deleteFoodCard(@RequestBody FoodCard foodCard){iFoodService.deleteFoodCard(foodCard);}
+    @PutMapping("updateFoodCard/{id}")
+    public void updateFoodCard(@RequestParam List<Food> foods,@RequestParam int quantity){iFoodService.updateFoodCard(foods, quantity);}
 
 }

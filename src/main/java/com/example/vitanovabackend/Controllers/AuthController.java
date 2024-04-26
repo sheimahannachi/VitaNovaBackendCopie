@@ -234,12 +234,12 @@ public class AuthController {
         return userRepository.existsByEmail(email);
     }
 
-   @GetMapping("/CheckIpAddress")
+    @GetMapping("/CheckIpAddress")
     public boolean IpAdressCheck(@RequestParam("username") String username  ){
         User user = userRepository.findByUsername(username);
         if (user != null) {
 
-IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
+            IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
 
             return ipAdresses != null;
 
@@ -271,4 +271,3 @@ if(ipAdresses2==null){
     }
 
 }
-

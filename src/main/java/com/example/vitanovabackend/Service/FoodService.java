@@ -1,5 +1,7 @@
 package com.example.vitanovabackend.Service;
 
+import com.example.vitanovabackend.DAO.Entities.FoodCard;
+import com.example.vitanovabackend.DAO.Repositories.FoodCardRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import com.example.vitanovabackend.DAO.Entities.Food;
@@ -22,8 +24,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -31,8 +35,6 @@ import org.json.simple.parser.ParseException;
 
 
 import java.io.FileReader;
-
-import java.util.ArrayList;
 
 @Service
 @AllArgsConstructor
@@ -42,6 +44,7 @@ public class FoodService implements IFoodService {
     FoodRepository foodRepository;
     TrackerRepository trackerRepository;
     HydrationRepository hydrationRepository;
+    FoodCardRepository foodCardRepository;
 
     public static String uploadDirectory= "C:/xampp/htdocs/uploads";
     @Override
@@ -93,8 +96,21 @@ public class FoodService implements IFoodService {
     /////////////////////////////////////////////////////////////////////////
 
     @Override
-    public List<Tracker> addTracker(List<Tracker> trackers) {
-        return trackerRepository.saveAll( trackers);
+    public Tracker addTracker(Tracker tracker) {
+       /* List<Food> selectedFoods = tracker.getConsumedFood();
+        double consumedCalories = calculateConsumedCalories(selectedFoods);
+        tracker.setConsumedcalories(consumedCalories);*/
+        // Assurez-vous que d'autres attributs de Tracker sont correctement définis
+
+        return trackerRepository.save(tracker);
+    }
+
+    private double calculateConsumedCalories(List<Food> selectedFoods) {
+        double totalCalories = 0;
+        for (Food food : selectedFoods) {
+            totalCalories += food.getCalories();
+        }
+        return totalCalories;
     }
 
     @Override
@@ -134,12 +150,12 @@ public class FoodService implements IFoodService {
 
     @Override
     public void deleteHydra(Long id) {
-    hydrationRepository.deleteById(id);
+        hydrationRepository.deleteById(id);
     }
 
     @Override
     public void deleteHydra2(Hydration hydration) {
-    hydrationRepository.delete(hydration);
+        hydrationRepository.delete(hydration);
     }
 
     @Override
@@ -152,6 +168,16 @@ public class FoodService implements IFoodService {
     @Override
     public List<Hydration> getHydra() {
         return hydrationRepository.findAll();
+    }
+
+    @Override
+    public Map<LocalDate, Double> calculateConsumedCaloriesPerDay(List<Tracker> trackers) {
+        return null;
+    }
+
+    @Override
+    public void addFoodListToTracker(Tracker tracker, Map<Food, Integer> foodQuantityMap) {
+
     }
 
     private String saveFile(MultipartFile file, String directoryName) throws IOException {
@@ -227,5 +253,49 @@ public class FoodService implements IFoodService {
         }
         return 0.0; // or throw an exception if the value is mandatory
     }
+    ///////////////////////////////////////////////////////////////////////////////
+    public void addFoodCards(List<Food> foods, int quantity) {
+        LocalDateTime entryTimestamp = LocalDateTime.now(); // Get current timestamp
 
+        List<FoodCard> foodCards = new ArrayList<>();
+        for (Food food : foods) {
+            double calcCalories = food.getCalories() * quantity; // Calculating calcCalories
+            FoodCard foodCard = FoodCard.builder()
+                    // .tracker(tracker)
+                    .food(food)
+                    .quantity(quantity)
+                    .calcCalories(calcCalories) // Setting calcCalories
+                    .entryTimestamp(entryTimestamp)
+                    .build();
+            foodCards.add(foodCard);
+        }
+
+        foodCardRepository.saveAll(foodCards);
+    }
+    public List<FoodCard> getFoodCards() {
+        return foodCardRepository.findFoodCardWithNullTrackerId();
+    }
+
+    @Override
+    public void deleteFoodCard(FoodCard foodCard) {
+        foodCardRepository.delete(foodCard);
+    }
+
+    @Override
+    public void updateFoodCard(List<Food> foods, int quantity) {
+        LocalDateTime entryTimestamp = LocalDateTime.now(); // Get current timestamp
+
+        List<FoodCard> foodCards = new ArrayList<>();
+        for (Food food : foods) {
+            FoodCard foodCard = FoodCard.builder()
+                    // .tracker(tracker)
+                    .food(food)
+                    .quantity(quantity)
+                    .entryTimestamp(entryTimestamp)
+                    .build();
+            foodCards.add(foodCard);
+        }
+
+        foodCardRepository.saveAll(foodCards);
+    }
 }

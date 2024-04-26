@@ -24,5 +24,9 @@ public interface IPeriodTrackerService {
     List<SymptomRating> getSymptomsAndRatingsForPeriod(long periodId);
      List<Exercise> getPeriodExercises();
     List<Food> getPeriodFood();
+    List<LocalDate> calculateFertileWindow(PeriodTracker periodTracker);
+
+
+
 }
 
