@@ -27,6 +27,7 @@ if(userRepository.findById(userId).isPresent()){
 User user=userRepository.findById(userId).get();
         personalGoalsRepository.save(personalGoals);
         user.setPersonalGoals(personalGoals);
+        user.setScore(user.getScore()+1);
         return userRepository.save(user);}
 return null;
     }
