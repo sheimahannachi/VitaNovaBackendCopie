@@ -22,7 +22,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     Long idCart;
-    float priceCart;
+    float priceCart=0;
     LocalDate dateCart;
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     @JsonIgnore

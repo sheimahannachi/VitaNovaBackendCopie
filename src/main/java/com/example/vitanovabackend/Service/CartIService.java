@@ -9,5 +9,5 @@ public interface CartIService {
 
     public List<Commandeline> getAllCommandelinesInCart(Long idCart);
     public int getNumberOfCommandelinesInCart(Long cartId);
-    public void createUserCart(long userId);
+    public void createUserCart();
 }

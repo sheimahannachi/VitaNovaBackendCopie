@@ -7,10 +7,7 @@ import com.example.vitanovabackend.Payload.Request.LoginRequest;
 import com.example.vitanovabackend.Payload.Request.ResetPasswordRequest;
 import com.example.vitanovabackend.Payload.Response.MessageResponse;
 import com.example.vitanovabackend.Payload.Response.UserInfoResponse;
-import com.example.vitanovabackend.Service.EmailService;
-import com.example.vitanovabackend.Service.IUserService;
-import com.example.vitanovabackend.Service.JwtService;
-import com.example.vitanovabackend.Service.MiscService;
+import com.example.vitanovabackend.Service.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -49,6 +46,8 @@ public class AuthController {
 
     @Autowired
     UserRepository userRepository;
+
+    CartService cartService;
 
 
 
@@ -162,7 +161,8 @@ public class AuthController {
         user.setPlan(Plan.FREE);
         ERole userRole = ERole.valueOf(role.toUpperCase());
         user.setRole(userRole);
-
+Cart cart = new Cart();
+user.setCart(cart);
         IPAdresses ipAdresses= new IPAdresses();
         ipAdresses.setValue(emailService.getWANIPAddress());
         ipAdresses.setLocation(emailService.getLocationFromIPAddress(ipAdresses.getValue()));

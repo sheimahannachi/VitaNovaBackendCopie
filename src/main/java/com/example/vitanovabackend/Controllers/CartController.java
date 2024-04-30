@@ -40,9 +40,9 @@ public class CartController {
         return ResponseEntity.ok(numberOfCommandelines);
     }
 
-    @PostMapping("/create/{userId}")
-    public ResponseEntity<String> createUserCart(@PathVariable long userId) {
-        cartService.createUserCart(userId);
+    @PostMapping("/create")
+    public ResponseEntity<String> createUserCart() {
+        cartService.createUserCart();
         return ResponseEntity.ok("Cart created and associated with user successfully!");
     }
     @GetMapping("/{userId}/cart/products")
