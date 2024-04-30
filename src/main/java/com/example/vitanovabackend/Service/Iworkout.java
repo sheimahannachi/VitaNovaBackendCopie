@@ -1,8 +1,6 @@
 package com.example.vitanovabackend.Service;
 
-import com.example.vitanovabackend.DAO.Entities.Exercise;
-import com.example.vitanovabackend.DAO.Entities.UserRating;
-import com.example.vitanovabackend.DAO.Entities.WorkoutProgram;
+import com.example.vitanovabackend.DAO.Entities.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,4 +29,6 @@ public interface Iworkout {
  //   public  Page<Exercise> searchExercises(String bodyParts, String searchText,int page,int size);
  public Page<Exercise> getFilteredExercises(int page, int size, List<String> bodyPart);
  public Page<Exercise> findExercisesOrderByAverageRating(int page, int size);
+ public WorkoutSession addWorkoutSession(WorkoutSession workoutSession,long id);
+ public WorkoutSession addSession(WorkoutSession workoutSession, long id, Intensity intensity);
 }

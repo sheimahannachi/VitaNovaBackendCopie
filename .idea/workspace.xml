@@ -6,7 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="31abc077-4c1a-419e-b05b-4c77dc131f29" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/WorkoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/WorkoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/WorkoutProgramRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/WorkoutProgramRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Security/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/Iworkout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/Iworkout.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/Workout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/Workout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/WorkoutController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Controllers/WorkoutController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Security/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Security/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/Iworkout.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/Iworkout.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/Workout.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/vitanovabackend/Service/Workout.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,8 +28,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -103,7 +110,11 @@
       <workItem from="1713977466901" duration="1876000" />
       <workItem from="1714092930181" duration="2159000" />
       <workItem from="1714134488218" duration="7777000" />
-      <workItem from="1714159681289" duration="960000" />
+      <workItem from="1714159681289" duration="3897000" />
+      <workItem from="1714215390239" duration="5576000" />
+      <workItem from="1714227133547" duration="3045000" />
+      <workItem from="1714413755303" duration="886000" />
+      <workItem from="1714416237874" duration="6344000" />
     </task>
     <servers />
   </component>

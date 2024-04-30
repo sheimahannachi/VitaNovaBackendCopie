@@ -1,15 +1,13 @@
 package com.example.vitanovabackend.Service;
 import com.example.vitanovabackend.DAO.Entities.*;
-import com.example.vitanovabackend.DAO.Repositories.ExerciseRepository;
-import com.example.vitanovabackend.DAO.Repositories.UserExerciseRatingRepository;
-import com.example.vitanovabackend.DAO.Repositories.UserRepository;
-import com.example.vitanovabackend.DAO.Repositories.WorkoutProgramRepository;
+import com.example.vitanovabackend.DAO.Repositories.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +18,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,9 +37,11 @@ public class Workout implements Iworkout {
     ExerciseRepository exerciseRepository;
     UserExerciseRatingRepository userExerciseRatingRepository;
     UserRepository userRepository;
+     WorkoutSessionRepository workoutSessionRepository;
+
     public static String uploadDirectory = "C:/xampp/htdocs/uploads";
 
-    public WorkoutProgram addPlan(WorkoutProgram workoutProgram, MultipartFile file, String[] selectedExerciseIds) throws IOException {
+     public WorkoutProgram addPlan(WorkoutProgram workoutProgram, MultipartFile file, String[] selectedExerciseIds) throws IOException {
         // Save the uploaded image
         String fileName = saveFile(file, uploadDirectory);
         workoutProgram.setImage(fileName);
@@ -342,6 +343,23 @@ public class Workout implements Iworkout {
     public Page<Exercise> findExercisesOrderByAverageRating(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return exerciseRepository.findExercisesOrderByAverageRating(pageable);
+    }
+    @Override
+    public WorkoutSession addWorkoutSession(WorkoutSession workoutSession,long id) {
+        User user =userRepository.findById(id).get();
+        workoutSession.setTime_start(LocalDateTime.now());
+        workoutSession.setUser(user);
+        // Save the workout session entity to the database
+        return workoutSessionRepository.save(workoutSession);
+    }
+    public WorkoutSession addSession(WorkoutSession workoutSession,long id,Intensity intensity) {
+        User user =userRepository.findById(id).get();
+        WorkoutProgram workoutProgram =workoutProgramRepository.findByIntensity(intensity);
+        workoutSession.setTime_start(LocalDateTime.now());
+        workoutSession.setUser(user);
+        workoutSession.setIntensity(workoutProgram.getIntensity());
+        // Save the workout session entity to the database
+        return workoutSessionRepository.save(workoutSession);
     }
 
     }

@@ -73,7 +73,9 @@ public class SecurityConfig implements WebSecurityConfigurer {
                        "RestController/getExerciseById/{exerciseId}",
                        "RestController/Rating/{exerciseId}",
                        "RestController/filtered",
-                       "RestControllersorted-by-rating",
+                       "RestController/sorted-by-rating",
+                       "RestController/addworkoutsession/{id}",
+                       "RestController/addSession/{id}/{intensity}",
 
 
 
