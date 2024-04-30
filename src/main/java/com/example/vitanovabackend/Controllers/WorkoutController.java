@@ -1,8 +1,6 @@
 package com.example.vitanovabackend.Controllers;
 
-import com.example.vitanovabackend.DAO.Entities.Exercise;
-import com.example.vitanovabackend.DAO.Entities.UserRating;
-import com.example.vitanovabackend.DAO.Entities.WorkoutProgram;
+import com.example.vitanovabackend.DAO.Entities.*;
 import com.example.vitanovabackend.Service.Iworkout;
 import jakarta.servlet.annotation.MultipartConfig;
 import lombok.AllArgsConstructor;
@@ -98,9 +96,9 @@ public class WorkoutController {
     public Exercise rateExercise(@PathVariable("id") long id,@PathVariable("rate") int rate){
         return iWorkout.rateExercise(id,rate);
     }*/
-    @PostMapping("saveUserExerciseRating/{idEx}")
-    public UserRating saveUserExerciseRating(@RequestBody UserRating userExerciseRating,@PathVariable("idEx") long idExercise){
-        return iWorkout.saveUserExerciseRating(userExerciseRating,idExercise);
+    @PostMapping("saveUserExerciseRating/{idEx}/{iduser}")
+    public UserRating saveUserExerciseRating(@RequestBody UserRating userExerciseRating,@PathVariable("idEx") long idExercise ,@PathVariable("iduser") long iduser){
+        return iWorkout.saveUserExerciseRating(userExerciseRating,idExercise,iduser);
     }
 @GetMapping("getExerciseById/{exerciseId}")
 public Exercise getExerciseById(@PathVariable("exerciseId") long id){
@@ -130,6 +128,16 @@ public Exercise getExerciseById(@PathVariable("exerciseId") long id){
 
             Page<Exercise> exercises = iWorkout.findExercisesOrderByAverageRating(page, size);
             return exercises;}
+    @PostMapping("addworkoutsession/{id}")
+    public WorkoutSession addWorkoutSession(@RequestBody WorkoutSession workoutSession,@PathVariable("id") long id) {
+        // Save the workout session entity to the database
+        return iWorkout.addWorkoutSession(workoutSession,id);
+    }
+    @PostMapping("addSession/{id}/{intensity}")
+    public WorkoutSession addSession(@RequestBody WorkoutSession workoutSession, @PathVariable("id") long id, @PathVariable("intensity")Intensity intensity) {
+        // Save the workout session entity to the database
+        return iWorkout.addSession(workoutSession,id,intensity);
+    }
 
 }
 

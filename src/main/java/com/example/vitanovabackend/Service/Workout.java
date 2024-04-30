@@ -1,15 +1,13 @@
 package com.example.vitanovabackend.Service;
 import com.example.vitanovabackend.DAO.Entities.*;
-import com.example.vitanovabackend.DAO.Repositories.ExerciseRepository;
-import com.example.vitanovabackend.DAO.Repositories.UserExerciseRatingRepository;
-import com.example.vitanovabackend.DAO.Repositories.UserRepository;
-import com.example.vitanovabackend.DAO.Repositories.WorkoutProgramRepository;
+import com.example.vitanovabackend.DAO.Repositories.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,8 +18,10 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,9 +37,11 @@ public class Workout implements Iworkout {
     ExerciseRepository exerciseRepository;
     UserExerciseRatingRepository userExerciseRatingRepository;
     UserRepository userRepository;
+     WorkoutSessionRepository workoutSessionRepository;
+
     public static String uploadDirectory = "C:/xampp/htdocs/uploads";
 
-    public WorkoutProgram addPlan(WorkoutProgram workoutProgram, MultipartFile file, String[] selectedExerciseIds) throws IOException {
+     public WorkoutProgram addPlan(WorkoutProgram workoutProgram, MultipartFile file, String[] selectedExerciseIds) throws IOException {
         // Save the uploaded image
         String fileName = saveFile(file, uploadDirectory);
         workoutProgram.setImage(fileName);
@@ -208,17 +210,44 @@ public class Workout implements Iworkout {
         return exerciseRepository.save(exercise);
     }
 */
-    public UserRating saveUserExerciseRating(UserRating userExerciseRating, long idExercise) {
-        Exercise exercise = exerciseRepository.findById(idExercise).orElse(null);
-        if (exercise != null) {
-            userExerciseRating.setExercise(exercise);
-            return userExerciseRatingRepository.save(userExerciseRating);
-        } else {
-            // Gérer l'erreur si l'exercice n'est pas trouvé
-            return null;
+    public UserRating saveUserExerciseRating(UserRating userExerciseRating, long userId, long idExercise) {
+        // Find the exercise by its ID
+        Optional <Exercise>  exerciseOptional = exerciseRepository.findById(idExercise);
+        if (exerciseOptional.isPresent()) {
+            Exercise exercise = exerciseOptional.get();
 
+            // Find the user by their ID
+            Optional<User> userOptional = userRepository.findById(userId);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+
+                // Check if the user has already rated the exercise
+                Optional<UserRating> existingRating = userExerciseRatingRepository.findByUserAndExercise(user, exercise);
+
+                if (existingRating.isPresent()) {
+                    // Update the existing rating
+                    UserRating ratingToUpdate = existingRating.get();
+                    ratingToUpdate.setRate(userExerciseRating.getRate()); // Update the rating value if needed
+                    return userExerciseRatingRepository.save(ratingToUpdate);
+                } else {
+                    // Associate the exercise and user with the user rating
+                    userExerciseRating.setExercise(exercise);
+                    userExerciseRating.setUser(user);
+
+                    // Save the user exercise rating
+                    return userExerciseRatingRepository.save(userExerciseRating);
+                }
+            } else {
+                // Handle the case where user is not found
+                return null;
+            }
+        } else {
+            // Handle the case where exercise is not found
+            return null;
         }
+
     }
+
 
     public Exercise getExerciseById(long id) {
         return exerciseRepository.findById(id).get();
@@ -314,6 +343,23 @@ public class Workout implements Iworkout {
     public Page<Exercise> findExercisesOrderByAverageRating(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return exerciseRepository.findExercisesOrderByAverageRating(pageable);
+    }
+    @Override
+    public WorkoutSession addWorkoutSession(WorkoutSession workoutSession,long id) {
+        User user =userRepository.findById(id).get();
+        workoutSession.setTime_start(LocalDateTime.now());
+        workoutSession.setUser(user);
+        // Save the workout session entity to the database
+        return workoutSessionRepository.save(workoutSession);
+    }
+    public WorkoutSession addSession(WorkoutSession workoutSession,long id,Intensity intensity) {
+        User user =userRepository.findById(id).get();
+        WorkoutProgram workoutProgram =workoutProgramRepository.findByIntensity(intensity);
+        workoutSession.setTime_start(LocalDateTime.now());
+        workoutSession.setUser(user);
+        workoutSession.setIntensity(workoutProgram.getIntensity());
+        // Save the workout session entity to the database
+        return workoutSessionRepository.save(workoutSession);
     }
 
     }
