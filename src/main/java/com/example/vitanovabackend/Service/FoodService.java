@@ -2,19 +2,19 @@ package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.*;
 import com.example.vitanovabackend.DAO.Repositories.FoodCardRepository;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import com.example.vitanovabackend.DAO.Repositories.FoodRepository;
 import com.example.vitanovabackend.DAO.Repositories.HydrationRepository;
 import com.example.vitanovabackend.DAO.Repositories.TrackerRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class FoodService implements IFoodService {
     TrackerRepository trackerRepository;
     HydrationRepository hydrationRepository;
     FoodCardRepository foodCardRepository;
-
+    private final OkHttpClient client = new OkHttpClient();
     public static String uploadDirectory= "C:/xampp/htdocs/uploads";
     @Override
     public Food addFood(Food food ,MultipartFile file) throws IOException
@@ -164,12 +164,12 @@ public class FoodService implements IFoodService {
 
     @Override
     public void deleteHydra(Long id) {
-    hydrationRepository.deleteById(id);
+        hydrationRepository.deleteById(id);
     }
 
     @Override
     public void deleteHydra2(Hydration hydration) {
-    hydrationRepository.delete(hydration);
+        hydrationRepository.delete(hydration);
     }
 
     @Override
@@ -342,4 +342,25 @@ public class FoodService implements IFoodService {
 
         return foodCards;
     }
+
+    @Override
+    public String getProductInfo(String barcode) throws IOException {
+        Request request = new Request.Builder()
+                .url("https://dietagram.p.rapidapi.com/apiBarcode.php?name=" + barcode)
+                .get()
+                .addHeader("X-RapidAPI-Key", "d9b3426de0mshca06726a2e3de22p13b8a7jsn8ddd27ae9d20")
+                .addHeader("X-RapidAPI-Host", "dietagram.p.rapidapi.com")
+                .build();
+        System.out.println(request);
+        try (Response response = client.newCall(request).execute()) {
+            System.out.println(response);
+
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            return response.body().string();
+        }
+    }
+
+
 }

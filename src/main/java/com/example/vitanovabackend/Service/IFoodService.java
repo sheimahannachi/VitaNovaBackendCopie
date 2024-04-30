@@ -33,11 +33,13 @@ public interface IFoodService {
     public Map<LocalDate, Double> calculateConsumedCaloriesPerDay(List<Tracker> trackers);
     public void addFoodListToTracker(Tracker tracker, Map<Food, Integer> foodQuantityMap);
     public void addFoodCards(List<Food> foods, int quantity, MealType mealType) ;
-        public List<FoodCard> getFoodCards();
+    public List<FoodCard> getFoodCards();
     public void deleteFoodCard(FoodCard foodCard);
     public void updateFoodCard(List<Food> foods, int quantity);
     /////////
 
     public List<FoodCard> getFoodCardsByMealType( MealType mealType,
                                                   Long idTracker);
+
+    String getProductInfo(String barcode) throws IOException;
 }

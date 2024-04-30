@@ -65,7 +65,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "RestController/addExercise",
                         "RestController/searchEx",
 
-                         //ons
+                        //ons
 
                         "RestController/addFood",
                         "RestController/updateFood/{id}",
@@ -80,6 +80,9 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "RestController/updateFoodCard/{id}",
                         "RestController/addTracker",
                         "RestController/foodCardCateg",
+                        "RestController/ScanBarcode",
+                        "RestController/search",
+                        "RestController/search-image",
                        //sheima
                         "/PeriodTracker/AddPeriodInformation",
                         "/PeriodTracker/UpdatePeriodinformation",
