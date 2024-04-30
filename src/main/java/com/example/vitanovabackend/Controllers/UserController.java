@@ -46,6 +46,10 @@ public class UserController {
         iUserService.ArchiveUser(id);
     }
 
+    @DeleteMapping("/DeleteUser/{id}")
+    public void DeleteUser2(@PathVariable("id") long id){
+        iUserService.ArchiveUser(id);
+    }
     @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping( "admin/ActivateUser/{id}")
     public void ActivateUser(@PathVariable("id") long id){

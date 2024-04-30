@@ -141,7 +141,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
 
 
                 .and()
-                .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**","/api/user/admin/UpdateUser").authenticated()
+                .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**","/api/user/admin/UpdateUser","/api/user/DeleteUser/{{id}}").authenticated()
                 .and()
 
                 .authorizeHttpRequests().requestMatchers("/api/user/admin/**").hasRole("ADMIN")

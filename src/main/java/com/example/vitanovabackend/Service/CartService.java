@@ -39,6 +39,8 @@ public class CartService implements CartIService{
         }
         return 0;
     }
+
+
     /*
     public void updateProductQuantityInCart(Long cartId, Long productId, int newQuantity) {
         // Rechercher le panier dans la base de données en fonction de l'ID du panier
@@ -80,17 +82,14 @@ public class CartService implements CartIService{
     }
 */
 
-    public void createUserCart(long userId) {
+    public void createUserCart() {
         // Retrieve the user from the database
-        User user = userRepository.findById(userId).get();
 
         // Create a new cart
         Cart cart = new Cart();
-        user.setCart(cart);
 
         // Save the cart to associate it with the user
         cartRepository.save(cart);
-        userRepository.save(user);
     }
 
     public List<Commandeline> getProductsInCart(Long userId) {
