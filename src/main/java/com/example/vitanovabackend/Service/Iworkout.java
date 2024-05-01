@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface Iworkout {
     public WorkoutProgram addPlan(WorkoutProgram workoutProgram, MultipartFile file,String[] selectedExerciseIds) throws IOException;
@@ -31,4 +32,5 @@ public interface Iworkout {
  public Page<Exercise> findExercisesOrderByAverageRating(int page, int size);
  public WorkoutSession addWorkoutSession(WorkoutSession workoutSession,long id);
  public WorkoutSession addSession(WorkoutSession workoutSession, long id, Intensity intensity);
+ public Map<String, Long> getUserTrainingStatistics(Long userId);
 }

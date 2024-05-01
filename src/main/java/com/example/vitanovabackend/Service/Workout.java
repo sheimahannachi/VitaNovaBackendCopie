@@ -19,10 +19,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -360,6 +359,16 @@ public class Workout implements Iworkout {
         workoutSession.setIntensity(workoutProgram.getIntensity());
         // Save the workout session entity to the database
         return workoutSessionRepository.save(workoutSession);
+    }
+    public Map<String, Long> getUserTrainingStatistics(Long userId) {
+        List<Object[]> resultList = workoutSessionRepository.getUserTrainingStatistics(userId);
+
+        // Mapping the result to a map of month-year -> count
+        return resultList.stream()
+                .collect(Collectors.toMap(
+                        objects -> objects[0] + "-" + objects[1],
+                        objects -> (Long) objects[2]
+                ));
     }
 
     }

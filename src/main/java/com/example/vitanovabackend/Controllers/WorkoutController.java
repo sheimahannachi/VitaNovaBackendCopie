@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("RestController")
@@ -137,6 +139,11 @@ public Exercise getExerciseById(@PathVariable("exerciseId") long id){
     public WorkoutSession addSession(@RequestBody WorkoutSession workoutSession, @PathVariable("id") long id, @PathVariable("intensity")Intensity intensity) {
         // Save the workout session entity to the database
         return iWorkout.addSession(workoutSession,id,intensity);
+    }
+    @GetMapping("/statistique/{id}")
+    public ResponseEntity<Map<String, Long>> getUserTrainingStatistics(@PathVariable("id") Long userId) {
+        Map<String, Long> statistics = iWorkout.getUserTrainingStatistics(userId);
+        return ResponseEntity.ok(statistics);
     }
 
 }
