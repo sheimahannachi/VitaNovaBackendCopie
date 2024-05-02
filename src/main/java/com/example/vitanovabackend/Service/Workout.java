@@ -7,7 +7,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,8 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,11 +35,11 @@ public class Workout implements Iworkout {
     ExerciseRepository exerciseRepository;
     UserExerciseRatingRepository userExerciseRatingRepository;
     UserRepository userRepository;
-     WorkoutSessionRepository workoutSessionRepository;
+    WorkoutSessionRepository workoutSessionRepository;
 
     public static String uploadDirectory = "C:/xampp/htdocs/uploads";
 
-     public WorkoutProgram addPlan(WorkoutProgram workoutProgram, MultipartFile file, String[] selectedExerciseIds) throws IOException {
+    public WorkoutProgram addPlan(WorkoutProgram workoutProgram, MultipartFile file, String[] selectedExerciseIds) throws IOException {
         // Save the uploaded image
         String fileName = saveFile(file, uploadDirectory);
         workoutProgram.setImage(fileName);
@@ -126,11 +125,12 @@ public class Workout implements Iworkout {
     }
 
     @Override
-    public Page<WorkoutProgram> GetPlan(int page,int size) {
+    public Page<WorkoutProgram> GetPlan(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return workoutProgramRepository.findActiveWorkoutPlan(pageable);
     }
-    public WorkoutProgram GetPlanById(long id){
+
+    public WorkoutProgram GetPlanById(long id) {
         return workoutProgramRepository.findById(id).get();
     }
 
@@ -193,7 +193,7 @@ public class Workout implements Iworkout {
     }
 
     @Override
-    public Page<Exercise> GetExercise(int page,int size) {
+    public Page<Exercise> GetExercise(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return exerciseRepository.findAll(pageable);
     }
@@ -211,7 +211,7 @@ public class Workout implements Iworkout {
 */
     public UserRating saveUserExerciseRating(UserRating userExerciseRating, long userId, long idExercise) {
         // Find the exercise by its ID
-        Optional <Exercise>  exerciseOptional = exerciseRepository.findById(idExercise);
+        Optional<Exercise> exerciseOptional = exerciseRepository.findById(idExercise);
         if (exerciseOptional.isPresent()) {
             Exercise exercise = exerciseOptional.get();
 
@@ -281,6 +281,7 @@ public class Workout implements Iworkout {
 
         return averageRating;
     }
+
     public void importExercisesFromCsv() {
         try {
             InputStream inputStream = getClass().getResourceAsStream("/exercises (1).csv");
@@ -343,35 +344,61 @@ public class Workout implements Iworkout {
         Pageable pageable = PageRequest.of(page, size);
         return exerciseRepository.findExercisesOrderByAverageRating(pageable);
     }
+
     @Override
-    public WorkoutSession addWorkoutSession(WorkoutSession workoutSession,long id) {
-        User user =userRepository.findById(id).get();
+    public WorkoutSession addWorkoutSession(WorkoutSession workoutSession, long id) {
+        User user = userRepository.findById(id).get();
         workoutSession.setTime_start(LocalDateTime.now());
         workoutSession.setUser(user);
         // Save the workout session entity to the database
         return workoutSessionRepository.save(workoutSession);
     }
-    public WorkoutSession addSession(WorkoutSession workoutSession,long id,Intensity intensity) {
-        User user =userRepository.findById(id).get();
-        WorkoutProgram workoutProgram =workoutProgramRepository.findByIntensity(intensity);
+
+    public WorkoutSession addSession(WorkoutSession workoutSession, long id, Intensity intensity) {
+        User user = userRepository.findById(id).get();
+        WorkoutProgram workoutProgram = workoutProgramRepository.findByIntensity(intensity);
         workoutSession.setTime_start(LocalDateTime.now());
         workoutSession.setUser(user);
         workoutSession.setIntensity(workoutProgram.getIntensity());
         // Save the workout session entity to the database
         return workoutSessionRepository.save(workoutSession);
     }
-    public Map<String, Long> getUserTrainingStatistics(Long userId) {
-        List<Object[]> resultList = workoutSessionRepository.getUserTrainingStatistics(userId);
 
-        // Mapping the result to a map of month-year -> count
-        return resultList.stream()
-                .collect(Collectors.toMap(
-                        objects -> objects[0] + "-" + objects[1],
-                        objects -> (Long) objects[2]
-                ));
+    public Map<String, List<Object[]>> getUserTrainingStatistics(long userId) {
+        List<WorkoutSession> resultList = workoutSessionRepository.getUserTrainingStatistics(userId);
+
+        // Group the results by month-year
+        Map<String, List<Object[]>> statisticsData = new HashMap<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        for (WorkoutSession workoutSession : resultList) {
+            LocalDateTime timeStart = workoutSession.getTime_start();
+            String monthYear = timeStart.format(formatter);
+            Object[] result = new Object[] { workoutSession.getIntensity(), timeStart };
+            statisticsData.computeIfAbsent(monthYear, k -> new ArrayList<>()).add(result);
+        }
+        return statisticsData;
     }
 
+    public List<WorkoutSession> getAllWorkoutSessions() {
+        return workoutSessionRepository.findAll();
     }
+
+    @Override
+    public List<Object[]> getAllWorkoutSessionData() {
+        List<WorkoutSession> sessions = getAllWorkoutSessions();
+        List<Object[]> sessionData = new ArrayList<>();
+
+        for (WorkoutSession session : sessions) {
+            Object[] data = new Object[3];
+            data[0] = session.getUser().getIdUser(); // UserID
+            data[1] = session.getIntensity();    // Intensity
+            data[2] = session.getTime_start();   // Start Time
+            sessionData.add(data);
+        }
+
+        return sessionData;
+    }
+}
 
 
 

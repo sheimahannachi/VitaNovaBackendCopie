@@ -2,7 +2,6 @@ package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.*;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,5 +31,6 @@ public interface Iworkout {
  public Page<Exercise> findExercisesOrderByAverageRating(int page, int size);
  public WorkoutSession addWorkoutSession(WorkoutSession workoutSession,long id);
  public WorkoutSession addSession(WorkoutSession workoutSession, long id, Intensity intensity);
- public Map<String, Long> getUserTrainingStatistics(Long userId);
+ public Map<String, List<Object[]>> getUserTrainingStatistics(long userId);
+ public List<Object[]> getAllWorkoutSessionData();
 }

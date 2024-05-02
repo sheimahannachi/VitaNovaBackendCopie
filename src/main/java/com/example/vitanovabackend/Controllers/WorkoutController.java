@@ -4,15 +4,10 @@ import com.example.vitanovabackend.DAO.Entities.*;
 import com.example.vitanovabackend.Service.Iworkout;
 import jakarta.servlet.annotation.MultipartConfig;
 import lombok.AllArgsConstructor;
-import org.apache.catalina.filters.CorsFilter;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -140,11 +135,9 @@ public Exercise getExerciseById(@PathVariable("exerciseId") long id){
         // Save the workout session entity to the database
         return iWorkout.addSession(workoutSession,id,intensity);
     }
-    @GetMapping("/statistique/{id}")
-    public ResponseEntity<Map<String, Long>> getUserTrainingStatistics(@PathVariable("id") Long userId) {
-        Map<String, Long> statistics = iWorkout.getUserTrainingStatistics(userId);
-        return ResponseEntity.ok(statistics);
+    @GetMapping("statistics")
+    public List<Object[]> getAllWorkoutSessionData(){
+        return iWorkout.getAllWorkoutSessionData();
     }
 
 }
-
