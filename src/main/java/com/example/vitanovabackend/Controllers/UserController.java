@@ -71,4 +71,11 @@ public class UserController {
         return iUserService.GetUserByGoal(personalGoals);
     }
 
+
+    @CrossOrigin("**")
+    @PutMapping("/admin/DeleteGoal")
+    public User DeleteGoal(@RequestBody User user) {
+        return iUserService.DeleteGoal(user);
+    }
+
 }

@@ -26,6 +26,9 @@ public interface IUserService {
 
     User updateUser(User user);
 
+    User DeleteGoal(User user);
+
+
     User ResetPassword(String Email, String password);
 
     User ResetPasswordPhone(String Phone, String password);
