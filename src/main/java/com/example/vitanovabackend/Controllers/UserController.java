@@ -65,6 +65,10 @@ public class UserController {
 
 
 
+    @GetMapping("/GetUserByGoal")
+    public User GetUserByGoal(@RequestBody PersonalGoals personalGoals){
 
+        return iUserService.GetUserByGoal(personalGoals);
+    }
 
 }

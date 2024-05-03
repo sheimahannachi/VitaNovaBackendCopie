@@ -1,5 +1,6 @@
 package com.example.vitanovabackend.Service;
 
+import com.example.vitanovabackend.DAO.Entities.PersonalGoals;
 import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -113,7 +114,10 @@ return userRepository.save(user);
         return user;
     }
 
-
+@Override
+    public  User GetUserByGoal(PersonalGoals personalGoals){
+        return userRepository.findByPersonalGoals(personalGoals);
+}
 
 
 
