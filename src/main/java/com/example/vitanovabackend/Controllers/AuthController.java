@@ -8,6 +8,8 @@ import com.example.vitanovabackend.Payload.Request.ResetPasswordRequest;
 import com.example.vitanovabackend.Payload.Response.MessageResponse;
 import com.example.vitanovabackend.Payload.Response.UserInfoResponse;
 import com.example.vitanovabackend.Service.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,6 +35,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -102,8 +105,31 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
+    @CrossOrigin("**")
+    @PostMapping("/LoginGoogle")
+    public ResponseEntity<UserInfoResponse> LoginGoogle(@RequestParam("email") String email) {
+        System.out.println(email);
+        if (email != null) {
+User user = userRepository.findByEmail(email);
+            System.out.println(user);
+            System.out.println("generating token : ");
+            if (user != null) {
+                String jwtToken = jwtService.generateToken(user.getUsername());
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", "Bearer " + jwtToken);
 
-    @PostMapping("/signup")
+                return ResponseEntity.ok().headers(headers)
+                        .body(new UserInfoResponse(user.getIdUser(),
+                                user.getUsername(),
+                                user.getRole().toString(),
+                                user.getEmail(),
+                                jwtToken
+                        ));
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+        @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestParam String username,
                                           @RequestParam String email,
                                           @RequestParam String password,
@@ -199,6 +225,8 @@ user.setCart(cart);
             String jwtToken = authHeader.substring(7);
             System.out.println(jwtToken);
             String username = jwtService.extractUsername(jwtToken);
+            System.out.println("USERNAME : " + username );
+
             if (username != null) {
                 User user = services.loadUserByUsername(username);
                 if (user != null) {
@@ -208,6 +236,8 @@ user.setCart(cart);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // JWT token not found in Authorization header
     }
+
+
 
 
 

@@ -133,6 +133,12 @@ return userRepository.save(user);
         return userRepository.findByPersonalGoals(personalGoals);
 }
 
+@Override
+    public User GetUserByEmail(String email) {
+return userRepository.findByEmail(email);
+
+}
+
 
 
     }

@@ -35,5 +35,8 @@ public interface IUserService {
 
     User loadUserByUsername(String email) throws UsernameNotFoundException;
 
+    User GetUserByEmail(String email) ;
+
+
     User GetUserByGoal(PersonalGoals personalGoals);
 }
