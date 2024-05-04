@@ -110,6 +110,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         ControllerUrls.CommunicationUrl.setSeenToCommunicationsOneToOne,
                         ControllerUrls.CommunityUrls.getCommunityByUser+"**",
                         ControllerUrls.CommunityUrls.AddMemberToCommunity+"****",
+                        "UploadImage",
 
 
                         "/ws/**").permitAll()

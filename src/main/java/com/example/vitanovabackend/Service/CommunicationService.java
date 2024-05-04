@@ -1,16 +1,21 @@
 package com.example.vitanovabackend.Service;
 
+import java.io.File;
+import java.util.Base64;
 import com.example.vitanovabackend.Configuration.EncryptionUtils;
+import com.example.vitanovabackend.Configuration.FileUtils;
 import com.example.vitanovabackend.DAO.Entities.Communication;
 import com.example.vitanovabackend.DAO.Entities.Community;
 import com.example.vitanovabackend.DAO.Repositories.CommunicationRepository;
 
 import com.example.vitanovabackend.DAO.Repositories.CommunityRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.time.LocalDate;
@@ -24,52 +29,65 @@ public class CommunicationService implements  ICommunicationService{
 
     CommunicationRepository repository;
     CommunityRepository communityRepository;
+    FileUtils fileUtils;
+
+
 
     @Override
     public Communication addCommunication(Communication communication) {
         Communication communicationRecieved;
 
+
+
         try {
             String encryptedMessage = EncryptionUtils.encrypt(communication.getMessage());
 
 
-            if (communication.getCommunity() != null) {
-                communicationRecieved = Communication.builder()
-                        .message(encryptedMessage)
-                        .seen(false)
-                        .sentDate(LocalDate.now())
-                        .sender(communication.getSender())
-                        .community(communication.getCommunity())
-                        .build();
-                communicationRecieved=repository.save(communicationRecieved);
-                communicationRecieved.setMessage(
-                        EncryptionUtils.decrypt(communicationRecieved.getMessage())
-                );
-                return communicationRecieved;
+
+
+                if (communication.getCommunity() != null) {
+                    communicationRecieved = Communication.builder()
+                            .message(encryptedMessage)
+                            .seen(false)
+                            .sentDate(LocalDate.now())
+                            .sender(communication.getSender())
+                            .community(communication.getCommunity())
+                            .imageSent(communication.getImageSent())
+                            .build();
+                    communicationRecieved = repository.save(communicationRecieved);
+
+                    //Method Return
+                    communicationRecieved.setMessage(
+                            EncryptionUtils.decrypt(communicationRecieved.getMessage())
+                    );
+                    return communicationRecieved;
+                }
+                if (communication.getReciever() != null) {
+                    communicationRecieved = Communication.builder()
+                            .message(encryptedMessage)
+                            .seen(false)
+                            .sentDate(LocalDate.now())
+                            .sender(communication.getSender())
+                            .reciever(communication.getReciever())
+                            .imageSent(communication.getImageSent())
+                            .build();
+                    communicationRecieved = repository.save(communicationRecieved);
+
+                    //Method Return
+                    communicationRecieved.setMessage(
+                            EncryptionUtils.decrypt(communicationRecieved.getMessage())
+                    );
+                    return communicationRecieved;
+                }
+            }catch(Exception e){
+                e.printStackTrace();
             }
-            if (communication.getReciever() != null) {
-                communicationRecieved = Communication.builder()
-                        .message(encryptedMessage)
-                        .seen(false)
-                        .sentDate(LocalDate.now())
-                        .sender(communication.getSender())
-                        .reciever(communication.getReciever())
-                        .build();
-                communicationRecieved=repository.save(communicationRecieved);
-                communicationRecieved.setMessage(
-                        EncryptionUtils.decrypt(communicationRecieved.getMessage())
-                );
-                return communicationRecieved;
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
+
+            return null;
+
+
         }
 
-        return null;
-
-
-
-    }
 
     @Override
     public Communication updateCommunication(long id, Communication communication) {
@@ -177,7 +195,12 @@ public class CommunicationService implements  ICommunicationService{
         return true;
     }
 
+    @Override
+    public Communication addAudioCommunication(Communication audioData) {
+        audioData.setMessage("Audio Message");
 
+        return null;
+    }
 
 
 }
