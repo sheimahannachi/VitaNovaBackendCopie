@@ -237,7 +237,7 @@ user.setCart(cart);
         User user = new User(username, email, encoder.encode(password));
 
         user.setDateOfBirth(LocalDate.parse(dateOfBirth.substring(0, 10)));
-        user.setGender(null);
+        user.setGender(Gender.MAN);
         user.setLastName(lastName);
         user.setFirstName(firstName);
 
@@ -348,11 +348,16 @@ user.setCart(cart);
     }
 
     @GetMapping("/CheckIpAddress")
-    public boolean IpAdressCheck(@RequestParam("username") String username  ){
+    public boolean IpAdressCheck(@RequestParam("username") String username , @RequestParam("ipAdress") String ip ){
         User user = userRepository.findByUsername(username);
+        System.out.println("adresse ip : " + ip);
+        System.out.println("username : " + username);
+
         if (user != null) {
 
-            IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
+
+
+            IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, ip);
 
             return ipAdresses != null;
 
@@ -362,7 +367,7 @@ user.setCart(cart);
 
     @CrossOrigin("*")
     @GetMapping("/AddIpAddress")
-    public void AddIpAddress(@RequestParam("qcxBb0ipkpAM") String EncryptedUsername, HttpServletResponse response) throws IOException {
+    public void AddIpAddress(@RequestParam("qcxBb0ipkpAM") String EncryptedUsername, @RequestParam("ipAdress") String ip, HttpServletResponse response) throws IOException {
         String encryptedText = EncryptedUsername.replace(' ', '+');
 
         String username = miscService.decrypt(encryptedText);
@@ -372,8 +377,8 @@ user.setCart(cart);
             IPAdresses ipAdresses2 = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
 if(ipAdresses2==null){
             IPAdresses ipAdresses = new IPAdresses();
-            ipAdresses.setValue(emailService.getWANIPAddress());
-            ipAdresses.setLocation(emailService.getLocationFromIPAddress(emailService.getWANIPAddress()));
+            ipAdresses.setValue(ip);
+            ipAdresses.setLocation(emailService.getLocationFromIPAddress(ip));
             ipAdresses.setUser(user);
             ipAddressesRepository.save(ipAdresses);
             String redirectUrl = "http://localhost:4200/login?verificationLinkClicked=true";

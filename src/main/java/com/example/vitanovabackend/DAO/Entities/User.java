@@ -62,7 +62,6 @@ public class User implements UserDetails {
     private int score=0;
     @Column(name = "phone")
     private String phone;
-    @JsonIgnore
     @OneToOne
     PersonalGoals personalGoals;
 
