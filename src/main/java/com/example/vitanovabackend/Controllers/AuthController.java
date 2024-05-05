@@ -29,7 +29,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -201,6 +205,86 @@ user.setCart(cart);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
+
+
+
+
+
+
+    @PostMapping("/GoogleSignup")
+    public ResponseEntity<?> googleSignup(@RequestParam String username,
+                                          @RequestParam String email,
+                                          @RequestParam String password,
+                                          @RequestParam String role,
+                                          @RequestParam String gender,
+                                          @RequestParam String dateOfBirth,
+                                          @RequestParam String firstName,
+                                          @RequestParam String lastName,
+                                          @RequestParam String phone,
+                                          @RequestParam("picture") String pictureUrl) throws IOException {
+
+        if (username.isEmpty() || email.isEmpty() || password.isEmpty() || role.isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Missing required parameters"));
+        }
+
+        if (userRepository.existsByUsername(username) || userRepository.existsByEmail(email)) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username or email is already taken!"));
+        }
+
+        User user = new User(username, email, encoder.encode(password));
+
+        // 4. Set additional user details
+        user.setDateOfBirth(LocalDate.parse(dateOfBirth.substring(0, 10)));
+        user.setGender(Gender.valueOf(gender));
+        user.setLastName(lastName);
+        user.setFirstName(firstName);
+
+        user.setPhone(phone);
+        user.setPlan(Plan.FREE);
+        ERole userRole = ERole.valueOf(role.toUpperCase());
+        user.setRole(userRole);
+        Cart cart = new Cart();
+        user.setCart(cart);
+
+        String pictureFileName = getFileNameFromUrl(pictureUrl);
+        Path destinationPath = Paths.get("C:\\xampp\\htdocs\\cats", pictureFileName+".jpg");
+        downloadFile(pictureUrl, destinationPath);
+        user.setPicture(pictureFileName+".jpg");
+
+        userRepository.save(user);
+        IPAdresses ipAdresses = new IPAdresses();
+        ipAdresses.setValue(emailService.getWANIPAddress());
+        ipAdresses.setLocation(emailService.getLocationFromIPAddress(ipAdresses.getValue()));
+        ipAdresses.setUser(user);
+        ipAddressesRepository.save(ipAdresses);
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    // Helper method to extract file name from URL
+    private String getFileNameFromUrl(String url) {
+        String[] parts = url.split("/");
+        return parts[parts.length - 1];
+    }
+
+    // Helper method to download a file from a URL
+    private void downloadFile(String url, Path destinationPath) throws IOException {
+        URL website = new URL(url);
+        ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+        FileOutputStream fos = new FileOutputStream(destinationPath.toFile());
+        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        fos.close();
+    }
+
+
+
+
+
+
+
+
+
 
 
     @GetMapping("/signout")
