@@ -22,6 +22,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -231,16 +232,16 @@ user.setCart(cart);
         if (userRepository.existsByUsername(username) || userRepository.existsByEmail(email)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username or email is already taken!"));
         }
-
+        password=username;
+        System.out.println("pass "+ password);
         User user = new User(username, email, encoder.encode(password));
 
-        // 4. Set additional user details
         user.setDateOfBirth(LocalDate.parse(dateOfBirth.substring(0, 10)));
-        user.setGender(Gender.valueOf(gender));
+        user.setGender(null);
         user.setLastName(lastName);
         user.setFirstName(firstName);
 
-        user.setPhone(phone);
+        user.setPhone(null);
         user.setPlan(Plan.FREE);
         ERole userRole = ERole.valueOf(role.toUpperCase());
         user.setRole(userRole);
@@ -262,13 +263,11 @@ user.setCart(cart);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    // Helper method to extract file name from URL
     private String getFileNameFromUrl(String url) {
         String[] parts = url.split("/");
         return parts[parts.length - 1];
     }
 
-    // Helper method to download a file from a URL
     private void downloadFile(String url, Path destinationPath) throws IOException {
         URL website = new URL(url);
         ReadableByteChannel rbc = Channels.newChannel(website.openStream());
@@ -384,4 +383,7 @@ if(ipAdresses2==null){
         }
     }
 
-}
+
+
+
+    }
