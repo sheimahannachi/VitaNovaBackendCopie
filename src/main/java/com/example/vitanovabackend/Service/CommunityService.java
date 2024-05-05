@@ -53,13 +53,28 @@ public class CommunityService implements ICommunityService{
     }
 
     @Override
-    public void deleteCommunity(long id) {
+    public boolean deleteCommunity(long id) {
         Community community=repository.findById(id).orElse(null);
         if(community!=null){
         List<Communication>communications=communicationRepository.findByCommunity(community);
         communicationRepository.deleteAll(communications);
-        repository.deleteById(id);
+
+        for(User member:community.getMembres()){
+            member=userRepository.findById(member.getIdUser()).orElse(null);
+            if(member!=null){
+                member.setCommunity(null);
+                userRepository.save(member);
+            }
+
         }
+
+
+
+
+        repository.deleteById(id);
+        return  true;
+        }
+        return false;
 
     }
 
@@ -119,14 +134,12 @@ public class CommunityService implements ICommunityService{
     }
 
     @Override
-    public boolean userLeaveCommunity(long userId, long communityId) {
+    public boolean userLeaveCommunity(long userId) {
         User user = userRepository.findById(userId).orElse(null);
         if(user==null)
             return false;
 
-        Community community=repository.findById(communityId).orElse(null);
-        if(community==null)
-            return false;
+
         user.setCommunity(null);
         userRepository.save(user);
 
@@ -136,6 +149,11 @@ public class CommunityService implements ICommunityService{
     @Override
     public List<User> getCommunityMembers(long comunityId) {
         return repository.getCommunityMembers(comunityId);
+    }
+
+    @Override
+    public Community getCommunityByUserId(long userId) {
+        return repository.getCommunityByUserId(userId).orElse(null);
     }
 
 

@@ -32,6 +32,14 @@ import java.time.LocalDate;
         boolean seen;
 
 
+        @Column(nullable = true)
+        String imageSent;
+
+
+
+
+
+
         @NotNull(message = "Sender is Mendatory")
         @ManyToOne
         User sender;

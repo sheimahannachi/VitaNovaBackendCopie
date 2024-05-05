@@ -12,7 +12,7 @@ public interface ICommunityService {
 
     Community updateCommmunity ( long id , Community community);
 
-    void deleteCommunity(long id);
+    boolean deleteCommunity(long id);
 
     Community findCommunity(long id);
 
@@ -26,9 +26,11 @@ public interface ICommunityService {
 
     List<User>fetchTopThree(long communityId);
 
-    boolean userLeaveCommunity(long userId,long communityId);
+    boolean userLeaveCommunity(long userId);
 
     List<User> getCommunityMembers(long comunityId);
+
+    Community getCommunityByUserId(long userId);
 
 
 }

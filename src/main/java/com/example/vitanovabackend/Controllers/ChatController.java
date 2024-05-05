@@ -11,6 +11,9 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 
 @Controller
 @Slf4j
@@ -22,18 +25,24 @@ public class ChatController {
     @MessageMapping("/chat.sendMessage/{t}")
     @SendTo("/topic/{t}")
     public Communication sendMessage(
-            @Payload Communication chatMessage, @DestinationVariable String t
+            @Payload Communication chatMessage
+
+            ,@DestinationVariable String t
     ) {
 
         log.info(t);
         log.info(chatMessage.getMessage());
         log.info(chatMessage.getSender().getFirstName());
+        log.info(chatMessage.getImageSent());
         //log.info(chatMessage.getCommunity().getId()+"");
+
 
 
         chatMessage=service.addCommunication(chatMessage);
         return chatMessage;
     }
+
+
 
     @MessageMapping("/chat.addUser/{t}")
     @SendTo("/topic/{t}")

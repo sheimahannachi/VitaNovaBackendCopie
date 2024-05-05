@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CommunityRepository extends JpaRepository<Community,Long> {
@@ -29,5 +30,10 @@ public interface CommunityRepository extends JpaRepository<Community,Long> {
 
     @Query("select c.membres from Community c where c.id=:id")
     List<User>getCommunityMembers(@Param("id")long communityId);
+
+
+    @Query("select c from Community  c join User  u on u.community.id = c.id where u.idUser=:userId")
+    Optional<Community> getCommunityByUserId(@Param("userId")long userId);
+
 
 }
