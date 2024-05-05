@@ -29,14 +29,14 @@ public class CartController {
 
 
 
-    @GetMapping("/commandelines/{idCart}")
-    public List<Commandeline> getAllCommandelinesInCart(@PathVariable Long idCart) {
-        return cartService.getAllCommandelinesInCart(idCart);
+    @GetMapping("/commandelines/{userId}")
+    public List<Commandeline> getAllCommandelinesInCart(@PathVariable Long userId) {
+        return cartService.getAllCommandelinesInCart(userId);
     }
-    @GetMapping("/count/{cartId}")
-    public ResponseEntity<Integer> getNumberOfCommandelinesInCart(@PathVariable Long cartId) {
+    @GetMapping("/count/{userId}")
+    public ResponseEntity<Integer> getNumberOfCommandelinesInCart(@PathVariable Long userId) {
         // Assuming you have a method in your service to get the count of command lines in the cart
-        int numberOfCommandelines = cartService.getNumberOfCommandelinesInCart(cartId);
+        int numberOfCommandelines = cartService.getNumberOfCommandelinesInCart(userId);
         return ResponseEntity.ok(numberOfCommandelines);
     }
 

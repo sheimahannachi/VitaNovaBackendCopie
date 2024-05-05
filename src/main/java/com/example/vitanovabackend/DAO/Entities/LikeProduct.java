@@ -1,21 +1,29 @@
 package com.example.vitanovabackend.DAO.Entities;
 
 
-import jakarta.persistence.*;
+import com.example.vitanovabackend.DAO.Entities.Product;
+import com.example.vitanovabackend.DAO.Entities.User;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@IdClass(LikeProduct.LikeProductId.class)
 public class LikeProduct {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long likePr;
+    private Long userId;
+
+    @Id
+    private Long productId;
 
     @ManyToOne
     private Product product;
@@ -23,5 +31,13 @@ public class LikeProduct {
     @ManyToOne
     private User user;
 
+    // Other fields and relationships...
 
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @EqualsAndHashCode
+    public static class LikeProductId implements Serializable {
+        private Long userId;
+        private Long productId;
+    }
 }
