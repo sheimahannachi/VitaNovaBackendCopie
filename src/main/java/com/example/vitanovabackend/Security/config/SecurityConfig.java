@@ -59,11 +59,40 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "RestController/GetActiveExercise",
                         "RestController/GetExercise",
                         "RestController/Rating/{exerciseId}",
-                        "RestController/saveUserExerciseRating/{idEx}",
+                        "RestController/saveUserExerciseRating/{idEx}/{iduser}",
                         "RestController/ArchiverExercise/{idex}",
                         "RestController/UpdateExercise/{id}",
                         "RestController/addExercise",
                         "RestController/searchEx",
+                       "RestController/addPlan",
+                       "RestController/UpdatePlan",
+                       "RestController/ArchiverPlan/{idplan}",
+                       "RestController/GetPlan",
+                       "RestController/getPlan/{id}",
+                       "RestController/saveUserExerciseRating/{idEx}",
+                       "RestController/getExerciseById/{exerciseId}",
+                       "RestController/Rating/{exerciseId}",
+                       "RestController/filtered",
+                       "RestController/sorted-by-rating",
+                       "RestController/addworkoutsession/{id}",
+                       "RestController/addSession/{id}/{intensity}",
+                       "RestController/statistics",
+
+
+
+                         //ons
+
+                        "RestController/addFood",
+                        "RestController/updateFood/{id}",
+                        "RestController/deleteFood",
+                        "RestController/archiveFood/{id}",
+                        "RestController/getFood",
+                        "RestController/lookup",
+                        "RestController/getcalories",
+                        "RestController/ListTracker",
+                        "RestController/get-food-cards",
+                        "RestController/deleteFoodCard",
+                        "RestController/updateFoodCard/{id}",
 
                        //sheima
                         "/PeriodTracker/AddPeriodInformation",
@@ -90,6 +119,17 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "/Product/search",
                         "/Product/filter",
                         "/Product/addLike/{idPr}",
+
+                        "Cart/Commandeline/{commandelineId}",
+                        "Cart/Commandeline/{commandelineId}/update",
+                        "Cart/Product/{userId}/cart/products/{productId}",
+                       " Cart/{userId}/cart/products",
+                        "Cart/create/{userId}",
+                        "Cart/count/{cartId}",
+                        "Cart/commandelines/{idCart}",
+
+
+
                         //firas
                         ControllerUrls.CommunityUrls.getCommunitiesOrderByChallenger,
                         ControllerUrls.CommunityUrls.addCommunity+"**",
@@ -113,15 +153,18 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "UploadImage",
 
 
+                        "/api/user/admin/**","/Cart/**","/Product/**",
                         "/ws/**").permitAll()
 
 
 
                 .and()
-                .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**","/api/user/admin/UpdateUser").authenticated()
+                .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**","/api/user/admin/UpdateUser","/api/user/DeleteUser/{{id}}").authenticated()
                 .and()
+
                 .authorizeHttpRequests().requestMatchers("/api/user/admin/**").hasRole("ADMIN")
                 .and()
+
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

@@ -74,7 +74,7 @@ ICheckoutService iCheckoutService;
         chargeParams.put("amount", payload.getAmount()); // Amount in cents
         chargeParams.put("currency", "usd");
         chargeParams.put("source", payload.getStripeToken()); // Stripe token obtained from frontend
-        chargeParams.put("description", "Premium " + payload.getName());
+        chargeParams.put("description", "Premium for " + payload.getName());
 
         try {
             // Create a charge using the Stripe API
@@ -82,7 +82,7 @@ ICheckoutService iCheckoutService;
 
             // Payment successful, return success response
             System.out.println("works");
-            return ResponseEntity.ok("Payment processed successfully. Charge ID: " + charge.getId());
+            return ResponseEntity.ok().build();
         } catch (StripeException e) {
             // Payment failed, return error response
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

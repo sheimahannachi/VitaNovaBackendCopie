@@ -3,6 +3,7 @@ package com.example.vitanovabackend.DAO.Entities;
 import com.example.vitanovabackend.Security.config.GrantedAuthorityDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.*;
@@ -72,6 +73,7 @@ public class User implements UserDetails {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     Cart cart;
 
     @JsonIgnore
@@ -81,7 +83,7 @@ public class User implements UserDetails {
     List<Food>foods=new ArrayList<>();
 
 
-    @JsonBackReference
+    @JsonBackReference("communityBackRef")
     @ManyToOne( cascade = CascadeType.ALL )
     Community community;
 
@@ -92,8 +94,8 @@ public class User implements UserDetails {
 
 
     @Column(name = "role")
-   @Enumerated(EnumType.STRING)
-   private ERole role ;
+    @Enumerated(EnumType.STRING)
+    private ERole role ;
 
     @Column(name = "plan")
     @Enumerated(EnumType.STRING)

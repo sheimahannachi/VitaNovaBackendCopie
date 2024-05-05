@@ -20,6 +20,8 @@ public class Exercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     String title;
+
+    @Column(length = 1000) // Setting maximum length to 1000 characters
     String description;
     String typeEx;
     String bodypart;

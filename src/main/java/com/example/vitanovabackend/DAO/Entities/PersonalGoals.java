@@ -1,5 +1,8 @@
 package com.example.vitanovabackend.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.engine.internal.Cascade;
@@ -21,13 +24,20 @@ public class PersonalGoals {
     private long idPG;
     @Column(name = "weightGoal")
     private float weightGoal;
+    @Column(name = "weightStart")
+    private float weightStart;
     @Column(name = "dateGoal")
     private LocalDate dateGoal;
     @Column(name = "description")
     private String description;
+    @Column(name = "DailyNeededCalories")
+    private float DailyNeededCalories;
+    private LocalDate StartDate=LocalDate.now();
 
     @OneToOne(mappedBy = "personalGoals")
-    User user;
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
     @OneToMany(mappedBy ="personalGoal")
     List<WorkoutProgram> workoutProgramList=new ArrayList<>();
     @OneToOne

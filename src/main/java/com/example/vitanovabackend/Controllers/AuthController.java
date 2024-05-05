@@ -7,10 +7,7 @@ import com.example.vitanovabackend.Payload.Request.LoginRequest;
 import com.example.vitanovabackend.Payload.Request.ResetPasswordRequest;
 import com.example.vitanovabackend.Payload.Response.MessageResponse;
 import com.example.vitanovabackend.Payload.Response.UserInfoResponse;
-import com.example.vitanovabackend.Service.EmailService;
-import com.example.vitanovabackend.Service.IUserService;
-import com.example.vitanovabackend.Service.JwtService;
-import com.example.vitanovabackend.Service.MiscService;
+import com.example.vitanovabackend.Service.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,6 +30,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -47,6 +46,8 @@ public class AuthController {
 
     @Autowired
     UserRepository userRepository;
+
+    CartService cartService;
 
 
 
@@ -145,6 +146,10 @@ public class AuthController {
             File tempFile = tempFilePath.toFile();
             picture.transferTo(tempFile);
 
+            // Copy the file to the desired location
+            Path destinationPath = Paths.get("C:\\xampp\\htdocs\\cats", pictureFileName);
+            Files.copy(tempFilePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+
             user.setPicture(pictureFileName);
 
             tempFile.delete();
@@ -156,7 +161,8 @@ public class AuthController {
         user.setPlan(Plan.FREE);
         ERole userRole = ERole.valueOf(role.toUpperCase());
         user.setRole(userRole);
-
+Cart cart = new Cart();
+user.setCart(cart);
         IPAdresses ipAdresses= new IPAdresses();
         ipAdresses.setValue(emailService.getWANIPAddress());
         ipAdresses.setLocation(emailService.getLocationFromIPAddress(ipAdresses.getValue()));
@@ -228,12 +234,12 @@ public class AuthController {
         return userRepository.existsByEmail(email);
     }
 
-   @GetMapping("/CheckIpAddress")
+    @GetMapping("/CheckIpAddress")
     public boolean IpAdressCheck(@RequestParam("username") String username  ){
         User user = userRepository.findByUsername(username);
         if (user != null) {
 
-IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
+            IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
 
             return ipAdresses != null;
 
@@ -250,6 +256,8 @@ IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailServ
 
         User user = userRepository.findByUsername(username);
         if (user != null) {
+            IPAdresses ipAdresses2 = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
+if(ipAdresses2==null){
             IPAdresses ipAdresses = new IPAdresses();
             ipAdresses.setValue(emailService.getWANIPAddress());
             ipAdresses.setLocation(emailService.getLocationFromIPAddress(emailService.getWANIPAddress()));
@@ -257,10 +265,9 @@ IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailServ
             ipAddressesRepository.save(ipAdresses);
             String redirectUrl = "http://localhost:4200/login?verificationLinkClicked=true";
             response.sendRedirect(redirectUrl);
-        } else {
+        } }else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
 }
-
