@@ -114,6 +114,8 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "/PeriodTracker/getSymptomsAndRatingsForPeriod/{idPeriod}",
                         "/PeriodTracker/exercises",
                         "PeriodTracker/period-food",
+                        "PeriodTracker/fertile-window/{idPeriod}",
+                        "PeriodTracker/AddJournal",
                         //aziz
                         "/Product/addProduct",
                         "/Product/getProductById/{idPr}",

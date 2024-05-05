@@ -24,7 +24,7 @@ public class PeriodTrackerService implements IPeriodTrackerService {
     ExerciseRepository exerciseRepository ;
     FoodRepository foodRepository;
     private SymptomRatingRepository symptomRatingRepository;
-
+    JournalRepository journalRepository;
     @Override
     public PeriodTracker AddPeriodInformation(PeriodTracker periodTracker) {
 
@@ -278,7 +278,12 @@ public class PeriodTrackerService implements IPeriodTrackerService {
         // Return the start and end dates of the fertile window
         return Arrays.asList(fertileWindowStart, fertileWindowEnd);
     }
+    @Override
+    public JournalEntry AddJournal(JournalEntry journalEntry) {
 
+
+        return journalRepository.save(journalEntry);
+    }
 
 }
 

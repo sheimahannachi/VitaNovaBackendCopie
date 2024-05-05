@@ -21,6 +21,11 @@ public class PeriodTrackerController {
     public PeriodTracker AddPeriodInformation(@RequestBody PeriodTracker periodTracker) {
         return iPeriodTrackerService.AddPeriodInformation(periodTracker);
     }
+
+    @PostMapping("AddJournal")
+    public JournalEntry AddJournal(@RequestBody JournalEntry journalEntry) {
+        return iPeriodTrackerService.AddJournal(journalEntry);
+    }
     @DeleteMapping ("deletePeriodinformation")
     public void deletePeriodInformation(@RequestParam long idPeriod ) {
         iPeriodTrackerService.deletePeriodInformation(idPeriod );

@@ -44,6 +44,7 @@ public class PeriodTracker {
 
 
 
+
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "periodTracker")
     @JsonIgnore
     User user;
