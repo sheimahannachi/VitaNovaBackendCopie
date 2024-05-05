@@ -156,7 +156,8 @@ public class ChallengeResultService implements IChallengeResultService {
 
                     sum=sum+(long)hydration.getSumofwater();
                 }
-                log.info("No hydration found while calculating water consumption");
+                else
+                    log.info("No hydration found while calculating water consumption");
 
             }
         }else log.info("No tracker found while calculating water consumption");

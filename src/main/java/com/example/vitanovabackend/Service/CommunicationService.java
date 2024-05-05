@@ -153,10 +153,10 @@ public class CommunicationService implements  ICommunicationService{
          Page<Communication> p =repository.findAllByCommunityOrderByIdDesc(community,pageable);
          try {
              for (Communication communication : p) {
-
                  communication.setMessage(
                          EncryptionUtils.decrypt(communication.getMessage())
                  );
+
              }
          } catch (Exception e) {
              e.printStackTrace();
