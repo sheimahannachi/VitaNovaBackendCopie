@@ -67,7 +67,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                        "RestController/addPlan",
                        "RestController/UpdatePlan",
                        "RestController/ArchiverPlan/{idplan}",
-                       "RestController/GetPlan",
+                       "RestController/GetPlan","/RestController/**",
                        "RestController/getPlan/{id}",
                        "RestController/saveUserExerciseRating/{idEx}",
                        "RestController/getExerciseById/{exerciseId}",
