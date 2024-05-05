@@ -90,10 +90,8 @@ public class AuthController {
         System.out.println(authRequest);
         if (authRequest != null) {
             User user = services.loginUser(authRequest.getUsername(), authRequest.getPassword());
-            System.out.println(user);
-            System.out.println("generating token : ");
+
             if (user != null) {
-                // Authenticate user
                 String jwtToken = jwtService.generateToken(user.getUsername());
                 HttpHeaders headers = new HttpHeaders();
                 headers.add("Authorization", "Bearer " + jwtToken);
@@ -116,7 +114,6 @@ public class AuthController {
         System.out.println(email);
         if (email != null) {
 User user = userRepository.findByEmail(email);
-            System.out.println(user);
             System.out.println("generating token : ");
             if (user != null) {
                 String jwtToken = jwtService.generateToken(user.getUsername());
