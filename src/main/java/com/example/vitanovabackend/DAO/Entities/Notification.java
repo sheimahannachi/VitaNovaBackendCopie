@@ -18,19 +18,23 @@ import java.util.List;
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idNotif;
+    private long Id;
     @Column(name = "Content")
     private String Content;
-    @Column(name = "priority")
-    private String priority;
-    @Column(name = "NotificationDate")
-    private LocalDate NotificationDate;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "categories")
+    private List<String> categories = new ArrayList<>();
     @Column(name = "archive")
     private Boolean archive=false;
+    @Column(name = "subscription")
+    private Boolean subscription=false;
+
+
 
 
     @ManyToOne
-    PeriodTracker periodTracker;
+    User user;
+
 
 
 }

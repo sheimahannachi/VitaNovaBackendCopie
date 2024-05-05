@@ -77,6 +77,10 @@ public class User implements UserDetails {
     List<Food>foods=new ArrayList<>();
 
 
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    List<Notification> notifications = new ArrayList<>();
+
+
     @JsonBackReference
     @ManyToOne( cascade = CascadeType.ALL )
     Community community;

@@ -95,6 +95,13 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "PeriodTracker/period-food",
                         "PeriodTracker/fertile-window/{idPeriod}",
                         "PeriodTracker/AddJournal",
+                        "Notification/unsubscribe/{idUser}",
+                        "/Notification/subscribe/{idUser}",
+                        "Notification/{Id}",
+                        "/Notification/AddNotification",
+                        "Notification/getNotification",
+                        "Notification/archive/{Id}",
+                        "Notification/notifications",
                         //aziz
                         "/Product/addProduct",
                         "/Product/getProductById/{idPr}",
