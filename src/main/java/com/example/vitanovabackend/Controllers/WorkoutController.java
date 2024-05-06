@@ -135,9 +135,9 @@ public Exercise getExerciseById(@PathVariable("exerciseId") long id){
         // Save the workout session entity to the database
         return iWorkout.addSession(workoutSession,id,intensity);
     }
-    @GetMapping("statistics")
-    public List<Object[]> getAllWorkoutSessionData(){
-        return iWorkout.getAllWorkoutSessionData();
+    @GetMapping("statistics/{id}")
+    public List<Object[]> getAllWorkoutSessionData(@PathVariable("id") long id){
+        return iWorkout.getAllWorkoutSessionData(id);
     }
 
 }

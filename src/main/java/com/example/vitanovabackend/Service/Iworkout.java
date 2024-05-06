@@ -32,5 +32,5 @@ public interface Iworkout {
  public WorkoutSession addWorkoutSession(WorkoutSession workoutSession,long id);
  public WorkoutSession addSession(WorkoutSession workoutSession, long id, Intensity intensity);
  public Map<String, List<Object[]>> getUserTrainingStatistics(long userId);
- public List<Object[]> getAllWorkoutSessionData();
+ public List<Object[]> getAllWorkoutSessionData(long id);
 }

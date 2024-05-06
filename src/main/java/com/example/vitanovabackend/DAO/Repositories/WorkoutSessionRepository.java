@@ -12,4 +12,5 @@ public interface WorkoutSessionRepository extends JpaRepository<WorkoutSession,L
                 "WHERE ws.user.idUser = :userId " +
                 "GROUP BY FUNCTION('YEAR', ws.time_start), FUNCTION('MONTH', ws.time_start)")
         List<WorkoutSession> getUserTrainingStatistics(long userId);
+        List<WorkoutSession> findByUser_IdUser(long iduser);
     }
