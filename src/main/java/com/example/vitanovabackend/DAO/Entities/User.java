@@ -86,7 +86,7 @@ public class User implements UserDetails {
     List<Notification> notifications = new ArrayList<>();
 
 
-    @JsonBackReference
+    @JsonBackReference("communityBackRef")
     @ManyToOne( cascade = CascadeType.ALL )
     Community community;
 
