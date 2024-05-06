@@ -379,13 +379,14 @@ public class Workout implements Iworkout {
         return statisticsData;
     }
 
-    public List<WorkoutSession> getAllWorkoutSessions() {
-        return workoutSessionRepository.findAll();
+    public List<WorkoutSession> getAllWorkoutSessions(long id) {
+
+        return workoutSessionRepository.findByUser_IdUser(id);
     }
 
     @Override
-    public List<Object[]> getAllWorkoutSessionData() {
-        List<WorkoutSession> sessions = getAllWorkoutSessions();
+    public List<Object[]> getAllWorkoutSessionData(long id) {
+        List<WorkoutSession> sessions = getAllWorkoutSessions(id);
         List<Object[]> sessionData = new ArrayList<>();
 
         for (WorkoutSession session : sessions) {
