@@ -26,6 +26,9 @@ public class FoodCard {
     @ManyToOne
     @JoinColumn(name = "food_id")
     private Food food;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
 
     private Integer quantity;
     private double calcCalories;
