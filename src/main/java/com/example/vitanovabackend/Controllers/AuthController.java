@@ -7,10 +7,9 @@ import com.example.vitanovabackend.Payload.Request.LoginRequest;
 import com.example.vitanovabackend.Payload.Request.ResetPasswordRequest;
 import com.example.vitanovabackend.Payload.Response.MessageResponse;
 import com.example.vitanovabackend.Payload.Response.UserInfoResponse;
-import com.example.vitanovabackend.Service.EmailService;
-import com.example.vitanovabackend.Service.IUserService;
-import com.example.vitanovabackend.Service.JwtService;
-import com.example.vitanovabackend.Service.MiscService;
+import com.example.vitanovabackend.Service.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +22,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -30,10 +30,17 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -47,6 +54,8 @@ public class AuthController {
 
     @Autowired
     UserRepository userRepository;
+
+    CartService cartService;
 
 
 
@@ -101,8 +110,31 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
+    @CrossOrigin("**")
+    @PostMapping("/LoginGoogle")
+    public ResponseEntity<UserInfoResponse> LoginGoogle(@RequestParam("email") String email) {
+        System.out.println(email);
+        if (email != null) {
+User user = userRepository.findByEmail(email);
+            System.out.println(user);
+            System.out.println("generating token : ");
+            if (user != null) {
+                String jwtToken = jwtService.generateToken(user.getUsername());
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", "Bearer " + jwtToken);
 
-    @PostMapping("/signup")
+                return ResponseEntity.ok().headers(headers)
+                        .body(new UserInfoResponse(user.getIdUser(),
+                                user.getUsername(),
+                                user.getRole().toString(),
+                                user.getEmail(),
+                                jwtToken
+                        ));
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+        @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestParam String username,
                                           @RequestParam String email,
                                           @RequestParam String password,
@@ -145,6 +177,10 @@ public class AuthController {
             File tempFile = tempFilePath.toFile();
             picture.transferTo(tempFile);
 
+            // Copy the file to the desired location
+            Path destinationPath = Paths.get("C:\\xampp\\htdocs\\cats", pictureFileName);
+            Files.copy(tempFilePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+
             user.setPicture(pictureFileName);
 
             tempFile.delete();
@@ -156,7 +192,8 @@ public class AuthController {
         user.setPlan(Plan.FREE);
         ERole userRole = ERole.valueOf(role.toUpperCase());
         user.setRole(userRole);
-
+Cart cart = new Cart();
+user.setCart(cart);
         IPAdresses ipAdresses= new IPAdresses();
         ipAdresses.setValue(emailService.getWANIPAddress());
         ipAdresses.setLocation(emailService.getLocationFromIPAddress(ipAdresses.getValue()));
@@ -169,6 +206,84 @@ public class AuthController {
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
+
+
+
+
+
+
+    @PostMapping("/GoogleSignup")
+    public ResponseEntity<?> googleSignup(@RequestParam String username,
+                                          @RequestParam String email,
+                                          @RequestParam String password,
+                                          @RequestParam String role,
+                                          @RequestParam String gender,
+                                          @RequestParam String dateOfBirth,
+                                          @RequestParam String firstName,
+                                          @RequestParam String lastName,
+                                          @RequestParam String phone,
+                                          @RequestParam("picture") String pictureUrl) throws IOException {
+
+        if (username.isEmpty() || email.isEmpty() || password.isEmpty() || role.isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Missing required parameters"));
+        }
+
+        if (userRepository.existsByUsername(username) || userRepository.existsByEmail(email)) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username or email is already taken!"));
+        }
+        password=username;
+        System.out.println("pass "+ password);
+        User user = new User(username, email, encoder.encode(password));
+
+        user.setDateOfBirth(LocalDate.parse(dateOfBirth.substring(0, 10)));
+        user.setGender(null);
+        user.setLastName(lastName);
+        user.setFirstName(firstName);
+
+        user.setPhone(null);
+        user.setPlan(Plan.FREE);
+        ERole userRole = ERole.valueOf(role.toUpperCase());
+        user.setRole(userRole);
+        Cart cart = new Cart();
+        user.setCart(cart);
+
+        String pictureFileName = getFileNameFromUrl(pictureUrl);
+        Path destinationPath = Paths.get("C:\\xampp\\htdocs\\cats", pictureFileName+".jpg");
+        downloadFile(pictureUrl, destinationPath);
+        user.setPicture(pictureFileName+".jpg");
+
+        userRepository.save(user);
+        IPAdresses ipAdresses = new IPAdresses();
+        ipAdresses.setValue(emailService.getWANIPAddress());
+        ipAdresses.setLocation(emailService.getLocationFromIPAddress(ipAdresses.getValue()));
+        ipAdresses.setUser(user);
+        ipAddressesRepository.save(ipAdresses);
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    private String getFileNameFromUrl(String url) {
+        String[] parts = url.split("/");
+        return parts[parts.length - 1];
+    }
+
+    private void downloadFile(String url, Path destinationPath) throws IOException {
+        URL website = new URL(url);
+        ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+        FileOutputStream fos = new FileOutputStream(destinationPath.toFile());
+        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        fos.close();
+    }
+
+
+
+
+
+
+
+
+
 
 
     @GetMapping("/signout")
@@ -193,6 +308,8 @@ public class AuthController {
             String jwtToken = authHeader.substring(7);
             System.out.println(jwtToken);
             String username = jwtService.extractUsername(jwtToken);
+            System.out.println("USERNAME : " + username );
+
             if (username != null) {
                 User user = services.loadUserByUsername(username);
                 if (user != null) {
@@ -202,6 +319,8 @@ public class AuthController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // JWT token not found in Authorization header
     }
+
+
 
 
 
@@ -228,12 +347,12 @@ public class AuthController {
         return userRepository.existsByEmail(email);
     }
 
-   @GetMapping("/CheckIpAddress")
+    @GetMapping("/CheckIpAddress")
     public boolean IpAdressCheck(@RequestParam("username") String username  ){
         User user = userRepository.findByUsername(username);
         if (user != null) {
 
-IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
+            IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
 
             return ipAdresses != null;
 
@@ -250,6 +369,8 @@ IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailServ
 
         User user = userRepository.findByUsername(username);
         if (user != null) {
+            IPAdresses ipAdresses2 = ipAddressesRepository.findByUserAndValue(user, emailService.getWANIPAddress());
+if(ipAdresses2==null){
             IPAdresses ipAdresses = new IPAdresses();
             ipAdresses.setValue(emailService.getWANIPAddress());
             ipAdresses.setLocation(emailService.getLocationFromIPAddress(emailService.getWANIPAddress()));
@@ -257,10 +378,12 @@ IPAdresses ipAdresses = ipAddressesRepository.findByUserAndValue(user, emailServ
             ipAddressesRepository.save(ipAdresses);
             String redirectUrl = "http://localhost:4200/login?verificationLinkClicked=true";
             response.sendRedirect(redirectUrl);
-        } else {
+        } }else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
-}
 
+
+
+    }

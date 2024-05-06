@@ -1,6 +1,8 @@
 package com.example.vitanovabackend.Service;
 
+import com.example.vitanovabackend.DAO.Entities.PersonalGoals;
 import com.example.vitanovabackend.DAO.Entities.User;
+import com.example.vitanovabackend.DAO.Repositories.PersonalGoalsRepository;
 import com.example.vitanovabackend.DAO.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class UserService implements IUserService {
     private final UserRepository userRepository;
+    private final PersonalGoalsRepository personalGoalsRepository;
+
 
     private final PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 
@@ -30,6 +34,17 @@ public class UserService implements IUserService {
     @Override
     public User updateUser(User user) {
         return userRepository.save(user);
+    }
+
+    public User DeleteGoal(User user){
+        long idPg=user.getPersonalGoals().getIdPG();
+        user.setPersonalGoals(null);
+        userRepository.save(user);
+        if(personalGoalsRepository.findById(idPg).isPresent()) {
+            PersonalGoals personalGoals1 = personalGoalsRepository.findById(idPg).get();
+            personalGoalsRepository.delete(personalGoals1);
+        }
+return user;
     }
 
 
@@ -113,7 +128,16 @@ return userRepository.save(user);
         return user;
     }
 
+@Override
+    public  User GetUserByGoal(PersonalGoals personalGoals){
+        return userRepository.findByPersonalGoals(personalGoals);
+}
 
+@Override
+    public User GetUserByEmail(String email) {
+return userRepository.findByEmail(email);
+
+}
 
 
 

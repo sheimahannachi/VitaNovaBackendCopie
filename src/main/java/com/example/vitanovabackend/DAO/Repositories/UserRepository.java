@@ -1,5 +1,6 @@
 package com.example.vitanovabackend.DAO.Repositories;
 
+import com.example.vitanovabackend.DAO.Entities.PersonalGoals;
 import com.example.vitanovabackend.DAO.Entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +23,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Boolean existsByUsername(String username);
 
     Boolean existsByEmail(String email);
+
+    User findByPersonalGoals(PersonalGoals personalGoals);
 
 }

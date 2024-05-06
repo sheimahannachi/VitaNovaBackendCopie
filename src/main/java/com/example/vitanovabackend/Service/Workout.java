@@ -1,9 +1,6 @@
 package com.example.vitanovabackend.Service;
 import com.example.vitanovabackend.DAO.Entities.*;
-import com.example.vitanovabackend.DAO.Repositories.ExerciseRepository;
-import com.example.vitanovabackend.DAO.Repositories.UserExerciseRatingRepository;
-import com.example.vitanovabackend.DAO.Repositories.UserRepository;
-import com.example.vitanovabackend.DAO.Repositories.WorkoutProgramRepository;
+import com.example.vitanovabackend.DAO.Repositories.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
@@ -20,9 +17,10 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +35,8 @@ public class Workout implements Iworkout {
     ExerciseRepository exerciseRepository;
     UserExerciseRatingRepository userExerciseRatingRepository;
     UserRepository userRepository;
+    WorkoutSessionRepository workoutSessionRepository;
+
     public static String uploadDirectory = "C:/xampp/htdocs/uploads";
 
     public WorkoutProgram addPlan(WorkoutProgram workoutProgram, MultipartFile file, String[] selectedExerciseIds) throws IOException {
@@ -125,11 +125,12 @@ public class Workout implements Iworkout {
     }
 
     @Override
-    public Page<WorkoutProgram> GetPlan(int page,int size) {
+    public Page<WorkoutProgram> GetPlan(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return workoutProgramRepository.findActiveWorkoutPlan(pageable);
     }
-    public WorkoutProgram GetPlanById(long id){
+
+    public WorkoutProgram GetPlanById(long id) {
         return workoutProgramRepository.findById(id).get();
     }
 
@@ -192,7 +193,7 @@ public class Workout implements Iworkout {
     }
 
     @Override
-    public Page<Exercise> GetExercise(int page,int size) {
+    public Page<Exercise> GetExercise(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return exerciseRepository.findAll(pageable);
     }
@@ -208,17 +209,44 @@ public class Workout implements Iworkout {
         return exerciseRepository.save(exercise);
     }
 */
-    public UserRating saveUserExerciseRating(UserRating userExerciseRating, long idExercise) {
-        Exercise exercise = exerciseRepository.findById(idExercise).orElse(null);
-        if (exercise != null) {
-            userExerciseRating.setExercise(exercise);
-            return userExerciseRatingRepository.save(userExerciseRating);
-        } else {
-            // Gérer l'erreur si l'exercice n'est pas trouvé
-            return null;
+    public UserRating saveUserExerciseRating(UserRating userExerciseRating, long userId, long idExercise) {
+        // Find the exercise by its ID
+        Optional<Exercise> exerciseOptional = exerciseRepository.findById(idExercise);
+        if (exerciseOptional.isPresent()) {
+            Exercise exercise = exerciseOptional.get();
 
+            // Find the user by their ID
+            Optional<User> userOptional = userRepository.findById(userId);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+
+                // Check if the user has already rated the exercise
+                Optional<UserRating> existingRating = userExerciseRatingRepository.findByUserAndExercise(user, exercise);
+
+                if (existingRating.isPresent()) {
+                    // Update the existing rating
+                    UserRating ratingToUpdate = existingRating.get();
+                    ratingToUpdate.setRate(userExerciseRating.getRate()); // Update the rating value if needed
+                    return userExerciseRatingRepository.save(ratingToUpdate);
+                } else {
+                    // Associate the exercise and user with the user rating
+                    userExerciseRating.setExercise(exercise);
+                    userExerciseRating.setUser(user);
+
+                    // Save the user exercise rating
+                    return userExerciseRatingRepository.save(userExerciseRating);
+                }
+            } else {
+                // Handle the case where user is not found
+                return null;
+            }
+        } else {
+            // Handle the case where exercise is not found
+            return null;
         }
+
     }
+
 
     public Exercise getExerciseById(long id) {
         return exerciseRepository.findById(id).get();
@@ -253,6 +281,7 @@ public class Workout implements Iworkout {
 
         return averageRating;
     }
+
     public void importExercisesFromCsv() {
         try {
             InputStream inputStream = getClass().getResourceAsStream("/exercises (1).csv");
@@ -316,7 +345,60 @@ public class Workout implements Iworkout {
         return exerciseRepository.findExercisesOrderByAverageRating(pageable);
     }
 
+    @Override
+    public WorkoutSession addWorkoutSession(WorkoutSession workoutSession, long id) {
+        User user = userRepository.findById(id).get();
+        workoutSession.setTime_start(LocalDateTime.now());
+        workoutSession.setUser(user);
+        // Save the workout session entity to the database
+        return workoutSessionRepository.save(workoutSession);
     }
+
+    public WorkoutSession addSession(WorkoutSession workoutSession, long id, Intensity intensity) {
+        User user = userRepository.findById(id).get();
+        WorkoutProgram workoutProgram = workoutProgramRepository.findByIntensity(intensity);
+        workoutSession.setTime_start(LocalDateTime.now());
+        workoutSession.setUser(user);
+        workoutSession.setIntensity(workoutProgram.getIntensity());
+        // Save the workout session entity to the database
+        return workoutSessionRepository.save(workoutSession);
+    }
+
+    public Map<String, List<Object[]>> getUserTrainingStatistics(long userId) {
+        List<WorkoutSession> resultList = workoutSessionRepository.getUserTrainingStatistics(userId);
+
+        // Group the results by month-year
+        Map<String, List<Object[]>> statisticsData = new HashMap<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        for (WorkoutSession workoutSession : resultList) {
+            LocalDateTime timeStart = workoutSession.getTime_start();
+            String monthYear = timeStart.format(formatter);
+            Object[] result = new Object[] { workoutSession.getIntensity(), timeStart };
+            statisticsData.computeIfAbsent(monthYear, k -> new ArrayList<>()).add(result);
+        }
+        return statisticsData;
+    }
+
+    public List<WorkoutSession> getAllWorkoutSessions() {
+        return workoutSessionRepository.findAll();
+    }
+
+    @Override
+    public List<Object[]> getAllWorkoutSessionData() {
+        List<WorkoutSession> sessions = getAllWorkoutSessions();
+        List<Object[]> sessionData = new ArrayList<>();
+
+        for (WorkoutSession session : sessions) {
+            Object[] data = new Object[3];
+            data[0] = session.getUser().getIdUser(); // UserID
+            data[1] = session.getIntensity();    // Intensity
+            data[2] = session.getTime_start();   // Start Time
+            sessionData.add(data);
+        }
+
+        return sessionData;
+    }
+}
 
 
 

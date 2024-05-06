@@ -1,22 +1,20 @@
 package com.example.vitanovabackend.Service;
 
-import com.example.vitanovabackend.DAO.Entities.FoodCard;
+import com.example.vitanovabackend.DAO.Entities.*;
 import com.example.vitanovabackend.DAO.Repositories.FoodCardRepository;
-import com.fasterxml.jackson.core.type.TypeReference;
 
-import com.example.vitanovabackend.DAO.Entities.Food;
-import com.example.vitanovabackend.DAO.Entities.Hydration;
-import com.example.vitanovabackend.DAO.Entities.Tracker;
 import com.example.vitanovabackend.DAO.Repositories.FoodRepository;
 import com.example.vitanovabackend.DAO.Repositories.HydrationRepository;
 import com.example.vitanovabackend.DAO.Repositories.TrackerRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -45,7 +43,7 @@ public class FoodService implements IFoodService {
     TrackerRepository trackerRepository;
     HydrationRepository hydrationRepository;
     FoodCardRepository foodCardRepository;
-
+    private final OkHttpClient client = new OkHttpClient();
     public static String uploadDirectory= "C:/xampp/htdocs/uploads";
     @Override
     public Food addFood(Food food ,MultipartFile file) throws IOException
@@ -95,23 +93,39 @@ public class FoodService implements IFoodService {
     }
     /////////////////////////////////////////////////////////////////////////
 
+
     @Override
     public Tracker addTracker(Tracker tracker) {
-       /* List<Food> selectedFoods = tracker.getConsumedFood();
-        double consumedCalories = calculateConsumedCalories(selectedFoods);
-        tracker.setConsumedcalories(consumedCalories);*/
-        // Assurez-vous que d'autres attributs de Tracker sont correctement définis
+        // Retrieve food cards with null tracker_id
+        List<FoodCard> foodCards = foodCardRepository.findFoodCardWithNullTrackerId();
 
+        if (foodCards != null && !foodCards.isEmpty()) {
+            double totalCalories = 0;
+
+            // Save the tracker first to ensure it's persisted
+            tracker = trackerRepository.save(tracker);
+
+            // Set tracker for each food card and calculate total calories
+            for (FoodCard foodCard : foodCards) {
+                foodCard.setTracker(tracker);
+                totalCalories += foodCard.getCalcCalories();
+            }
+
+            // Set consumed calories and other properties for the tracker
+            tracker.setConsumedcalories(totalCalories);
+            tracker.setDate(LocalDate.now());
+            tracker.setArchive(false);
+        }
+
+        // Save the updated food cards (if any)
+        foodCardRepository.saveAll(foodCards);
+
+        // Save the tracker
         return trackerRepository.save(tracker);
     }
 
-    private double calculateConsumedCalories(List<Food> selectedFoods) {
-        double totalCalories = 0;
-        for (Food food : selectedFoods) {
-            totalCalories += food.getCalories();
-        }
-        return totalCalories;
-    }
+
+
 
     @Override
     public List<Tracker> updateTracker(List<Tracker> trackers) {
@@ -150,12 +164,12 @@ public class FoodService implements IFoodService {
 
     @Override
     public void deleteHydra(Long id) {
-    hydrationRepository.deleteById(id);
+        hydrationRepository.deleteById(id);
     }
 
     @Override
     public void deleteHydra2(Hydration hydration) {
-    hydrationRepository.delete(hydration);
+        hydrationRepository.delete(hydration);
     }
 
     @Override
@@ -254,7 +268,7 @@ public class FoodService implements IFoodService {
         return 0.0; // or throw an exception if the value is mandatory
     }
     ///////////////////////////////////////////////////////////////////////////////
-    public void addFoodCards(List<Food> foods, int quantity) {
+    public void addFoodCards(List<Food> foods, int quantity, MealType mealType) {
         LocalDateTime entryTimestamp = LocalDateTime.now(); // Get current timestamp
 
         List<FoodCard> foodCards = new ArrayList<>();
@@ -263,6 +277,7 @@ public class FoodService implements IFoodService {
             FoodCard foodCard = FoodCard.builder()
                     // .tracker(tracker)
                     .food(food)
+                    .mealType(mealType) // Set mealType
                     .quantity(quantity)
                     .calcCalories(calcCalories) // Setting calcCalories
                     .entryTimestamp(entryTimestamp)
@@ -272,6 +287,7 @@ public class FoodService implements IFoodService {
 
         foodCardRepository.saveAll(foodCards);
     }
+
     public List<FoodCard> getFoodCards() {
         return foodCardRepository.findFoodCardWithNullTrackerId();
     }
@@ -285,17 +301,66 @@ public class FoodService implements IFoodService {
     public void updateFoodCard(List<Food> foods, int quantity) {
         LocalDateTime entryTimestamp = LocalDateTime.now(); // Get current timestamp
 
-        List<FoodCard> foodCards = new ArrayList<>();
         for (Food food : foods) {
-            FoodCard foodCard = FoodCard.builder()
-                    // .tracker(tracker)
-                    .food(food)
-                    .quantity(quantity)
-                    .entryTimestamp(entryTimestamp)
-                    .build();
-            foodCards.add(foodCard);
-        }
+            // Check if a FoodCard with the same foodId already exists
+            Optional<FoodCard> existingFoodCardOptional = foodCardRepository.findByFoodId(food.getId());
 
-        foodCardRepository.saveAll(foodCards);
+            if (existingFoodCardOptional.isPresent()) {
+                // If FoodCard already exists, update its quantity and other attributes
+                FoodCard existingFoodCard = existingFoodCardOptional.get();
+                int updatedQuantity =  quantity;
+                double calcCalories = existingFoodCard.getFood().getCalories() * updatedQuantity; // Recalculate calories
+                existingFoodCard.setCalcCalories(calcCalories); // Update calcCalories
+                existingFoodCard.setQuantity(updatedQuantity);
+                existingFoodCard.setEntryTimestamp(entryTimestamp); // Update timestamp
+                // You may need to update other attributes as well based on your requirements
+                foodCardRepository.save(existingFoodCard); // Save updated FoodCard
+            } else {
+                // If FoodCard doesn't exist, create a new one
+                FoodCard foodCard = FoodCard.builder()
+                        .food(food)
+                        .quantity(quantity)
+                        .entryTimestamp(entryTimestamp)
+                        .build();
+                foodCardRepository.save(foodCard); // Save new FoodCard
+            }
+        }
     }
+
+
+    public List<FoodCard> getFoodCardsByMealType( MealType mealType,
+                                                  Long idTracker) {
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // Retrieve food cards by meal type and associated tracker id
+        List<FoodCard> foodCards = foodCardRepository.getFoodCardsByMealTypeAndTrackerId(mealType, idTracker);
+
+        // Filter food cards based on timestamp (remove those not associated with today's date)
+        foodCards.removeIf(foodCard -> !foodCard.getEntryTimestamp().toLocalDate().equals(currentDate));
+
+
+        return foodCards;
+    }
+
+    @Override
+    public String getProductInfo(String barcode) throws IOException {
+        Request request = new Request.Builder()
+                .url("https://dietagram.p.rapidapi.com/apiBarcode.php?name=" + barcode)
+                .get()
+                .addHeader("X-RapidAPI-Key", "d9b3426de0mshca06726a2e3de22p13b8a7jsn8ddd27ae9d20")
+                .addHeader("X-RapidAPI-Host", "dietagram.p.rapidapi.com")
+                .build();
+        System.out.println(request);
+        try (Response response = client.newCall(request).execute()) {
+            System.out.println(response);
+
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            return response.body().string();
+        }
+    }
+
+
 }

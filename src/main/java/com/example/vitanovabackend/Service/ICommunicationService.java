@@ -2,13 +2,14 @@ package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.Communication;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
 
 public interface ICommunicationService {
 
-    Communication addCommunication ( Communication communication);
+    Communication addCommunication (Communication communication);
 
     Communication updateCommunication ( long id , Communication communication);
 
@@ -23,5 +24,7 @@ public interface ICommunicationService {
 
     boolean setSeenToComunicationComunity(long comunityId, long senderId);
     boolean setSeenToComunicationOneToOne(long senderId, long recieverId);
+
+    Communication addAudioCommunication(Communication audioData);
 
 }

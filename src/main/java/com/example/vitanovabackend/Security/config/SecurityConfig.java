@@ -52,19 +52,36 @@ public class SecurityConfig implements WebSecurityConfigurer {
 
                 .requestMatchers(
                         ControllerUrls.UserUrls.AuthLoginUrl, ControllerUrls.UserUrls.AuthSignupUrl,
-                        ControllerUrls.UserUrls.AuthResetPasswordE,ControllerUrls.UserUrls.AuthResetPasswordE,"/api/CheckIpAddress","/api/AddIpAddress",
+                        ControllerUrls.UserUrls.AuthResetPasswordE,ControllerUrls.UserUrls.AuthResetPasswordE,"/api/CheckIpAddress","/api/AddIpAddress","/api/checkPassword",
                         "/api/checkUsername","/api/checkEmail","/api/user/GetUserByUsername","/PG/AddGoal","/api/user/AddUser","/checkout/create-checkout-session","/checkout/process-payment"
-                        ,"/api/getuserfromtoken","/api/sendEmail","/api/misc/uploadImage","api/misc/takePic","/api/sendEmailWithAttachment",
+                        ,"/api/getuserfromtoken","/api/sendEmail","/api/misc/uploadImage","api/misc/takePic","/api/sendEmailWithAttachment","/api/user/GetUserByEmail","/api/LoginGoogle","/api/GoogleSignup",
                         //yoser
                         "RestController/GetActiveExercise",
                         "RestController/GetExercise",
                         "RestController/Rating/{exerciseId}",
-                        "RestController/saveUserExerciseRating/{idEx}",
+                        "RestController/saveUserExerciseRating/{idEx}/{iduser}",
                         "RestController/ArchiverExercise/{idex}",
                         "RestController/UpdateExercise/{id}",
                         "RestController/addExercise",
                         "RestController/searchEx",
-                         //ons
+                       "RestController/addPlan",
+                       "RestController/UpdatePlan",
+                       "RestController/ArchiverPlan/{idplan}",
+                       "RestController/GetPlan","/RestController/**",
+                       "RestController/getPlan/{id}",
+                       "RestController/saveUserExerciseRating/{idEx}",
+                       "RestController/getExerciseById/{exerciseId}",
+                       "RestController/Rating/{exerciseId}",
+                       "RestController/filtered",
+                       "RestController/sorted-by-rating",
+                       "RestController/addworkoutsession/{id}",
+                       "RestController/addSession/{id}/{intensity}",
+                       "RestController/statistics",
+
+
+
+                        //ons
+
                         "RestController/addFood",
                         "RestController/updateFood/{id}",
                         "RestController/deleteFood",
@@ -76,7 +93,11 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "RestController/get-food-cards",
                         "RestController/deleteFoodCard",
                         "RestController/updateFoodCard/{id}",
-
+                        "RestController/addTracker",
+                        "RestController/foodCardCateg",
+                        "RestController/ScanBarcode",
+                        "RestController/search",
+                        "RestController/search-image",
                        //sheima
                         "/PeriodTracker/AddPeriodInformation",
                         "/PeriodTracker/UpdatePeriodinformation",
@@ -111,6 +132,17 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "/Product/search",
                         "/Product/filter",
                         "/Product/addLike/{idPr}",
+
+                        "Cart/Commandeline/{commandelineId}",
+                        "Cart/Commandeline/{commandelineId}/update",
+                        "Cart/Product/{userId}/cart/products/{productId}",
+                       " Cart/{userId}/cart/products",
+                        "Cart/create/{userId}",
+                        "Cart/count/{cartId}",
+                        "Cart/commandelines/{idCart}",
+
+
+
                         //firas
                         ControllerUrls.CommunityUrls.getCommunitiesOrderByChallenger,
                         ControllerUrls.CommunityUrls.addCommunity+"**",
@@ -123,23 +155,29 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         ControllerUrls.CommunityUrls.fetchTopThree,
                         ControllerUrls.CommunityUrls.userLeaveCommunity,
                         ControllerUrls.ChallengesUrl.AddChallenge,
-                        ControllerUrls.CommunityUrls.getCommunityMembers,
+                        ControllerUrls.CommunityUrls.getCommunityMembers+"**",
                         ControllerUrls.CommunicationUrl.deleteComunicationUrl,
                         ControllerUrls.CommunicationUrl.updateCommunication,
                         ControllerUrls.CommunicationUrl.seenComunication+"**",
                         ControllerUrls.CommunicationUrl.getComunicationbySenderAndReciever,
                         ControllerUrls.CommunicationUrl.setSeenToCommunicationsOneToOne,
+                        ControllerUrls.CommunityUrls.getCommunityByUser+"**",
+                        ControllerUrls.CommunityUrls.AddMemberToCommunity+"****",
+                        "UploadImage",
 
 
+                        "/api/user/admin/**","/Cart/**","/Product/**",
                         "/ws/**").permitAll()
 
 
 
                 .and()
-                .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**","/api/user/admin/UpdateUser").authenticated()
+                .authorizeHttpRequests().requestMatchers("/user/**","/api/signout","/api/**","/api/user/admin/UpdateUser","/api/user/DeleteUser/{{id}}").authenticated()
                 .and()
+
                 .authorizeHttpRequests().requestMatchers("/api/user/admin/**").hasRole("ADMIN")
                 .and()
+
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

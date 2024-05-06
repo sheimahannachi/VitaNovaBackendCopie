@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
-
 @Entity
 @Table(name = "food_card")
 @Getter
@@ -18,7 +17,8 @@ public class FoodCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Enumerated(EnumType.STRING)
+    private MealType mealType;
     @ManyToOne
     @JoinColumn(name = "tracker_id")
     private Tracker tracker;
@@ -30,8 +30,7 @@ public class FoodCard {
     private Integer quantity;
     private double calcCalories;
 
+
     @Column(name = "entry_timestamp")
     private LocalDateTime entryTimestamp;
-
-
 }

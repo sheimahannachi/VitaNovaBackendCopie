@@ -22,10 +22,10 @@ public class CommunicationController {
     ICommunicationService service;
 
 
-    @PostMapping("addCommunication")
+ /*   @PostMapping("addCommunication")
     public Communication addCommunication (@RequestBody  Communication communication){
         return service.addCommunication(communication);
-    }
+    }*/
 
     @PutMapping(ControllerUrls.CommunicationUrl.updateCommunication)
     public Communication updateCommunication (@PathVariable long id ,@RequestBody Communication communication){

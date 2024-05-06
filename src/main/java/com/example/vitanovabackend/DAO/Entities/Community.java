@@ -1,5 +1,6 @@
 package com.example.vitanovabackend.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -50,7 +51,7 @@ public class Community {
     User creator;
 
 
-    @JsonManagedReference
+    @JsonBackReference("communityBackRef")
     @OneToMany(mappedBy = "community")
     List<User> membres = new ArrayList<>();
 

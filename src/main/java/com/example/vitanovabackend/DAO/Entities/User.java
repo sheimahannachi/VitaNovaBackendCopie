@@ -62,15 +62,19 @@ public class User implements UserDetails {
     private int score=0;
     @Column(name = "phone")
     private String phone;
+    @JsonIgnore
     @OneToOne
     PersonalGoals personalGoals;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     PeriodTracker periodTracker;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     Cart cart;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
 
 
