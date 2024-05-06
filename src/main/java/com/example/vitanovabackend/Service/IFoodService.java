@@ -18,13 +18,13 @@ public interface IFoodService {
     public Page<Food> getFood(int page, int size);
     public Food getFoodById(long id);
     /////////////////////////////////////////////
-    public Tracker addTracker(Tracker tracker);
+    public Tracker addTracker(Tracker tracker, Long userId);
     public List<Tracker> updateTracker  (List<Tracker> trackers);
     public void deleteTracker(List<Tracker> trackers);
     public Tracker archiverTracker(Long idTracker);
     public  List<Tracker> getTracker();
     //////////////////////////////////////////////
-    public Hydration addHydra(Hydration hydration);
+    public Hydration addHydra(long id);
     public Hydration updateHydra(Hydration hydration);
     public void deleteHydra(Long id);
     public void deleteHydra2(Hydration hydration);
@@ -32,7 +32,7 @@ public interface IFoodService {
     public List<Hydration> getHydra();
     public Map<LocalDate, Double> calculateConsumedCaloriesPerDay(List<Tracker> trackers);
     public void addFoodListToTracker(Tracker tracker, Map<Food, Integer> foodQuantityMap);
-    public void addFoodCards(List<Food> foods, int quantity, MealType mealType) ;
+    public void addFoodCards(List<Food> foods, int quantity, MealType mealType, long userId);
     public List<FoodCard> getFoodCards();
     public void deleteFoodCard(FoodCard foodCard);
     public void updateFoodCard(List<Food> foods, int quantity);
@@ -42,4 +42,6 @@ public interface IFoodService {
                                                   Long idTracker);
 
     String getProductInfo(String barcode) throws IOException;
+    public Hydration getHydrationForToday(long userId);
+    public Hydration deleteHydration(long userId);
 }

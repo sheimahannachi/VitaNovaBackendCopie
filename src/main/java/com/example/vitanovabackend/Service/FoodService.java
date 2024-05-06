@@ -1,11 +1,8 @@
 package com.example.vitanovabackend.Service;
 
 import com.example.vitanovabackend.DAO.Entities.*;
-import com.example.vitanovabackend.DAO.Repositories.FoodCardRepository;
+import com.example.vitanovabackend.DAO.Repositories.*;
 
-import com.example.vitanovabackend.DAO.Repositories.FoodRepository;
-import com.example.vitanovabackend.DAO.Repositories.HydrationRepository;
-import com.example.vitanovabackend.DAO.Repositories.TrackerRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
@@ -43,6 +40,7 @@ public class FoodService implements IFoodService {
     TrackerRepository trackerRepository;
     HydrationRepository hydrationRepository;
     FoodCardRepository foodCardRepository;
+    UserRepository userRepository;
     private final OkHttpClient client = new OkHttpClient();
     public static String uploadDirectory= "C:/xampp/htdocs/uploads";
     @Override
@@ -95,7 +93,7 @@ public class FoodService implements IFoodService {
 
 
     @Override
-    public Tracker addTracker(Tracker tracker) {
+    public Tracker addTracker(Tracker tracker, Long userId) {
         // Retrieve food cards with null tracker_id
         List<FoodCard> foodCards = foodCardRepository.findFoodCardWithNullTrackerId();
 
@@ -115,6 +113,10 @@ public class FoodService implements IFoodService {
             tracker.setConsumedcalories(totalCalories);
             tracker.setDate(LocalDate.now());
             tracker.setArchive(false);
+
+            // Set the user for the tracker
+            User user = userRepository.findById(userId).orElse(null);
+            tracker.setUser(user);
         }
 
         // Save the updated food cards (if any)
@@ -123,6 +125,7 @@ public class FoodService implements IFoodService {
         // Save the tracker
         return trackerRepository.save(tracker);
     }
+
 
 
 
@@ -149,13 +152,83 @@ public class FoodService implements IFoodService {
     public List<Tracker> getTracker() {
         return trackerRepository.findAll();
     }
+    public Hydration addHydra(long userId) {
+        // Get today's date
+        LocalDate today = LocalDate.now();
 
-    /////////////////////////////////////////////////////////////////////////
+        // Check if a hydration entry exists for the user and today's date
+        Optional<Hydration> existingHydration = hydrationRepository.findByUser_IdUserAndDate(userId, today);
 
-    @Override
-    public Hydration addHydra(Hydration hydration) {
-        return hydrationRepository.save(hydration);
+        // If a hydration entry exists, update it; otherwise, create a new one
+        if (existingHydration.isPresent()) {
+            Hydration hydration = existingHydration.get();
+            int cupsQty = hydration.getCupsqte();
+            double sumOfWater = hydration.getSumofwater();
+            if (cupsQty < 4) {
+                // Increment cups quantity
+                hydration.setCupsqte(cupsQty + 1);
+                // Increment sum of water by 0.5L
+                hydration.setSumofwater(sumOfWater + 0.5);
+            } else {
+                // User has already consumed 4 cups today
+                return null;
+            }
+            // Save and return the updated hydration
+            return hydrationRepository.save(hydration);
+        } else {
+            // No hydration entry exists for today, create a new one
+            Hydration newHydration = new Hydration();
+            newHydration.setUser(userRepository.findById(userId).orElse(null)); // Set the user
+            newHydration.setCupsqte(1); // Set cups quantity to 1
+            newHydration.setSumofwater(0.5); // Set sum of water to 0.5
+            newHydration.setDate(today); // Set the date
+            return hydrationRepository.save(newHydration); // Save and return the new hydration
+        }
     }
+
+    public Hydration getHydrationForToday(long userId) {
+        // Get today's date
+        LocalDate today = LocalDate.now();
+
+        // Retrieve hydration entry for the user and today's date
+        Optional<Hydration> hydration = hydrationRepository.findByUser_IdUserAndDate(userId, today);
+
+        // If hydration entry exists for today, return it; otherwise, return null
+        return hydration.orElse(null);
+    }
+        public Hydration deleteHydration(long userId) {
+            // Get today's date
+            LocalDate today = LocalDate.now();
+
+            // Retrieve hydration entry for the user and today's date
+            Optional<Hydration> hydrationOptional = hydrationRepository.findByUser_IdUserAndDate(userId, today);
+
+            // If hydration entry exists, decrement sumofwater by 0.5 for each unfilled cup
+            if (hydrationOptional.isPresent()) {
+                Hydration hydration = hydrationOptional.get();
+                int cupsQty = hydration.getCupsqte();
+                double sumOfWater = hydration.getSumofwater();
+
+                // Decrement sumofwater by 0.5 for each unfilled cup
+                if (cupsQty > 0) {
+                    // Decrement cups quantity
+                    hydration.setCupsqte(cupsQty - 1);
+                    // Decrement sum of water by 0.5L
+                    hydration.setSumofwater(Math.max(0, sumOfWater - 0.5)); // Ensure it's not negative
+                }
+
+                // Save and return the updated hydration
+                return hydrationRepository.save(hydration);
+            }
+
+            // If hydration entry doesn't exist, return null or handle as needed
+            return null;
+        }
+
+
+    /////////////////////////////////////////////0////////////////////////////
+
+
 
     @Override
     public Hydration updateHydra(Hydration hydration) {
@@ -268,7 +341,7 @@ public class FoodService implements IFoodService {
         return 0.0; // or throw an exception if the value is mandatory
     }
     ///////////////////////////////////////////////////////////////////////////////
-    public void addFoodCards(List<Food> foods, int quantity, MealType mealType) {
+    public void addFoodCards(List<Food> foods, int quantity, MealType mealType, long userId) {
         LocalDateTime entryTimestamp = LocalDateTime.now(); // Get current timestamp
 
         List<FoodCard> foodCards = new ArrayList<>();
@@ -285,8 +358,15 @@ public class FoodService implements IFoodService {
             foodCards.add(foodCard);
         }
 
+        // Set the user for each food card
+        User user = userRepository.findById(userId).orElse(null);
+        for (FoodCard foodCard : foodCards) {
+            foodCard.setUser(user);
+        }
+
         foodCardRepository.saveAll(foodCards);
     }
+
 
     public List<FoodCard> getFoodCards() {
         return foodCardRepository.findFoodCardWithNullTrackerId();

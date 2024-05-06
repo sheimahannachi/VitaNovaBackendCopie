@@ -12,6 +12,7 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/scheduler/SchedulerHydration.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/scheduler/SchedulerNotification.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/NotificationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Notification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Notification.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/PeriodTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/PeriodTracker.java" afterDir="false" />
@@ -25,6 +26,16 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/AuthController.java" afterDir="false" />
 >>>>>>> Amine
+=======
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/FoodController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/FoodController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/FoodCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/FoodCard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Hydration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Hydration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Tracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Tracker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/HydrationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Repositories/HydrationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Security/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/FoodService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/FoodService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/IFoodService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/IFoodService.java" afterDir="false" />
+>>>>>>> ONS
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +69,11 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+<<<<<<< HEAD
     &quot;git-widget-placeholder&quot;: &quot;Merging sheima&quot;,
+=======
+    &quot;git-widget-placeholder&quot;: &quot;ONS&quot;,
+>>>>>>> ONS
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
@@ -66,12 +81,15 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+<<<<<<< HEAD
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn clean" />
       <command value="mvn install" />
     </option>
   </component>
+=======
+>>>>>>> ONS
   <component name="RunManager">
     <configuration name="VitaNovabackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="VitaNovabackend" />
@@ -102,7 +120,12 @@
       <updated>1714485120473</updated>
       <workItem from="1714485121611" duration="142000" />
       <workItem from="1714582524748" duration="827000" />
+<<<<<<< HEAD
       <workItem from="1714986517915" duration="1275000" />
+=======
+      <workItem from="1714749413165" duration="12123000" />
+      <workItem from="1714997993108" duration="10790000" />
+>>>>>>> ONS
     </task>
     <servers />
   </component>

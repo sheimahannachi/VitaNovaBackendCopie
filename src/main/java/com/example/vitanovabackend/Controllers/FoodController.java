@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -78,9 +79,9 @@ public class FoodController {
         return restTemplate.getForObject(url, Object.class);
     }
     //////////////////////////////////////////////
-    @PostMapping("addTracker")
-    public Tracker addTracker(Tracker tracker) {
-        return iFoodService.addTracker(tracker);
+    @PostMapping("addTracker/{id}")
+    public Tracker addTracker(Tracker tracker,@PathVariable("id") long id) {
+        return iFoodService.addTracker(tracker,id);
     }
     @PutMapping("updateTracker")
     public List<Tracker> updateTracker(List<Tracker> trackers){
@@ -99,9 +100,19 @@ public class FoodController {
         return iFoodService.getTracker();
     }
     /////////////////////////////////////////////////
-    @PostMapping("addHydration")
-    public Hydration addHydra(Hydration hydration){
-        return iFoodService.addHydra(hydration);
+    @PostMapping("addHydration/{id}")
+    public Hydration addHydra( @PathVariable("id") long id){
+        return iFoodService.addHydra(id);
+    }
+    @GetMapping("getHydration/{id}")
+    public Hydration getHydrationForToday(@PathVariable("id") long userId) {
+        // Get today's date
+       return iFoodService.getHydrationForToday(userId);
+    }
+    @PutMapping("hydration/{userId}")
+    public Hydration deleteHydration(@PathVariable long userId) {
+        // Call the deleteHydration method from FoodService
+       return iFoodService.deleteHydration(userId);
     }
     @PutMapping("updateHydration")
     public Hydration updateHydra(Hydration hydration){
@@ -130,9 +141,9 @@ public class FoodController {
 
         return iFoodService.calculateConsumedCaloriesPerDay(trackers);
     }
-    @PostMapping("ListTracker")
-    public void addFoodCards(@RequestParam List<Food> foods, @RequestParam int quantity, @RequestParam MealType mealType){
-        iFoodService.addFoodCards(foods, quantity,mealType);
+    @PostMapping("ListTracker/{id}")
+    public void addFoodCards(@RequestParam List<Food> foods, @RequestParam int quantity, @RequestParam MealType mealType,@PathVariable("id")long id){
+        iFoodService.addFoodCards(foods, quantity,mealType,id);
 
     }
     @GetMapping("get-food-cards")
