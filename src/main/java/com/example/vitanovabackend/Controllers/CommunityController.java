@@ -38,8 +38,8 @@ public class CommunityController {
     }
 
     @DeleteMapping(ControllerUrls.CommunityUrls.DeleteCommunity)
-    public void deleteCommunity(@PathVariable long id){
-        service.deleteCommunity(id);
+    public boolean deleteCommunity(@PathVariable long id){
+        return service.deleteCommunity(id);
     }
 
 
@@ -82,13 +82,18 @@ public class CommunityController {
     }
 
     @PutMapping(ControllerUrls.CommunityUrls.userLeaveCommunity)
-    public boolean userLeaveCommunity(@RequestParam long userId,@RequestParam long communityId){
-        return service.userLeaveCommunity(userId,communityId);
+    public boolean userLeaveCommunity(@PathVariable long userId){
+        return service.userLeaveCommunity(userId);
     }
 
     @GetMapping(ControllerUrls.CommunityUrls.getCommunityMembers)
     public List<User> getCommunityMembers(@RequestParam long comunityId){
         return service.getCommunityMembers(comunityId);
+    }
+
+    @GetMapping(ControllerUrls.CommunityUrls.getCommunityByUser)
+    public Community getCommunityByUserId(@PathVariable long userId){
+        return service.getCommunityByUserId(userId);
     }
 
 }

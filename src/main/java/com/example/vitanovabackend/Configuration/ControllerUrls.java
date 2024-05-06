@@ -12,8 +12,9 @@ public   class ControllerUrls {
         public static final String AddMemberToCommunity="addMemberToComunity";
         public static final String getCommunitiesOrderByChallenger="getCommunitiesOrderedByChallenges";
         public static final String fetchTopThree="getTopThreeByCommunity";
-        public static final String userLeaveCommunity="leaveCommunity";
+        public static final String userLeaveCommunity="leaveCommunity/{userId}";
         public static final String getCommunityMembers="communityMembers";
+        public static final String getCommunityByUser="communityByUser/{userId}";
 
     }
     public static class ChallengesUrl{

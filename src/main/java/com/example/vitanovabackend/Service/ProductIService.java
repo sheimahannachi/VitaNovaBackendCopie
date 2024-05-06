@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductIService {
 
@@ -22,12 +23,13 @@ public interface ProductIService {
 
     public void uploadImage(MultipartFile file,String fileName)  throws IOException;
 
-    public  void addLike(/*Long idUser,*/ Long idPr);
 
+    boolean addLike(Long idUser, Long idPr);
     public void addProductToCart(Long idPr, Long idUser);
 
     public void deleteProductFromCart(Long productId, Long userId);
     public void generateQRCodeForProduct(Long productId);
+    public Map<String, Object> getInvoiceData( Long userId);
 
 
 }

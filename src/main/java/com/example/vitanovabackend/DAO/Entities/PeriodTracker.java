@@ -44,6 +44,7 @@ public class PeriodTracker {
 
 
 
+
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "periodTracker")
     @JsonIgnore
     User user;
@@ -54,6 +55,5 @@ public class PeriodTracker {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "periodTracker")
     List<Food> foods = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "periodTracker")
-    List<Notification> notifications = new ArrayList<>();
+
 }

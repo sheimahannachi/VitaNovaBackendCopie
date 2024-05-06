@@ -52,9 +52,9 @@ public class SecurityConfig implements WebSecurityConfigurer {
 
                 .requestMatchers(
                         ControllerUrls.UserUrls.AuthLoginUrl, ControllerUrls.UserUrls.AuthSignupUrl,
-                        ControllerUrls.UserUrls.AuthResetPasswordE,ControllerUrls.UserUrls.AuthResetPasswordE,"/api/CheckIpAddress","/api/AddIpAddress",
+                        ControllerUrls.UserUrls.AuthResetPasswordE,ControllerUrls.UserUrls.AuthResetPasswordE,"/api/CheckIpAddress","/api/AddIpAddress","/api/checkPassword",
                         "/api/checkUsername","/api/checkEmail","/api/user/GetUserByUsername","/PG/AddGoal","/api/user/AddUser","/checkout/create-checkout-session","/checkout/process-payment"
-                        ,"/api/getuserfromtoken","/api/sendEmail","/api/misc/uploadImage","api/misc/takePic","/api/sendEmailWithAttachment",
+                        ,"/api/getuserfromtoken","/api/sendEmail","/api/misc/uploadImage","api/misc/takePic","/api/sendEmailWithAttachment","/api/user/GetUserByEmail","/api/LoginGoogle","/api/GoogleSignup",
                         //yoser
                         "RestController/GetActiveExercise",
                         "RestController/GetExercise",
@@ -67,7 +67,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
                        "RestController/addPlan",
                        "RestController/UpdatePlan",
                        "RestController/ArchiverPlan/{idplan}",
-                       "RestController/GetPlan",
+                       "RestController/GetPlan","/RestController/**",
                        "RestController/getPlan/{id}",
                        "RestController/saveUserExerciseRating/{idEx}",
                        "RestController/getExerciseById/{exerciseId}",
@@ -80,7 +80,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
 
 
 
-                         //ons
+                        //ons
 
                         "RestController/addFood",
                         "RestController/updateFood/{id}",
@@ -89,11 +89,18 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "RestController/getFood",
                         "RestController/lookup",
                         "RestController/getcalories",
-                        "RestController/ListTracker",
+                        "RestController/ListTracker/{id}",
                         "RestController/get-food-cards",
                         "RestController/deleteFoodCard",
                         "RestController/updateFoodCard/{id}",
-
+                        "RestController/addTracker/{id}",
+                        "RestController/foodCardCateg",
+                        "RestController/ScanBarcode",
+                        "RestController/search",
+                        "RestController/search-image",
+                        "RestController/addHydration/{id}",
+                        "RestController/getHydration/{id}",
+                        "RestController/hydration/{userId}",
                        //sheima
                         "/PeriodTracker/AddPeriodInformation",
                         "/PeriodTracker/UpdatePeriodinformation",
@@ -110,6 +117,15 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "/PeriodTracker/getSymptomsAndRatingsForPeriod/{idPeriod}",
                         "/PeriodTracker/exercises",
                         "PeriodTracker/period-food",
+                        "PeriodTracker/fertile-window/{idPeriod}",
+                        "PeriodTracker/AddJournal",
+                        "Notification/unsubscribe/{idUser}",
+                        "/Notification/subscribe/{idUser}",
+                        "Notification/{Id}",
+                        "/Notification/AddNotification",
+                        "Notification/getNotification",
+                        "Notification/archive/{Id}",
+                        "Notification/notifications",
                         //aziz
                         "/Product/addProduct",
                         "/Product/getProductById/{idPr}",
@@ -119,14 +135,18 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "/Product/search",
                         "/Product/filter",
                         "/Product/addLike/{idPr}",
+                        "/Product/generate-pdf/{cartId}/{userId}",
 
                         "Cart/Commandeline/{commandelineId}",
-                        "Cart/Commandeline/{commandelineId}/update",
+                        "Commandeline/{commandelineId}/update",
                         "Cart/Product/{userId}/cart/products/{productId}",
                        " Cart/{userId}/cart/products",
                         "Cart/create/{userId}",
                         "Cart/count/{cartId}",
                         "Cart/commandelines/{idCart}",
+                        "Payment/charge",
+                        "sendmail/**",
+
 
 
 
@@ -142,12 +162,15 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         ControllerUrls.CommunityUrls.fetchTopThree,
                         ControllerUrls.CommunityUrls.userLeaveCommunity,
                         ControllerUrls.ChallengesUrl.AddChallenge,
-                        ControllerUrls.CommunityUrls.getCommunityMembers,
+                        ControllerUrls.CommunityUrls.getCommunityMembers+"**",
                         ControllerUrls.CommunicationUrl.deleteComunicationUrl,
                         ControllerUrls.CommunicationUrl.updateCommunication,
                         ControllerUrls.CommunicationUrl.seenComunication+"**",
                         ControllerUrls.CommunicationUrl.getComunicationbySenderAndReciever,
                         ControllerUrls.CommunicationUrl.setSeenToCommunicationsOneToOne,
+                        ControllerUrls.CommunityUrls.getCommunityByUser+"**",
+                        ControllerUrls.CommunityUrls.AddMemberToCommunity+"****",
+                        "UploadImage",
 
 
                         "/api/user/admin/**","/Cart/**","/Product/**",

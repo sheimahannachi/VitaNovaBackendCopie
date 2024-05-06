@@ -26,14 +26,16 @@ public class CartService implements CartIService{
 
 
 
-    public List<Commandeline> getAllCommandelinesInCart(Long idCart) {
-        Cart cart = cartRepository.findById(idCart).get();
+    public List<Commandeline> getAllCommandelinesInCart(Long userId) {
+        User user=userRepository.findById(userId).get();
+        Cart cart =user.getCart();
         System.out.println(cart.getPriceCart());
         return cart.getCommandelineList();
     }
 
-    public int getNumberOfCommandelinesInCart(Long cartId) {
-        Cart cart = cartRepository.findById(cartId).orElse(null);
+    public int getNumberOfCommandelinesInCart(Long userId) {
+        User user=userRepository.findById(userId).get();
+        Cart cart =user.getCart();
         if (cart != null) {
             return cart.getCommandelineList().size();
         }
@@ -82,15 +84,20 @@ public class CartService implements CartIService{
     }
 */
 
-    public void createUserCart() {
-        // Retrieve the user from the database
 
-        // Create a new cart
-        Cart cart = new Cart();
+        public void createUserCart(long userId) {
+            // Retrieve the user from the database
+            User user = userRepository.findById(userId).get();
 
-        // Save the cart to associate it with the user
-        cartRepository.save(cart);
-    }
+            // Create a new cart
+            Cart cart = new Cart();
+            user.setCart(cart);
+
+            // Save the cart to associate it with the user
+            cartRepository.save(cart);
+            userRepository.save(user);
+        }
+
 
     public List<Commandeline> getProductsInCart(Long userId) {
         Cart cart = cartRepository.findByUserIdUser(userId);

@@ -37,5 +37,8 @@ public class Tracker {
 
     @OneToMany(mappedBy = "tracker")
     private List<FoodCard> foodCards = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
 }
 

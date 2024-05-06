@@ -1,17 +1,11 @@
 package com.example.vitanovabackend.Controllers;
 
-import com.example.vitanovabackend.DAO.Entities.*;
+import com.example.vitanovabackend.DAO.Entities.PersonalGoals;
+import com.example.vitanovabackend.DAO.Entities.User;
 import com.example.vitanovabackend.Service.IUserService;
 import com.example.vitanovabackend.Service.JwtService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -64,6 +58,26 @@ public class UserController {
 }
 
 
+
+    @GetMapping("/GetUserByGoal")
+    public User GetUserByGoal(@RequestBody PersonalGoals personalGoals){
+
+        return iUserService.GetUserByGoal(personalGoals);
+    }
+
+
+    @CrossOrigin("**")
+    @PutMapping("/admin/DeleteGoal")
+    public User DeleteGoal(@RequestBody User user) {
+        return iUserService.DeleteGoal(user);
+    }
+
+
+    @GetMapping("/GetUserByEmail")
+    public User GetUserByEmail(@PathParam("email") String email){
+
+        return iUserService.GetUserByEmail(email);
+    }
 
 
 

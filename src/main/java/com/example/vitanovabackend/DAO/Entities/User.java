@@ -66,20 +66,27 @@ public class User implements UserDetails {
     @OneToOne
     PersonalGoals personalGoals;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     PeriodTracker periodTracker;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JsonManagedReference
     Cart cart;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
 
 
     List<Food>foods=new ArrayList<>();
 
 
-    @JsonBackReference("communityBackRef")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    List<Notification> notifications = new ArrayList<>();
+
+
+    @JsonBackReference
     @ManyToOne( cascade = CascadeType.ALL )
     Community community;
 
