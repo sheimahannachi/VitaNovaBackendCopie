@@ -5,13 +5,17 @@ import com.example.vitanovabackend.DAO.Entities.Product;
 import com.example.vitanovabackend.Service.ProductIService;
 import jakarta.servlet.annotation.MultipartConfig;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 @org.springframework.web.bind.annotation.RestController
 @AllArgsConstructor
@@ -74,9 +78,10 @@ public class ProductController {
 
 
     @PostMapping("/addLike/{idPr}")
-    public ResponseEntity<Void> addLike(/*@RequestParam("idUser") Long idUser,*/ @PathVariable("idPr") Long idPr) {
-        productIService.addLike(idPr);
+    public ResponseEntity<Void> addLike(@RequestParam("idUser") Long idUser, @PathVariable("idPr") Long idPr) {
+       if( productIService.addLike(idUser,idPr))
         return ResponseEntity.ok().build();
+       else return ResponseEntity.badRequest().build();
     }
 
 
@@ -108,4 +113,9 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/details/{userId}")
+    public ResponseEntity<Map<String, Object>> getInvoiceDetails( @PathVariable Long userId) {
+        Map<String, Object> invoiceData = productIService.getInvoiceData( userId);
+        return ResponseEntity.ok(invoiceData);
+    }
 }

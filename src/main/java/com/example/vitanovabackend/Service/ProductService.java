@@ -7,15 +7,29 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Text;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.Document;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystems;
@@ -23,6 +37,16 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+
+import com.itextpdf.layout.element.Paragraph;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Map;
 
 @org.springframework.stereotype.Service
 @AllArgsConstructor
@@ -224,21 +248,37 @@ public class ProductService implements ProductIService {
         return filteredProducts;
     }
 
-    public void addLike(/*Long idUser,*/ Long idPr) {
-        // Recherche de l'utilisateur et du produit correspondants
-        // User user = userRepository.findById(idUser).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'ID : " + idUser));
-        Product product = productRepository.findById(idPr).orElseThrow(() -> new EntityNotFoundException("Produit non trouvé avec l'ID : " + idPr));
+    @Override
+    public boolean addLike(Long idUser, Long idPr) {
 
-        // Création du like pour le produit
-        LikeProduct likeProduct = new LikeProduct();
-        //likeProduct.setUser(user);
-        likeProduct.setProduct(product);
-        likeProductRepository.save(likeProduct);
+            // Recherche de l'utilisateur et du produit correspondants
+            User user = userRepository.findById(idUser)
+                    .orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'ID : " + idUser));
+            Product product = productRepository.findById(idPr)
+                    .orElseThrow(() -> new EntityNotFoundException("Produit non trouvé avec l'ID : " + idPr));
 
-        // Incrémentation du nombre de likes du produit
-        product.setLikeCount(product.getLikeCount() + 1);
-        productRepository.save(product);
+            // Vérifier si l'utilisateur a déjà aimé le produit
+            if(likeProductRepository.existsByUserAndProduct(user, product)) {
+return false;
+            }
+
+            // Création du like pour le produit
+            LikeProduct likeProduct = new LikeProduct();
+            likeProduct.setUser(user);
+            likeProduct.setProduct(product);
+            likeProduct.setUserId(user.getIdUser());
+            likeProduct.setProductId(product.getIdPr());
+
+            // Enregistrer le like dans la base de données
+            likeProductRepository.save(likeProduct);
+
+            // Incrémentation du nombre de likes du produit
+            product.setLikeCount(product.getLikeCount() + 1);
+            productRepository.save(product);
+
+        return true;
     }
+
 
     public void addProductToCart(Long idPr, Long idUser) throws RuntimeException {
         // Retrieve the user from the database based on userId
@@ -307,13 +347,27 @@ public class ProductService implements ProductIService {
 
 
     // Calculate total price of the cart
-    private float calculateTotalPrice(Cart cart) {
-        float totalPrice = 0;
+    public float calculateTotalPrice(Cart cart) {
+        // Initialize total price to 0
+        float totalPrice = 0.0f;
+
+        // Iterate through each command line in the cart
         for (Commandeline commandeline : cart.getCommandelineList()) {
-            totalPrice += commandeline.getProduct().getPricePr() * commandeline.getQuantity();
+            // Get the quantity and unit price of the command line
+            int quantity = (int) commandeline.getQuantity();
+            float unitPrice = commandeline.getProduct().getPricePr();
+
+            // Calculate the price of the command line and add it to the total price
+            totalPrice += quantity * unitPrice;
         }
+
+        // Set the total price in the cart
+        cart.setPriceCart(totalPrice);
+
+        // Return the total price
         return totalPrice;
     }
+
     public void deleteProductFromCart(Long userId, Long productId) {
         // Retrieve the user from the database based on userId
         User user = userRepository.findById(userId)
@@ -357,12 +411,12 @@ public class ProductService implements ProductIService {
         }
 
         // Generate QR code text with the product URL
-        String productUrl = "http://localhost:4200/ProductDetails/" + productId; // Modify the URL format as needed
+        String productUrl = "http://localhost:4200/vitaNova/ProductDetails/" + productId; // Modify the URL format as needed
         String qrCodeText = productUrl;
 
         // Set QR code image width and height
-        int width = 300;
-        int height = 300;
+        int width = 250;
+        int height = 250;
 
         // Set file path for saving the QR code image (change as needed)
         String uploadDirectory = "C:/xampp/htdocs/aziz/";
@@ -384,6 +438,49 @@ public class ProductService implements ProductIService {
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
         Path path = FileSystems.getDefault().getPath(filePath);
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+    }
+
+
+
+    public Map<String, Object> getInvoiceData(Long userId) {
+        Map<String, Object> invoiceData = new HashMap<>();
+
+        // Récupérer l'utilisateur
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            throw new IllegalArgumentException("Utilisateur non trouvé avec l'ID : " + userId);
+        }
+
+        // Récupérer le panier de l'utilisateur
+        Cart cart = user.getCart();
+        if (cart == null) {
+            throw new RuntimeException("Panier non trouvé pour l'utilisateur avec l'ID : " + userId);
+        }
+
+        // Ajouter la date de la facture
+        invoiceData.put("date", LocalDate.now());
+
+        // Ajouter le nom de l'utilisateur
+        invoiceData.put("username", user.getUsername());
+
+        // Ajouter les produits avec leur nom, prix et quantité
+        List<Map<String, Object>> products = new ArrayList<>();
+        float totalPrice = 0;
+        for (Commandeline commandeline : cart.getCommandelineList()) {
+            Product product = commandeline.getProduct();
+            Map<String, Object> productMap = new HashMap<>();
+            productMap.put("name", product.getNamePr());
+            productMap.put("price", product.getPricePr());
+            productMap.put("quantity", commandeline.getQuantity()); // Ajout de la quantité
+            products.add(productMap);
+            totalPrice += (product.getPricePr() * commandeline.getQuantity());
+        }
+        invoiceData.put("products", products);
+
+        // Ajouter le prix total
+        invoiceData.put("totalPrice", totalPrice);
+
+        return invoiceData;
     }
 
 

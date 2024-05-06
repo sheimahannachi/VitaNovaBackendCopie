@@ -125,14 +125,18 @@ public class SecurityConfig implements WebSecurityConfigurer {
                         "/Product/search",
                         "/Product/filter",
                         "/Product/addLike/{idPr}",
+                        "/Product/generate-pdf/{cartId}/{userId}",
 
                         "Cart/Commandeline/{commandelineId}",
-                        "Cart/Commandeline/{commandelineId}/update",
+                        "Commandeline/{commandelineId}/update",
                         "Cart/Product/{userId}/cart/products/{productId}",
                        " Cart/{userId}/cart/products",
                         "Cart/create/{userId}",
                         "Cart/count/{cartId}",
                         "Cart/commandelines/{idCart}",
+                        "Payment/charge",
+                        "sendmail/**",
+
 
 
 

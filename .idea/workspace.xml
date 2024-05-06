@@ -4,7 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a652875-3486-4395-a6a1-4e367c9a91a2" name="Changes" comment="" />
+    <list default="true" id="9a652875-3486-4395-a6a1-4e367c9a91a2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/SendmailController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/PaymentRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/Sendmail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/CartController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/PaymentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Commandeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/Commandeline.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/LikeProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/LikeProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/DAO/Entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Security/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/CartIService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/CartIService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/CartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/CartService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/CommandelineService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/CommandelineService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/ProductIService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/ProductIService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/StripeIService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/StripeIService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/StripeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/StripeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
