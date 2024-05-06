@@ -51,7 +51,7 @@ public class Community {
     User creator;
 
 
-    @JsonBackReference("communityBackRef")
+    @JsonManagedReference("communityBackRef")
     @OneToMany(mappedBy = "community")
     List<User> membres = new ArrayList<>();
 
