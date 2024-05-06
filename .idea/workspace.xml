@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a652875-3486-4395-a6a1-4e367c9a91a2" name="Changes" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/scheduler/SchedulerBooks.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/scheduler/SchedulerCommunity.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/scheduler/SchedulerExercises.java" afterDir="false" />
@@ -20,6 +21,10 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/INotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/INotificationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/NotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Service/NotificationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/VitaNovabackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/VitaNovabackendApplication.java" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/AuthController.java" afterDir="false" />
+>>>>>>> Amine
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
