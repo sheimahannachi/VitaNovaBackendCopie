@@ -32,7 +32,7 @@ public class SchedulerExercises {
 
         // Query to find workout sessions that ended more than 2 days ago
         TypedQuery<WorkoutSession> query = entityManager.createQuery(
-                "SELECT ws FROM WorkoutSession ws WHERE ws.time_end <= :thresholdDate",
+                "SELECT ws FROM WorkoutSession ws WHERE ws.time_start <= :thresholdDate",
                 WorkoutSession.class
         );
         query.setParameter("thresholdDate", thresholdDate);
