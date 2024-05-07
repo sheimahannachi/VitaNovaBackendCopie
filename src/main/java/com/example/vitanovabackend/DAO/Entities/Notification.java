@@ -1,5 +1,7 @@
 package com.example.vitanovabackend.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,6 +34,7 @@ public class Notification {
 
 
 
+    @JsonManagedReference("notifBack")
     @ManyToOne
     User user;
 

@@ -81,7 +81,7 @@ public class User implements UserDetails {
 
     List<Food>foods=new ArrayList<>();
 
-
+    @JsonBackReference("notifBack")
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
     List<Notification> notifications = new ArrayList<>();
 
