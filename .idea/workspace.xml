@@ -4,8 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="f72a3803-7685-4379-8eab-cf79d8fc6d4e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+    <list default="true" id="e5e8051d-bc4c-4973-9bfa-47bc7eb99de5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/WorkoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Controllers/WorkoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/vitanovabackend/Security/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+>>>>>>> e5eeefb4fa43620a0fe81abbaa6de90956854e12
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,9 +48,21 @@
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
+<<<<<<< HEAD
     "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Users/ASUS/Desktop/AAAAAAAAAA/VitaNovaFrontEndCopie",
     "node.js.selected.package.tslint": "(autodetect)"
+=======
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "yoser",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+>>>>>>> e5eeefb4fa43620a0fe81abbaa6de90956854e12
   }
 }]]></component>
   <component name="RunAnythingCache">
@@ -52,24 +72,13 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="VitaNovabackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+    <configuration name="VitaNovabackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="VitaNovabackend" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.vitanovabackend.VitaNovabackendApplication" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.example.vitanovabackend.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Spring Boot.VitaNovabackendApplication" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
